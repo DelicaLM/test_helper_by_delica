@@ -114,7 +114,7 @@ def run_func_tests(unittest_obj, assert_func, test_func, input_output_pairs, tes
         run_single_test(unittest_obj, assert_func, test_func, test_input, expected_output,
                         f"{test_func.__name__} function for input " + str(test_input))
         test_num += 1
-    print(f"SUCCESS: ALL {num_tests} TESTS COMPLETED\n")
+    print(f"ALL {num_tests} TESTS COMPLETED FOR {test_desc.upper()}\n")
 
 
 def test_bool_func(unittest_obj, test_func, true_inputs=None, false_inputs=None, error_if_false=False, error_type=Exception,
