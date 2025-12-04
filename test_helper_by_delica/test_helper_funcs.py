@@ -45,12 +45,17 @@ def run_single_test(unittest_obj, assert_func, test_func, test_input=(), expecte
             error_type = expected_output
 
     if use_assert_raises:
+        assert error_type is not None
         # error_type = Exception
         # if len(expected_output) > 0:
         #     error_type = expected_output[0]
         assert error_type is Exception or issubclass(error_type, Exception)
-        with unittest_obj.assertRaises(error_type):
+        with unittest_obj.assertRaises(error_type) as context_manager:
             test_func(*test_input)
+        raised_exception = context_manager.exception
+        if raised_exception is not None:
+            print(f"ERROR MESSAGE: {str(raised_exception)}")
+
     else:
         test_output = test_func(*test_input)
         if hasattr(test_output, "__len__"):
