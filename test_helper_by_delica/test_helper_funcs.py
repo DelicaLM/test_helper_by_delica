@@ -97,9 +97,13 @@ def run_func_tests(unittest_obj, assert_func, test_func, input_output_pairs, tes
     assert type(input_output_pairs) == list
     assert type(test_desc) == str
     print("TESTING " + test_desc.upper())
-    num_tests = len(input_output_pairs)
-    test_num = 1
+    io_pairs = []
     for io_pair in input_output_pairs:
+        if io_pair != ():
+            io_pairs.append(io_pair)
+    num_tests = len(io_pairs)
+    test_num = 1
+    for io_pair in io_pairs:
         assert type(io_pair) == tuple
         assert len(io_pair) == 1 or len(io_pair) == 2
         test_input = io_pair[0]
@@ -110,9 +114,10 @@ def run_func_tests(unittest_obj, assert_func, test_func, input_output_pairs, tes
         run_single_test(unittest_obj, assert_func, test_func, test_input, expected_output,
                         f"{test_func.__name__} function for input " + str(test_input))
         test_num += 1
+    print(f"SUCCESS: ALL {num_tests} TESTS COMPLETED\n")
 
 
-def test_bool_func(unittest_obj, test_func, true_inputs, false_inputs, error_if_false=False, error_type=Exception,
+def test_bool_func(unittest_obj, test_func, true_inputs=None, false_inputs=None, error_if_false=False, error_type=Exception,
                    test_desc="", success_desc=""):
     """Runs a set of unittest tests for a function that returns a boolean value.
 
@@ -145,7 +150,14 @@ def test_bool_func(unittest_obj, test_func, true_inputs, false_inputs, error_if_
     """
     assert isinstance(unittest_obj, TestCase)
     assert callable(test_func)
-    assert type(true_inputs) == list
+    if true_inputs is None:
+        true_inputs = []
+    else:
+        assert type(true_inputs) == list
+    if false_inputs is None:
+        false_inputs = []
+    else:
+        assert type(false_inputs) == list
     assert type(false_inputs) == list
     assert type(error_if_false) == bool
     assert issubclass(error_type, Exception)
@@ -169,8 +181,8 @@ def test_bool_func(unittest_obj, test_func, true_inputs, false_inputs, error_if_
             test_input = test_inputs[io_index]
             expected_output = expected_outputs[io_index]
             io_pairs[io_index] = (test_input, expected_output)
-            run_func_tests(unittest_obj, assert_func, test_func, io_pairs, test_desc)
             io_index += 1
+        run_func_tests(unittest_obj, assert_func, test_func, io_pairs, test_desc)
 
 
     # test_num = 1
