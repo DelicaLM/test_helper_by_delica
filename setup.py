@@ -6,7 +6,8 @@ long_description = (this_directory / "README.md").read_text()
 
 setup(
     name='test_helper_by_delica',
-    version="0.1.0",
+    use_scm_version=True,
+    setup_requires=['setuptools_scm'],
     description="A Python package that simplifies the creation and execution of unittest test cases.",
     author="Delica Leboe-McGowan",
     author_email="stormindustries22@outlook.com",
