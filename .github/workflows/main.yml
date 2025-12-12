@@ -4,6 +4,7 @@ name: publish-python-to-test-py
 on:
   release:
     types: [created]
+    branches: --develop
 
 jobs:
   build:
