@@ -24,7 +24,7 @@ def always_true():
 We then use the test helper package to create a unittest TestCase object.
 ````
 import test_helper_by_delica as test_lib 
-test_obj = test_lib.create_test_obj()
+test_obj = test_lib.create_unittest_obj()
 ````
 Now we can call the boolean testing function to check whether always_true returns the expected result.
 ````
