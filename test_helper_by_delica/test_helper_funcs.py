@@ -1,5 +1,14 @@
 from unittest import TestCase
 
+class TestClass(TestCase):
+    def return_self(self):
+        return self
+
+
+
+def create_unittest_obj():
+    return TestClass().return_self()
+
 def run_single_test(unittest_obj, assert_func, test_func, test_input=(), expected_output=(),
                     test_desc=""):
     """Runs a single test using an unittest TestCase object.

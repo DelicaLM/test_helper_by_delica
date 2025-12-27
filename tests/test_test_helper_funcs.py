@@ -16,19 +16,26 @@ def test_func_is_int_type_error_if_false(test_input=0):
         raise TypeError(f"{test_input} is not an integer")
     return is_int
 
-class Test(TestCase):
-    def test_test_bool_func(self):
-        # test_lib.test_bool_func(self, test_func_always_true, true_inputs=[(),(1,),(1,2),(1,2,True,False),
-        #                                                                   (1,2,True,False,"A","ab")],
-        #                         test_desc="always true function")
-        # test_lib.test_bool_func(self, test_func_always_false, false_inputs=[(),(1,),(1,2),(1,2,True,False),
-        #                                                                   (1,2,True,False,"A","ab")],
-        #                         test_desc="always false function")
-        # test_lib.test_bool_func(self, test_func_is_int, true_inputs=[(),(1,),(-1,),(10000,),(-10000,)],
-        #                         false_inputs=[(1.0,),(-1.0,),(10000.0,),(-10000.0,),("",),("int",),(True,),(False,)],
-        #                         test_desc="is int function")
-        test_lib.test_bool_func(self, test_func_is_int_type_error_if_false, true_inputs=[(), (1,), (-1,), (10000,), (-10000,)],
-                                false_inputs=[(1.0,), (-1.0,), (10000.0,), (-10000.0,), ("",), ("int",), (True,),
-                                              (False,)],
-                                test_desc="is int function with TypeError if false", error_if_false=True, error_type=TypeError)
-        test = 0
+test_obj = test_lib.create_unittest_obj()
+test_lib.test_bool_func(test_obj, test_func_is_int_type_error_if_false, true_inputs=[(), (1,), (-1,), (10000,), (-10000,)],
+                        false_inputs=[(1.0,), (-1.0,), (10000.0,), (-10000.0,), ("",), ("int",), (True,),
+                                      (False,)],
+                        test_desc="is int function with TypeError if false", error_if_false=True, error_type=TypeError)
+
+
+# class Test(TestCase):
+#     def test_test_bool_func(self):
+#         # test_lib.test_bool_func(self, test_func_always_true, true_inputs=[(),(1,),(1,2),(1,2,True,False),
+#         #                                                                   (1,2,True,False,"A","ab")],
+#         #                         test_desc="always true function")
+#         # test_lib.test_bool_func(self, test_func_always_false, false_inputs=[(),(1,),(1,2),(1,2,True,False),
+#         #                                                                   (1,2,True,False,"A","ab")],
+#         #                         test_desc="always false function")
+#         # test_lib.test_bool_func(self, test_func_is_int, true_inputs=[(),(1,),(-1,),(10000,),(-10000,)],
+#         #                         false_inputs=[(1.0,),(-1.0,),(10000.0,),(-10000.0,),("",),("int",),(True,),(False,)],
+#         #                         test_desc="is int function")
+#         test_lib.test_bool_func(self, test_func_is_int_type_error_if_false, true_inputs=[(), (1,), (-1,), (10000,), (-10000,)],
+#                                 false_inputs=[(1.0,), (-1.0,), (10000.0,), (-10000.0,), ("",), ("int",), (True,),
+#                                               (False,)],
+#                                 test_desc="is int function with TypeError if false", error_if_false=True, error_type=TypeError)
+#         test = 0
