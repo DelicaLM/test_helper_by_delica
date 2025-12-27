@@ -4,9 +4,8 @@ class TestClass(TestCase):
     def return_self(self):
         return self
 
-
-
 def create_unittest_obj():
+    """Creates and returns an instance of an unittest TestCase"""
     return TestClass().return_self()
 
 def run_single_test(unittest_obj, assert_func, test_func, test_input=(), expected_output=(),
