@@ -28,7 +28,32 @@ test_obj = test_lib.create_unittest_obj()
 ````
 Now we can call the boolean testing function to check whether always_true returns the expected result.
 ````
-test_lib.test_bool_func(test_obj, always_True, true_inputs=())
+test_lib.test_bool_func(test_obj, always_true, true_inputs=())
 ````
-## Current Features
+This function call generates the following output:
+````
+TESTING ALWAYS TRUE FUNCTION
+Test #1 of 1
+Testing always_true function for input ()
+SUCCESS: input=() -> output=True
+ALL 1 TESTS COMPLETED FOR ALWAYS TRUE FUNCTION
+````
+Similarly, we can test a function that always returns False.
+````
+def always_false():    
+    return False
+    
+test_lib.test_bool_func(test_obj, always_false, false_inputs=())
+````
+We then have the following output:
+````
+TESTING ALWAYS FALSE FUNCTION
+Test #1 of 1
+Testing always_false function for input ()
+SUCCESS: input=() -> output=False
+ALL 1 TESTS COMPLETED FOR ALWAYS FALSE FUNCTION
+````
+The Usage section below provides additional examples of how you can test your own functions with the test helper package.
+## Usage
+
 ## Citation
