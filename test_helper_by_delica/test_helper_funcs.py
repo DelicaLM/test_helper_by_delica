@@ -1,4 +1,23 @@
 from unittest import TestCase
+from IOPair import IOPair
+
+ASSERT_EQUAL = "assert_equal"
+ASSERT_RAISES = "assert_raises"
+ASSERT_NAMES = [ASSERT_EQUAL, ASSERT_RAISES]
+
+def get_assert_func(unittest_obj, assert_name):
+    if assert_name not in ASSERT_NAMES:
+        raise ValueError(f"VALUE ERROR IN GET_ASSERT_FUNC: {assert_name} is not a valid unittest assert function.")
+    assert assert_name in ASSERT_NAMES
+    assert_func = None
+    if assert_name == ASSERT_EQUAL:
+        assert_func = unittest_obj.assertEqual
+    elif assert_name == ASSERT_RAISES:
+        assert_func = unittest_obj.assertRaises
+    assert assert_func is not None
+    return assert_func
+
+
 
 class TestClass(TestCase):
     def return_self(self):
@@ -89,26 +108,29 @@ def run_single_test(unittest_obj, assert_func, test_func, test_input=(), expecte
     return test_succeeded
 
 
-def run_func_tests(unittest_obj, assert_func, test_func, input_output_pairs, test_desc=""):
+def run_func_tests(test_func, unittest_obj, correct_io_pairs, assert_func_name=ASSERT_EQUAL, test_desc=""):
     """Runs a set of unittest tests for a specified function.
 
     Parameters
     ----------
-    unittest_obj : TestCase
-        The unittest TestCase object that should be used to run the tests.
-    assert_func : function
-        The unittest assertion function that should be used to verify the results of the tests.
     test_func : function
         The function that should be tested.
-    input_output_pairs : list
-        List of the input/output tuples that should be passed to the test function. The length of this list determines
-        the number of tests that will be run.
+    unittest_obj : TestCase
+        The unittest TestCase object that should be used to run the tests.
+    correct_io_pairs : list[IOPair]
+        List of the input-output pairs that should occur if the test function is working properly. The number of
+        input-output pairs determines the number of tests that will be run. For each test, this function will pass the input from the IOPair to the
+        function that we are testing. It will then use the requested assertion function to check whether the actual
+        output matches the expected output from the IOPair.
+    assert_func_name : str
+        The string name (from the constants at the top of test_helper_funcs.py) that corresponds to the unittest
+        assertion function we should use to check whether each test is successful.
     test_desc : str, default="",
         A description of the tests that should be printed to stdout.
-
     Returns
     -------
     None
+    (Test results are printed to stdout.)
 
     Raises
     ______
@@ -118,28 +140,32 @@ def run_func_tests(unittest_obj, assert_func, test_func, input_output_pairs, tes
     """
     assert isinstance(unittest_obj, TestCase)
     assert callable(test_func)
-    assert callable(assert_func)
+    assert_func = get_assert_func(unittest_obj, assert_func_name)
+    assert assert_func is not None
     assert type(input_output_pairs) == list
     assert type(test_desc) == str
     print("TESTING " + test_desc.upper())
-    io_pairs = []
-    for io_pair in input_output_pairs:
-        if io_pair != ():
-            io_pairs.append(io_pair)
-    num_tests = len(io_pairs)
+    # io_pairs = []
+    # for io_pair in input_output_pairs:
+    #     if io_pair != ():
+    #         io_pairs.append(io_pair)
+    num_tests = len(input_output_pairs)
     num_succeeded = 0
     num_failed = 0
     failed_test_nums = []
     test_num = 1
-    for io_pair in io_pairs:
-        assert type(io_pair) == tuple
-        assert len(io_pair) == 1 or len(io_pair) == 2
-        test_input = io_pair[0]
-        expected_output = ()
+    for io_pair in input_output_pairs:
+        curr_assert_func = assert_func
+        assert isinstance(io_pair, IOPair)
+        test_input = io_pair.input_tuple
+        expected_output = io_pair.output_tuple
         if len(io_pair) == 2:
             expected_output = io_pair[1]
         print(f"Test #{test_num} of {num_tests}")
-        is_success = run_single_test(unittest_obj, assert_func, test_func, test_input, expected_output,
+        if len(expected_output) > 0:
+            if isinstance(expected_output[0], Exception):
+                curr_assert_func = unittest_obj.assertRaises
+        is_success = run_single_test(unittest_obj, curr_assert_func, test_func, test_input, expected_output,
                         f"{test_func.__name__} function for input " + str(test_input))
         test_num += 1
         if is_success:
@@ -203,8 +229,6 @@ def test_bool_func(unittest_obj, test_func, true_inputs=None, false_inputs=None,
     assert issubclass(error_type, Exception)
     assert type(test_desc) == str
     assert type(success_desc) == str
-    # print("TESTING " + test_desc.upper())
-    assert_func = unittest_obj.assertEqual
     test_inputs = true_inputs.copy()
     test_inputs.extend(false_inputs)
     expected_outputs = [(True)] * len(true_inputs)
@@ -222,7 +246,7 @@ def test_bool_func(unittest_obj, test_func, true_inputs=None, false_inputs=None,
             expected_output = expected_outputs[io_index]
             io_pairs[io_index] = (test_input, expected_output)
             io_index += 1
-        run_func_tests(unittest_obj, assert_func, test_func, io_pairs, test_desc)
+        run_func_tests(test_func, unittest_obj, io_pairs,assert_func_name=ASSERT_EQUAL, test_desc=test_desc)
 
 
     # test_num = 1
@@ -242,3 +266,16 @@ def test_bool_func(unittest_obj, test_func, true_inputs=None, false_inputs=None,
     #                     f"{test_func.__name__} function for input "
     #                     + str(false_input), success_desc)
     # test_num += 1
+
+def make_io_pair(test_input, expected_output):
+    test_input_tuple = test_input
+    if type(test_input) != tuple:
+        test_input_tuple = (test_input,)
+    expected_output_tuple = expected_output
+    if type(expected_output) != tuple:
+        expected_output_tuple = (expected_output,)
+    return (test_input_tuple, expected_output_tuple)
+#
+# def make_io_pairs(test_inputs, expected_outputs):
+#     result = []
+#     assert

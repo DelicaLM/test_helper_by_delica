@@ -1,13 +1,16 @@
-from test_helper_by_delica import create_unittest_obj, test_bool_func
+from test_helper_by_delica import *
 
 test_obj = create_unittest_obj()
 
 def always_true():
+    """Function that always returns True"""
     return True
 
 #test_bool_func(test_obj, always_true, true_inputs=[()], test_desc="always true function")
 
+run_func_tests(test_obj, always_true)
 def always_false():
+    """Function that always returns False"""
     return False
 
 #test_bool_func(test_obj, always_false, false_inputs=[()], test_desc="always false function")
