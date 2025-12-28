@@ -67,7 +67,7 @@ def run_single_test(unittest_obj, assert_func, test_func, test_input=(), expecte
         test_output = test_func(*test_input)
         if hasattr(test_output, "__len__"):
             assert len(test_output) == len(expected_output)
-        fail_msg = (f"{test_desc.upper()} FAILED WITH INPUT = {input_string} EXPECTED_OUTPUT = {expected_output_string},"
+        fail_msg = (f"{test_desc.upper()} FAILED WITH INPUT = {input_string}, EXPECTED_OUTPUT = {expected_output_string},"
                     + f" ACTUAL_OUTPUT = {test_output}")
 
         if type(test_output) is tuple:
@@ -86,6 +86,7 @@ def run_single_test(unittest_obj, assert_func, test_func, test_input=(), expecte
         # assert_func(test_output, *expected_output)
     if test_succeeded:
         print(f"SUCCESS: input={input_string} -> output={expected_output_string}")
+    return test_succeeded
 
 
 def run_func_tests(unittest_obj, assert_func, test_func, input_output_pairs, test_desc=""):
@@ -126,6 +127,9 @@ def run_func_tests(unittest_obj, assert_func, test_func, input_output_pairs, tes
         if io_pair != ():
             io_pairs.append(io_pair)
     num_tests = len(io_pairs)
+    num_succeeded = 0
+    num_failed = 0
+    failed_test_nums = []
     test_num = 1
     for io_pair in io_pairs:
         assert type(io_pair) == tuple
@@ -135,10 +139,22 @@ def run_func_tests(unittest_obj, assert_func, test_func, input_output_pairs, tes
         if len(io_pair) == 2:
             expected_output = io_pair[1]
         print(f"Test #{test_num} of {num_tests}")
-        run_single_test(unittest_obj, assert_func, test_func, test_input, expected_output,
+        is_success = run_single_test(unittest_obj, assert_func, test_func, test_input, expected_output,
                         f"{test_func.__name__} function for input " + str(test_input))
         test_num += 1
-    print(f"ALL {num_tests} TESTS COMPLETED FOR {test_desc.upper()}\n")
+        if is_success:
+            num_succeeded += 1
+        else:
+            num_failed += 1
+            failed_test_nums.append(test_num-1)
+    print(f"ALL {num_tests} TESTS COMPLETED FOR {test_desc.upper()}")
+    print(f"{num_succeeded} SUCCESSFUL TESTS")
+    failed_test_nums_str = ""
+    for failed_test_num in failed_test_nums:
+        failed_test_nums_str += f"#{failed_test_num}"
+        if failed_test_num != failed_test_nums[-1]:
+            failed_test_nums_str += ", "
+    print(f"{num_failed} FAILED TESTS ({failed_test_nums_str})")
 
 
 def test_bool_func(unittest_obj, test_func, true_inputs=None, false_inputs=None, error_if_false=False, error_type=Exception,

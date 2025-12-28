@@ -12,6 +12,8 @@ def always_false():
 
 #test_bool_func(test_obj, always_false, false_inputs=[()], test_desc="always false function")
 
+#test_bool_func(test_obj, can_convert_to_int, true_inputs=[("1",)], test_desc="is_int function")
+
 def is_int(val):
     return isinstance(val, int)
 
@@ -26,7 +28,4 @@ def can_convert_to_int(val):
             can_convert = False
     return can_convert
 
-#test_bool_func(test_obj, can_convert_to_int, true_inputs=[("1",)], test_desc="is_int function")
 
-
-test_bool_func(test_obj, always_false, true_inputs=[()], test_desc="always true function")

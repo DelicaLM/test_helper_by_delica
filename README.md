@@ -57,6 +57,14 @@ To see what happens if a test fails, we can try using the always_true function i
 ````
 test_lib.test_bool_func(test_obj, always_false, true_inputs=[()], test_desc="always true function")
 ````
+This call prints the following stdout output to inform the user that the test has failed:
+````
+TESTING ALWAYS TRUE FUNCTION
+Test #1 of 1
+Testing always_false function for input ()
+FAILURE: ALWAYS_FALSE FUNCTION FOR INPUT () FAILED WITH INPUT = () EXPECTED_OUTPUT = True, ACTUAL_OUTPUT = False
+ALL 1 TESTS COMPLETED FOR ALWAYS TRUE FUNCTION
+````
 Now suppose we want to test a boolean function that takes an input parameter. For example, let's use the is_even   
 function below, which returns True if the input parameter is an integer and False if it is not.
 ````
