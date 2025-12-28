@@ -46,11 +46,10 @@ def run_single_test(unittest_obj, assert_func, test_func, test_input=(), expecte
     expected_output_string = str(expected_output)
     use_assert_raises = False
     error_type = None
-    use_assert_raises = False
-    if type(expected_output) is type:
-        use_assert_raises = issubclass(expected_output, Exception)
-        if use_assert_raises:
-            error_type = expected_output
+    use_assert_raises = isinstance(expected_output, Exception)
+    if use_assert_raises:
+        error_type = expected_output
+    test_succeeded = False
 
     if use_assert_raises:
         assert error_type is not None
@@ -63,18 +62,30 @@ def run_single_test(unittest_obj, assert_func, test_func, test_input=(), expecte
         raised_exception = context_manager.exception
         if raised_exception is not None:
             print(f"ERROR MESSAGE: {str(raised_exception)}")
-
+            test_succeeded = isinstance(raised_exception, error_type)
     else:
         test_output = test_func(*test_input)
         if hasattr(test_output, "__len__"):
             assert len(test_output) == len(expected_output)
+        fail_msg = (f"{test_desc.upper()} FAILED WITH INPUT = {input_string} EXPECTED_OUTPUT = {expected_output_string},"
+                    + f" ACTUAL_OUTPUT = {test_output}")
+
         if type(test_output) is tuple:
-            assert_func(*test_output, *expected_output)
+            try:
+                assert_func(*test_output, *expected_output, msg=fail_msg)
+                test_succeeded = True
+            except AssertionError as e:
+                print(f"FAILURE: {fail_msg}")
         else:
-            assert_func(test_output, expected_output)
+            try:
+                assert_func(test_output, expected_output, msg=fail_msg)
+                test_succeeded = True
+            except AssertionError as e:
+                print(f"FAILURE: {fail_msg}")
 
         # assert_func(test_output, *expected_output)
-    print(f"SUCCESS: input={input_string} -> output={expected_output_string}")
+    if test_succeeded:
+        print(f"SUCCESS: input={input_string} -> output={expected_output_string}")
 
 
 def run_func_tests(unittest_obj, assert_func, test_func, input_output_pairs, test_desc=""):
