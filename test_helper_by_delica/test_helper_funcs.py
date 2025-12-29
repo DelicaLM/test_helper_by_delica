@@ -1,5 +1,5 @@
 from unittest import TestCase
-from IOPair import IOPair
+from test_helper_by_delica.IOPair import IOPair
 
 ASSERT_EQUAL = "assert_equal"
 ASSERT_RAISES = "assert_raises"
@@ -20,25 +20,26 @@ def get_assert_func(unittest_obj, assert_name):
 
 
 class TestClass(TestCase):
-    def return_self(self):
-        return self
+    pass
+    # def return_self(self):
+    #     return self
 
 def create_unittest_obj():
     """Creates and returns an instance of an unittest TestCase"""
-    return TestClass().return_self()
+    return TestClass()#.return_self()
 
-def run_single_test(unittest_obj, assert_func, test_func, test_input=(), expected_output=(),
+def run_single_test(test_func, unittest_obj, assert_func, test_input=(), expected_output=(),
                     test_desc=""):
     """Runs a single test using an unittest TestCase object.
 
     Parameters
     ----------
+    test_func : function
+        The function that should be tested.
     unittest_obj : TestCase
         The unittest TestCase object that should be used to run the test.
     assert_func : function
         The unittest assertion function that should be used to verify the result of the test.
-    test_func : function
-        The function that should be tested.
     test_input : tuple, default=()
         The input tuple that will be passed to the test function.
     expected_output : tuple, default=()
@@ -60,12 +61,15 @@ def run_single_test(unittest_obj, assert_func, test_func, test_input=(), expecte
     # test = getattr(TestCase, assert_func.__name__)
     # assert callable(getattr(unittest_obj, assert_func.__name__))
     assert callable(test_func)
+    if type(expected_output) == tuple:
+        if len(expected_output) == 1:
+            expected_output = expected_output[0]
     print("Testing " + test_desc)
     input_string = str(test_input)
     expected_output_string = str(expected_output)
     use_assert_raises = False
     error_type = None
-    use_assert_raises = isinstance(expected_output, Exception)
+    use_assert_raises = issubclass(expected_output, Exception)
     if use_assert_raises:
         error_type = expected_output
     test_succeeded = False
@@ -88,7 +92,6 @@ def run_single_test(unittest_obj, assert_func, test_func, test_input=(), expecte
             assert len(test_output) == len(expected_output)
         fail_msg = (f"{test_desc.upper()} FAILED WITH INPUT = {input_string}, EXPECTED_OUTPUT = {expected_output_string},"
                     + f" ACTUAL_OUTPUT = {test_output}")
-
         if type(test_output) is tuple:
             try:
                 assert_func(*test_output, *expected_output, msg=fail_msg)
@@ -119,9 +122,9 @@ def run_func_tests(test_func, unittest_obj, correct_io_pairs, assert_func_name=A
         The unittest TestCase object that should be used to run the tests.
     correct_io_pairs : list[IOPair]
         List of the input-output pairs that should occur if the test function is working properly. The number of
-        input-output pairs determines the number of tests that will be run. For each test, this function will pass the input from the IOPair to the
-        function that we are testing. It will then use the requested assertion function to check whether the actual
-        output matches the expected output from the IOPair.
+        input-output pairs determines the number of tests that will be run. For each input-output pair, this function
+        will pass the input to the function that we are testing. It will then use the requested assertion function to
+        check whether the actual output matches the expected output from the input-output pair.
     assert_func_name : str
         The string name (from the constants at the top of test_helper_funcs.py) that corresponds to the unittest
         assertion function we should use to check whether each test is successful.
@@ -138,34 +141,42 @@ def run_func_tests(test_func, unittest_obj, correct_io_pairs, assert_func_name=A
         Raised if any of the tests fail (stdout messages allow the user to easily determine which test case failed).
 
     """
-    assert isinstance(unittest_obj, TestCase)
-    assert callable(test_func)
-    assert_func = get_assert_func(unittest_obj, assert_func_name)
-    assert assert_func is not None
-    assert type(input_output_pairs) == list
-    assert type(test_desc) == str
+    assert isinstance(unittest_obj, TestCase), "Unittest object must be an instance of TestCase."
+    assert callable(test_func), "Test function must be callable."
+    assert_func = get_assert_func(unittest_obj, assert_func_name),
+    assert assert_func is not None, "Assertion function must not be None."
+    if type(assert_func) is tuple:
+        assert_func = assert_func[0]
+    assert callable(assert_func), "Assertion function must be callable."
+    if isinstance(correct_io_pairs, IOPair):
+        correct_io_pairs = [correct_io_pairs]
+    else:
+        assert type(correct_io_pairs) == list, "Input-output pairs must be passed as a list of IO_Pair objects."
+        for io_pair in correct_io_pairs:
+            assert isinstance(io_pair, IOPair), "Every item in the input-output pairs list must be an instance of IO_Pair object."
+    assert type(test_desc) == str, "Test description must be a string."
     print("TESTING " + test_desc.upper())
     # io_pairs = []
     # for io_pair in input_output_pairs:
     #     if io_pair != ():
     #         io_pairs.append(io_pair)
-    num_tests = len(input_output_pairs)
+    num_tests = len(correct_io_pairs)
     num_succeeded = 0
     num_failed = 0
     failed_test_nums = []
     test_num = 1
-    for io_pair in input_output_pairs:
+    for io_pair in correct_io_pairs:
         curr_assert_func = assert_func
         assert isinstance(io_pair, IOPair)
         test_input = io_pair.input_tuple
+        assert type(test_input) == tuple, "Test input must be a tuple."
         expected_output = io_pair.output_tuple
-        if len(io_pair) == 2:
-            expected_output = io_pair[1]
-        print(f"Test #{test_num} of {num_tests}")
+        assert type(expected_output) == tuple, "Expected test output must be a tuple."
         if len(expected_output) > 0:
-            if isinstance(expected_output[0], Exception):
+            if issubclass(expected_output[0], Exception):
                 curr_assert_func = unittest_obj.assertRaises
-        is_success = run_single_test(unittest_obj, curr_assert_func, test_func, test_input, expected_output,
+        print(f"Test #{test_num} of {num_tests}")
+        is_success = run_single_test(test_func, unittest_obj, curr_assert_func, test_input, expected_output,
                         f"{test_func.__name__} function for input " + str(test_input))
         test_num += 1
         if is_success:
@@ -180,22 +191,25 @@ def run_func_tests(test_func, unittest_obj, correct_io_pairs, assert_func_name=A
         failed_test_nums_str += f"#{failed_test_num}"
         if failed_test_num != failed_test_nums[-1]:
             failed_test_nums_str += ", "
+    failed_tests_line = f"{num_failed} FAILED TESTS"
+    if num_failed > 0:
+        failed_tests_line += f" ({failed_test_nums_str})"
     print(f"{num_failed} FAILED TESTS ({failed_test_nums_str})")
 
 
-def test_bool_func(unittest_obj, test_func, true_inputs=None, false_inputs=None, error_if_false=False, error_type=Exception,
+def test_bool_func(test_func, unittest_obj, true_inputs=None, false_inputs=None, error_if_false=False, error_type=Exception,
                    test_desc="", success_desc=""):
     """Runs a set of unittest tests for a function that returns a boolean value.
 
     Parameters
     ----------
-    unittest_obj : TestCase
-        The unittest TestCase object that should be used to run the tests.
     test_func : function
         The boolean function that should be tested.
-    true_inputs : list
+    unittest_obj : TestCase
+        The unittest TestCase object that should be used to run the tests.
+    true_inputs : list[tuple], optional, default=None
         List of input tuples that should cause the test function to return True.
-    false_inputs : list
+    false_inputs : list[tuple], optional, default=None
         List of input tuples that should cause the test function to return False.
     error_if_false : bool, default=False
         Boolean flag for whether the function should raise an error when the condition it evaluates is False.
@@ -229,24 +243,38 @@ def test_bool_func(unittest_obj, test_func, true_inputs=None, false_inputs=None,
     assert issubclass(error_type, Exception)
     assert type(test_desc) == str
     assert type(success_desc) == str
-    test_inputs = true_inputs.copy()
-    test_inputs.extend(false_inputs)
-    expected_outputs = [(True)] * len(true_inputs)
-    false_output = False
+    io_pairs = []
+    for true_input in true_inputs:
+        if type(true_input) != tuple:
+            true_input = (true_input,)
+        new_io_pair = IOPair(true_input, (True,))
+        io_pairs.append(new_io_pair)
+
+    false_result = False
     if error_if_false:
-        false_output = error_type
-    expected_outputs.extend([(false_output)] * len(false_inputs))
-    num_tests = len(test_inputs)
-    assert num_tests == len(expected_outputs)
-    if num_tests > 0:
-        io_pairs = [()]*num_tests
-        io_index = 0
-        while io_index < num_tests:
-            test_input = test_inputs[io_index]
-            expected_output = expected_outputs[io_index]
-            io_pairs[io_index] = (test_input, expected_output)
-            io_index += 1
-        run_func_tests(test_func, unittest_obj, io_pairs,assert_func_name=ASSERT_EQUAL, test_desc=test_desc)
+        false_result = error_type
+    for false_input in false_inputs:
+        if type(false_input) != tuple:
+            false_input = (false_input,)
+        new_io_pair = IOPair(false_input, (false_result,))
+        io_pairs.append(new_io_pair)
+    # test_inputs = true_inputs.copy()
+    # test_inputs.extend(false_inputs)
+    # expected_outputs = [(True)] * len(true_inputs)
+    # false_output = False
+    # if error_if_false:
+    #     false_output = error_type
+    # expected_outputs.extend([(false_output)] * len(false_inputs))
+    # num_tests = len(io_pairs)
+    # if num_tests > 0:
+    #     io_pairs = [()]*num_tests
+    #     io_index = 0
+    #     while io_index < num_tests:
+    #         test_input = test_inputs[io_index]
+    #         expected_output = expected_outputs[io_index]
+    #         io_pairs[io_index] = (test_input, expected_output)
+    #         io_index += 1
+    run_func_tests(test_func, unittest_obj, io_pairs,assert_func_name=ASSERT_EQUAL, test_desc=test_desc)
 
 
     # test_num = 1
@@ -267,14 +295,14 @@ def test_bool_func(unittest_obj, test_func, true_inputs=None, false_inputs=None,
     #                     + str(false_input), success_desc)
     # test_num += 1
 
-def make_io_pair(test_input, expected_output):
-    test_input_tuple = test_input
-    if type(test_input) != tuple:
-        test_input_tuple = (test_input,)
-    expected_output_tuple = expected_output
-    if type(expected_output) != tuple:
-        expected_output_tuple = (expected_output,)
-    return (test_input_tuple, expected_output_tuple)
+# def make_io_pair(test_input, expected_output):
+#     test_input_tuple = test_input
+#     if type(test_input) != tuple:
+#         test_input_tuple = (test_input,)
+#     expected_output_tuple = expected_output
+#     if type(expected_output) != tuple:
+#         expected_output_tuple = (expected_output,)
+#     return (test_input_tuple, expected_output_tuple)
 #
 # def make_io_pairs(test_inputs, expected_outputs):
 #     result = []
