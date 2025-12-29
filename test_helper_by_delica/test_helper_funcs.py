@@ -56,7 +56,11 @@ def run_single_test(test_func, test_input=(), expected_output=(), assert_type=AS
     expected_output_string = str(expected_output)
     use_assert_raises = False
     error_type = None
-    use_assert_raises = isinstance(expected_output, Exception)
+    use_assert_raises = False
+    try:
+        use_assert_raises = expected_output is Exception or issubclass(expected_output, Exception)
+    except TypeError:
+        pass
     if use_assert_raises:
         error_type = expected_output
     test_succeeded = False
@@ -70,9 +74,22 @@ def run_single_test(test_func, test_input=(), expected_output=(), assert_type=AS
             test_succeeded = True
             print(f"ERROR MESSAGE: {e}")
     else:
-        test_output = test_func(*test_input)
-        output_is_correct = compare_output_tuples(test_output, expected_output, compare_type=assert_type)
-        test_succeeded = output_is_correct
+        unwanted_error_raised = False
+        unwanted_error_type = None
+        test_output = None
+        try:
+            test_output = test_func(*test_input)
+        except Exception as e:
+            unwanted_error_raised = True
+            unwanted_error_type = type(e)
+            test_output = unwanted_error_type
+            test_succeeded = False
+            unwanted_error_type_name = unwanted_error_type.__name__
+            print(f"TEST FUNCTION RAISED UNEXPECTED {unwanted_error_type_name}\n   ERROR MESSAGE: {e}")
+
+        if not unwanted_error_raised:
+            output_is_correct = compare_output_tuples(test_output, expected_output, compare_type=assert_type)
+            test_succeeded = output_is_correct
         if not test_succeeded:
             fail_msg = (f"{test_desc.upper()} FAILED WITH INPUT = {input_string}, EXPECTED_OUTPUT = {expected_output_string},"
                     + f" ACTUAL_OUTPUT = {test_output}")
@@ -133,8 +150,11 @@ def run_func_tests(test_func, correct_io_pairs, assert_type=ASSERT_EQUAL, test_d
         expected_output = io_pair.output_tuple
         assert type(expected_output) == tuple, "Expected test output must be a tuple."
         if len(expected_output) > 0:
-            if isinstance(expected_output[0], Exception):
-                curr_assert_type = ASSERT_RAISES
+            try:
+                if expected_output[0] is Exception or issubclass(expected_output[0], Exception):
+                    curr_assert_type = ASSERT_RAISES
+            except TypeError:
+                curr_assert_type = assert_type
         print(f"Test #{test_num} of {num_tests}")
         is_success = run_single_test(test_func, test_input, expected_output, assert_type=curr_assert_type,
                         test_desc=f"{test_func.__name__} function for input " + str(test_input))

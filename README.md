@@ -1,7 +1,7 @@
 # test-helper-by-delica
 ## Purpose
-This Python package simplifies the creation and execution of unittest test cases,  
-in order to help programmers efficiently develop and run tests for their Python software.
+This package simplifies the creation, execution, and analysis of unit tests in Python,
+in order to help programmers more efficiently develop and validate their software.
 ## Installation
 This package is available through the Python Package Index (PyPI).      
 One can easily download the package with the following pip install statement:   
@@ -21,14 +21,9 @@ For a simple example, we can define a boolean function that always returns True.
 def always_true():    
     return True   
 ````
-We then use the test helper package to create a unittest TestCase object.
+Now we can call the boolean testing function from the package to check whether always_true returns the expected result.
 ````
-import test_helper_by_delica as test_lib 
-test_obj = test_lib.create_unittest_obj()
-````
-Now we can call the boolean testing function to check whether always_true returns the expected result.
-````
-test_lib.test_bool_func(test_obj, always_true, true_inputs=[()], test_desc="always true function)
+test_lib.test_bool_func(always_true, true_inputs=[()], test_desc="always true function")
 ````
 This function call generates the following output:
 ````

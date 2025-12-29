@@ -3,20 +3,100 @@ import test_helper_by_delica.test_helper_funcs as test_lib
 def no_param_no_return():
     return
 
-test_lib.run_single_test(no_param_no_return, test_input=(), expected_output=(),
-                         test_desc="function with no parameters and no return value")
-print("")
+def one_param_no_return(param):
+    return
 
+def two_param_no_return(param1, param2):
+    return
+
+
+test_run_single_test = True
+test_run_func_tests = False
+
+test_with_no_param_no_return = False
+test_with_one_param_no_return = False
+test_with_two_param_no_return = True
+
+if test_run_single_test:
+    print("TESTING RUN_SINGLE_TEST FUNCTION")
+    if test_with_no_param_no_return:
+        #Test whether the run-single-test function correctly handles a test function with no parameters and no return values.
+        #Success Case: The run-single-test function should conclude that the no-param-no-return function
+        #              is working properly when it returns nothing.
+        test_lib.run_single_test(test_lib.run_single_test,
+                                 test_input=(no_param_no_return,(),(),test_lib.ASSERT_EQUAL,
+                                             "function with no parameters and no return value"),
+                                 expected_output=(True,),
+                                 test_desc="run-single-test function on test function with no parameters and no return value (success case)")
+        print("")
+        #Fail Case: Make sure that the run-single-test function raises an Assertion error if the expected output from
+        #           no-param-no-return does not match the actual output.
+        test_lib.run_single_test(test_lib.run_single_test,
+                                 test_input=(no_param_no_return,(),(True,),test_lib.ASSERT_EQUAL,
+                                             "function with no parameters and no return value"),
+                                 expected_output=(AssertionError,),
+                                 test_desc="run-single-test function on test function with no parameters and no return value "
+                                           + "(fail case)")
+        print("")
+    if test_with_one_param_no_return:
+        #Test whether the run-single-test function correctly handles a test function with one parameter and no return value.
+        #Success Case: The run-single-test function should conclude that the one-param-no-return function
+        #              is working properly when it returns nothing.
+        test_lib.run_single_test(test_lib.run_single_test,
+                                 test_input=(one_param_no_return,(0,),(),test_lib.ASSERT_EQUAL,
+                                             "function with one parameter and no return value"),
+                                 expected_output=(True,),
+                                 test_desc="run-single-test function on test function with one parameter and no return value "
+                                           + "(success case)")
+        print("")
+        #Fail Case: Make sure that the run-single-test function raises an Assertion error if the expected output from
+        #           one-param-no-return does not match the actual output.
+        test_lib.run_single_test(test_lib.run_single_test,
+                                 test_input=(one_param_no_return,(0,),(True,),test_lib.ASSERT_EQUAL,
+                                             "function with one parameter and no return value"),
+                                 expected_output=(AssertionError,),
+                                 test_desc="run-single-test function on test function with one parameter and no return value "
+                                          + "(fail case)")
+        print("")
+        #Fail Case: Make sure that the run-single-test function raises an Assertion error if the one-param-no-return
+        #           function raises an unexpected error (which we trigger by not passing the required parameter).
+        test_lib.run_single_test(test_lib.run_single_test,
+                                 test_input=(one_param_no_return,(),(True,),test_lib.ASSERT_EQUAL,
+                                             "function with one parameter and no return value"),
+                                 expected_output=(AssertionError,),
+                                 test_desc="run-single-test function on test function with one parameter and no return value "
+                                          + "(fail case)")
+        print("")
+    if test_with_two_param_no_return:
+        #Test whether the run-single-test function correctly handles a test function with two parameters and no return value.
+        #Success Case: The run-single-test function should conclude that the two-param-no-return function
+        #              is working properly when it returns nothing.
+        test_lib.run_single_test(test_lib.run_single_test,
+                                 test_input=(two_param_no_return,(0,0),(),test_lib.ASSERT_EQUAL,
+                                             "function with two parameters and no return value"),
+                                 expected_output=(True,),
+                                 test_desc="run-single-test function on test function with two parameters and no return value "
+                                           + "(success case)")
+        print("")
+        # Fail Case: Make sure that the run-single-test function raises an Assertion error if the expected output from
+        #           two-param-no-return does not match the actual output.
+        test_lib.run_single_test(test_lib.run_single_test,
+                                 test_input=(two_param_no_return,(0,0),(True,),test_lib.ASSERT_EQUAL,
+                                             "function with two parameters and no return value"),
+                                 expected_output=(AssertionError,),
+                                 test_desc="run-single-test function on test function with two parameters and no return value "
+                                          + "(fail case)")
+        print("")
 
 def always_true_no_param():
     return True
 
-test_lib.test_bool_func(always_true_no_param,true_inputs=[()],test_desc="always true function with no parameters")
+#test_lib.test_bool_func(always_true_no_param,true_inputs=[()],test_desc="always true function with no parameters")
 
 def always_false_no_param():
     return False
 
-test_lib.test_bool_func(always_false_no_param,false_inputs=[()],test_desc="always false function with no parameters")
+#test_lib.test_bool_func(always_false_no_param,false_inputs=[()],test_desc="always false function with no parameters")
 
 def test_func_always_false(test_int1=0, test_int2=0, test_bool1=True, test_bool2=False, test_str1="", test_str2=""):
     return False
