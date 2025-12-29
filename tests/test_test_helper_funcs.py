@@ -1,9 +1,22 @@
 import test_helper_by_delica.test_helper_funcs as test_lib
 
+def no_param_no_return():
+    return
+
+test_lib.run_single_test(no_param_no_return, test_input=(), expected_output=(),
+                         test_desc="function with no parameters and no return value")
+print("")
+
+
 def always_true_no_param():
     return True
 
 test_lib.test_bool_func(always_true_no_param,true_inputs=[()],test_desc="always true function with no parameters")
+
+def always_false_no_param():
+    return False
+
+test_lib.test_bool_func(always_false_no_param,false_inputs=[()],test_desc="always false function with no parameters")
 
 def test_func_always_false(test_int1=0, test_int2=0, test_bool1=True, test_bool2=False, test_str1="", test_str2=""):
     return False

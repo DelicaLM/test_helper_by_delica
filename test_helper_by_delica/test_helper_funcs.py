@@ -14,6 +14,8 @@ def compare_output_tuples(output_tuple1, output_tuple2, compare_type=ASSERT_EQUA
     result = False
     if compare_type == ASSERT_EQUAL:
         result = output_tuple1 == output_tuple2
+        if output_tuple1 == () or output_tuple1 == (None,):
+            result = output_tuple2  == () or output_tuple2 == (None,)
     return result
 
 
@@ -152,7 +154,7 @@ def run_func_tests(test_func, correct_io_pairs, assert_type=ASSERT_EQUAL, test_d
     failed_tests_line = f"{num_failed} FAILED TESTS"
     if num_failed > 0:
         failed_tests_line += f" ({failed_test_nums_str})"
-    print(f"{num_failed} FAILED TESTS ({failed_test_nums_str})")
+    print(f"{num_failed} FAILED TESTS ({failed_test_nums_str})\n")
 
 
 def test_bool_func(test_func, true_inputs=None, false_inputs=None, error_if_false=False, error_type=Exception,
