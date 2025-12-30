@@ -4,6 +4,33 @@ ASSERT_EQUAL = "assert_equal"
 ASSERT_RAISES = "assert_raises"
 ASSERT_TYPES = [ASSERT_EQUAL, ASSERT_RAISES]
 
+def make_tuple_str(input_tuple):
+    result = "("
+    is_tuple = isinstance(input_tuple, tuple)
+    input_items = []
+    if not is_tuple:
+        input_items.append(input_tuple)
+    else:
+        for item in input_tuple:
+            input_items.append(item)
+    for item in input_items:
+        if isinstance(item, list):
+            result += "["
+            for list_item in item:
+                result += str(list_item)
+                if list_item != item[-1]:
+                    result += ", "
+            result += "]"
+        elif callable(item) or isinstance(item, type):
+            result += item.__name__
+
+        else:
+            result += str(item)
+        if item != input_items[-1] or len(input_items) == 1:
+            result += ", "
+    result += ")"
+    return result
+
 
 
 def compare_output_tuples(output_tuple1, output_tuple2, compare_type=ASSERT_EQUAL):
@@ -20,7 +47,7 @@ def compare_output_tuples(output_tuple1, output_tuple2, compare_type=ASSERT_EQUA
 
 
 def run_single_test(test_func, test_input=(), expected_output=(), assert_type=ASSERT_EQUAL, test_desc="",
-                    add_new_line=True):
+                    add_new_line=True,include_input_in_error_msg=True):
     """Runs a single unit test for a given function.
 
     Parameters
@@ -40,6 +67,10 @@ def run_single_test(test_func, test_input=(), expected_output=(), assert_type=AS
     add_new_line : bool, optional, default=True
         Boolean flag indicating whether we should add a blank line after we finish printing the test results to stdout
         (useful for readability).
+    include_input_in_error_msg : bool, optional, default=True
+        Boolean flag indicating whether we should include the test's input in the error message that is displayed
+        if the test fails (included to prevent the input from being printed twice if the test description already
+        includes the input).
 
     Returns
     -------
@@ -56,8 +87,8 @@ def run_single_test(test_func, test_input=(), expected_output=(), assert_type=AS
         if len(expected_output) == 1:
             expected_output = expected_output[0]
     print("Testing " + test_desc)
-    input_string = str(test_input)
-    expected_output_string = str(expected_output)
+    input_string = make_tuple_str(test_input)
+    expected_output_string = make_tuple_str(expected_output)
     use_assert_raises = False
     error_type = None
     use_assert_raises = False
@@ -95,11 +126,13 @@ def run_single_test(test_func, test_input=(), expected_output=(), assert_type=AS
             output_is_correct = compare_output_tuples(test_output, expected_output, compare_type=assert_type)
             test_succeeded = output_is_correct
         if not test_succeeded:
-            fail_msg = (f"{test_desc.upper()} FAILED WITH INPUT = {input_string}, EXPECTED_OUTPUT = {expected_output_string},"
-                    + f" ACTUAL_OUTPUT = {test_output}")
+            fail_msg = f"{test_desc.upper()} FAILED "
+            if include_input_in_error_msg:
+                fail_msg += f"WITH INPUT = {input_string} "
+            fail_msg += f"(EXPECTED OUTPUT = {expected_output}, ACTUAL_OUTPUT = {test_output})"
             raise AssertionError(fail_msg)
     if test_succeeded:
-        print(f"SUCCESS: input={input_string} -> output={expected_output_string}")
+        print(f"SUCCESS: input={input_string}\n         output={expected_output_string}")
     if add_new_line:
         print("")
     return test_succeeded
@@ -164,7 +197,7 @@ def run_func_tests(test_func, correct_io_pairs, assert_type=ASSERT_EQUAL, test_d
         print(f"Test #{test_num} of {num_tests}")
         is_success = run_single_test(test_func, test_input, expected_output, assert_type=curr_assert_type,
                                      test_desc=f"{test_func.__name__} function for input " + str(test_input),
-                                     add_new_line=False)
+                                     add_new_line=False, include_input_in_error_msg=False)
         test_num += 1
         if is_success:
             num_succeeded += 1

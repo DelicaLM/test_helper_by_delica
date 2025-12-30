@@ -7,8 +7,8 @@ DEFAULT_RETURN_VAL = DEFAULT_INT
 test_run_single_test = False
 test_run_func_tests = True
 
-test_with_no_param_no_return = True
-test_with_one_param_no_return = False
+test_with_no_param_no_return = False
+test_with_one_param_no_return = True
 test_with_two_param_no_return = False
 test_with_no_param_one_return = False
 
@@ -92,7 +92,7 @@ if test_run_single_test:
                                  test_desc="run-single-test function on test function with two parameters and no return value "
                                           + "(fail case)")
         # Fail Case: Make sure that the run-single-test function raises an Assertion error if the two-param-no-return
-        #            function itself raises an unexpected error (which we trigger by passing too many input arguments.
+        #            function itself raises an unexpected error (which we trigger by passing too many input arguments).
         test_lib.run_single_test(test_lib.run_single_test,
                                  test_input=(two_param_no_return, (0, 0, 0), (), test_lib.ASSERT_EQUAL,
                                              "function with two parameters and no return value"),
@@ -142,16 +142,69 @@ if test_run_single_test:
 if test_run_func_tests:
     print("TESTING RUN_FUNC_TESTS FUNCTION")
     if test_with_no_param_no_return:
-        # Test whether the run-single-test function correctly handles a test function with no parameters and no return values.
-        # Success Case: The run-single-test function should conclude that the no-param-no-return function
+        # Test whether the run-func-tests function correctly handles a test function with no parameters and no return values.
+        # Success Case: The run-func-tests function should conclude that the no-param-no-return function
         #              is working properly when it returns nothing.
         test_lib.run_single_test(test_lib.run_func_tests,
                                  test_input=(no_param_no_return, [IOPair((),())], test_lib.ASSERT_EQUAL,
                                              "function with no parameters and no return value"),
                                  expected_output=(True,),
                                  test_desc="run-func-tests function on test function with no parameters and no return value (success case)")
-
-
+        # Fail Case: Make sure that the run-func_tests function raises an Assertion error if the expected output from
+        #            no-param-one-return does not match the actual output (expects something, receives nothing).
+        test_lib.run_single_test(test_lib.run_func_tests,
+                                 test_input=(no_param_no_return, [IOPair((), (True,))], test_lib.ASSERT_EQUAL,
+                                             "function with no parameters and no return value"),
+                                 expected_output=(AssertionError,),
+                                 test_desc="run-func-tests function on test function with no parameters and no return value (fail case)")
+        # Fail Case: Make sure that the run-func-tests function raises an Assertion error if the no-param-no-return
+        #            function itself raises an unexpected error (which we trigger by passing too many input arguments).
+        test_lib.run_single_test(test_lib.run_func_tests,
+                                 test_input=(no_param_no_return, [IOPair((DEFAULT_INT,), ())], test_lib.ASSERT_EQUAL,
+                                             "function with no parameters and no return value"),
+                                 expected_output=(AssertionError,),
+                                 test_desc="run-func-tests function on test function with no parameters and no return value (fail case)")
+        # Mixed Success/Fail Case: Make sure that the run-func-tests function raises an Assertion error if the second
+        #                         test fails after the first test is successful.
+        test_lib.run_single_test(test_lib.run_func_tests,
+                                 test_input=(no_param_no_return, [IOPair((), ()),
+                                                                  IOPair((),(0,))], test_lib.ASSERT_EQUAL,
+                                             "function with no parameters and no return value"),
+                                 expected_output=(AssertionError,),
+                                 test_desc="run-func-tests function on test function with no parameters and no return "
+                                           +"value (mixed success/fail case)")
+    if test_with_one_param_no_return:
+        # Test whether the run-func-test function correctly handles a test function with no parameters and no return values.
+        # Success Case: The run-single-test function should conclude that the no-param-no-return function
+        #              is working properly when it returns nothing.
+        test_lib.run_single_test(test_lib.run_func_tests,
+                                 test_input=(one_param_no_return, [IOPair((DEFAULT_INT,), ())], test_lib.ASSERT_EQUAL,
+                                             "function with one parameter and no return value"),
+                                 expected_output=(True,),
+                                 test_desc="run-func-tests function on test function with one parameter and no return value (success case)")
+        # Fail Case: Make sure that the run-func_tests function raises an Assertion error if the expected output from
+        #            one-param-one-return does not match the actual output (expects something, receives nothing).
+        test_lib.run_single_test(test_lib.run_func_tests,
+                                 test_input=(one_param_no_return, [IOPair((DEFAULT_INT,), (True,))], test_lib.ASSERT_EQUAL,
+                                             "function with one parameter and no return value"),
+                                 expected_output=(AssertionError,),
+                                 test_desc="run-func-tests function on test function with one parameter and no return value (fail case)")
+        # Fail Case: Make sure that the run-func-tests function raises an Assertion error if the no-param-no-return
+        #            function itself raises an unexpected error (which we trigger by not passing a required input argument).
+        test_lib.run_single_test(test_lib.run_func_tests,
+                                 test_input=(no_param_no_return, [IOPair((), ())], test_lib.ASSERT_EQUAL,
+                                             "function with no parameters and no return value"),
+                                 expected_output=(AssertionError,),
+                                 test_desc="run-func-tests function on test function with one parameter and no return value (fail case)")
+        # Mixed Success/Fail Case: Make sure that the run-func-tests function raises an Assertion error if a second
+        #                          test fails after the first test is successful.
+        test_lib.run_single_test(test_lib.run_func_tests,
+                                 test_input=(one_param_no_return, [IOPair((DEFAULT_INT,), ()),
+                                                                  IOPair((), (True,))], test_lib.ASSERT_EQUAL,
+                                             "function with one parameter and no return value"),
+                                 expected_output=(AssertionError,),
+                                 test_desc="run-func-tests function on test function with one parameter and no return "
+                                           + "value (mixed success/fail case)")
 
 def always_true_no_param():
     return True
