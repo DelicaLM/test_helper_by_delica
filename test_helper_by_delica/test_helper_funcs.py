@@ -19,13 +19,15 @@ test_bool_func(test_func, true_inputs=None, false_inputs=None, error_if_false=Fa
                test_desc="", success_desc="")
     Runs one or more tests for a boolean function. Returns True if all the tests succeed and raises an AssertionError if
     any of the tests fail.
-
 """
 
+# Import the IOPair class to more easily create and pass input-output pairs for tests
 from test_helper_by_delica.IOPair import IOPair
 
-ASSERT_EQUAL = "assert_equal"
-ASSERT_RAISES = "assert_raises"
+# Constants for assertion types (i.e., methods in which we determine whether a test was successful) that the user
+# can use for their tests.
+ASSERT_EQUAL = "assert_equal" # use if test outputs should be equal to the expected outputs
+ASSERT_RAISES = "assert_raises" # use if the tested function should raise an Exception
 ASSERT_TYPES = [ASSERT_EQUAL, ASSERT_RAISES]
 
 def make_tuple_str(input_tuple):
