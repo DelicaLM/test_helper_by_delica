@@ -1,5 +1,15 @@
 class IOPair:
-    """Class for easily defining input-output pairs."""
+    """
+    Class for easily defining input-output pairs.
+
+    Attributes
+    ----------
+    input_tuple : tuple
+        Input tuple for the input-output pair.
+    output_tuple : tuple
+        Output tuple for the output-input pair.
+
+    """
     def __init__(self, input_tuple=(), output_tuple=()):
         """IOPair constructor
 

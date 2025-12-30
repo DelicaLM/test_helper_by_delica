@@ -1,3 +1,27 @@
+"""
+This module provides functions to help users easily create and run unit tests for their Python software.
+
+Functions
+---------
+make_tuple_str(input_tuple)
+    Returns a string representation of an input tuple (improves readability of test outputs).
+compare_output_tuples(output_tuple1, output_tuple2, compare_type=ASSERT_EQUAL)
+    Returns True if two tuples match based on a user-specified comparison (e.g., "==", "<", ">", etc.) and False
+    otherwise (used to check whether tested functions yield the correct output).
+run_single_test(test_func, test_input=(), expected_output=(), assert_type=ASSERT_EQUAL, test_desc="",
+                add_new_line=True,include_input_in_error_msg=True):
+    Runs a single test of a function. Returns True if all the tests succeed and raises an AssertionError if
+    any of the tests fail.
+run_func_tests(test_func, correct_io_pairs, assert_type=ASSERT_EQUAL, test_desc="")
+    Runs one or more tests for a function. Returns True if all the tests succeed and raises an AssertionError if
+    any of the tests fail.
+test_bool_func(test_func, true_inputs=None, false_inputs=None, error_if_false=False, error_type=Exception,
+               test_desc="", success_desc="")
+    Runs one or more tests for a boolean function. Returns True if all the tests succeed and raises an AssertionError if
+    any of the tests fail.
+
+"""
+
 from test_helper_by_delica.IOPair import IOPair
 
 ASSERT_EQUAL = "assert_equal"
@@ -5,35 +29,73 @@ ASSERT_RAISES = "assert_raises"
 ASSERT_TYPES = [ASSERT_EQUAL, ASSERT_RAISES]
 
 def make_tuple_str(input_tuple):
+    """Creates a more readable string representation of a tuple.
+
+    Parameters
+    ----------
+    input_tuple : tuple
+        The tuple that we must convert into a string. (If you do not pass a tuple for this parameter, this function will
+        create the appropriate tuple for your input before generating the string output.)
+
+    Returns
+    -------
+    str
+        The string representation of the tuple.
+    """
+    # Start the string with an open parenthesis.
     result = "("
+    # Check if the user actually passed a tuple.
     is_tuple = isinstance(input_tuple, tuple)
+    # Find all the tuple items that we need to print.
     input_items = []
     if not is_tuple:
+        # If the parameter is not a tuple, we only have one element.
         input_items.append(input_tuple)
-    else:
-        for item in input_tuple:
+    else: # if the parameter is a tuple
+        for item in input_tuple: # iterate over all the elements in the tuple
             input_items.append(item)
+    # Add each tuple item to the string.
     for item in input_items:
-        if isinstance(item, list):
+        if isinstance(item, list): # If the item is a list, we iterate over each of its elements to make sure that
+                                   # we add their correct string forms to the list (otherwise str(list) can give the
+                                   # obj.__repr__() string instead of obj.__str__()).
             result += "["
             for list_item in item:
                 result += str(list_item)
                 if list_item != item[-1]:
                     result += ", "
             result += "]"
-        elif callable(item) or isinstance(item, type):
+        elif callable(item) or isinstance(item, type): # If the item is a class or function, make sure that we only
+                                                       # print its name.
             result += item.__name__
-
         else:
             result += str(item)
         if item != input_items[-1] or len(input_items) == 1:
             result += ", "
     result += ")"
+    # Return the string that we created for the tuple.
     return result
 
-
-
 def compare_output_tuples(output_tuple1, output_tuple2, compare_type=ASSERT_EQUAL):
+    """Checks whether two tuples agree with each other based on a specified comparison type (e.g., "==", "<", ">", etc.).
+
+    Parameters
+    ----------
+    output_tuple1 : tuple | any
+        The first tuple in comparison. If it is not passed as a tuple, this function will convert it to a tuple with a
+        single element.
+    output_tuple2 : tuple | any
+        The second tuple in comparison. If it is not passed as a tuple, this function will convert it to a tuple with a
+        single element.
+    compare_type : str
+        The name of the comparison type that should be used (must be a value from the ASSERT_TYPES list at the start
+        of this file (test_helper_funcs.py)).
+
+    Returns
+    -------
+    bool
+        Returns True if the tuples match based on the comparison type and False if they do not.
+    """
     if type(output_tuple1) != tuple:
         output_tuple1 = (output_tuple1,)
     if type(output_tuple2) != tuple:
@@ -214,8 +276,9 @@ def run_func_tests(test_func, correct_io_pairs, assert_type=ASSERT_EQUAL, test_d
     failed_tests_line = f"{num_failed} FAILED TESTS"
     if num_failed > 0:
         failed_tests_line += f" ({failed_test_nums_str})"
+    failed_tests_line += "\n"
     all_tests_succeeded = num_succeeded == num_tests
-    print(f"{num_failed} FAILED TESTS ({failed_test_nums_str})\n")
+    print(failed_tests_line)
     return all_tests_succeeded
 
 
