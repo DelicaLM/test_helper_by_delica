@@ -19,7 +19,8 @@ def compare_output_tuples(output_tuple1, output_tuple2, compare_type=ASSERT_EQUA
     return result
 
 
-def run_single_test(test_func, test_input=(), expected_output=(), assert_type=ASSERT_EQUAL, test_desc=""):
+def run_single_test(test_func, test_input=(), expected_output=(), assert_type=ASSERT_EQUAL, test_desc="",
+                    add_new_line=True):
     """Runs a single unit test for a given function.
 
     Parameters
@@ -36,6 +37,9 @@ def run_single_test(test_func, test_input=(), expected_output=(), assert_type=AS
         this file (test_helper_funcs.py).
     test_desc : str, default=""
         A description of the test that should be printed to stdout.
+    add_new_line : bool, optional, default=True
+        Boolean flag indicating whether we should add a blank line after we finish printing the test results to stdout
+        (useful for readability).
 
     Returns
     -------
@@ -96,6 +100,8 @@ def run_single_test(test_func, test_input=(), expected_output=(), assert_type=AS
             raise AssertionError(fail_msg)
     if test_succeeded:
         print(f"SUCCESS: input={input_string} -> output={expected_output_string}")
+    if add_new_line:
+        print("")
     return test_succeeded
 
 
@@ -119,8 +125,8 @@ def run_func_tests(test_func, correct_io_pairs, assert_type=ASSERT_EQUAL, test_d
         A description of the tests that should be printed to stdout.
     Returns
     -------
-    None
-    (Test results are printed to stdout.)
+    bool all_tests_succeeded
+        A boolean flag indicating whether all of the tests were successful.
 
     Raises
     ______
@@ -157,7 +163,8 @@ def run_func_tests(test_func, correct_io_pairs, assert_type=ASSERT_EQUAL, test_d
                 curr_assert_type = assert_type
         print(f"Test #{test_num} of {num_tests}")
         is_success = run_single_test(test_func, test_input, expected_output, assert_type=curr_assert_type,
-                        test_desc=f"{test_func.__name__} function for input " + str(test_input))
+                                     test_desc=f"{test_func.__name__} function for input " + str(test_input),
+                                     add_new_line=False)
         test_num += 1
         if is_success:
             num_succeeded += 1
@@ -174,7 +181,9 @@ def run_func_tests(test_func, correct_io_pairs, assert_type=ASSERT_EQUAL, test_d
     failed_tests_line = f"{num_failed} FAILED TESTS"
     if num_failed > 0:
         failed_tests_line += f" ({failed_test_nums_str})"
+    all_tests_succeeded = num_succeeded == num_tests
     print(f"{num_failed} FAILED TESTS ({failed_test_nums_str})\n")
+    return all_tests_succeeded
 
 
 def test_bool_func(test_func, true_inputs=None, false_inputs=None, error_if_false=False, error_type=Exception,
