@@ -1,6 +1,6 @@
 """
 This script provides several examples of how one can use test_helper_by_delica to test boolean functions (i.e.,
-functions that return True or False). We use the sample functions below to demonstrate test_bool_func from the test
+functions that return True or False). We use the sample functions below to demonstrate how test_bool_func from the test
 helper package allows us to quickly verify that Python code accurately returns True or False for a wide range of inputs.
 
 Functions
@@ -11,17 +11,20 @@ always_false()
     Returns False.
 is_int(val)
     Returns True if val is an integer and False if it is not.
+is_int_error_if_false(val)
+    Returns True if val is an integer and raises a TypeError if it is not.
 can_convert_to_int(val)
     Returns True if val is an integer or can be converted to an integer, False otherwise.
 """
 
 from test_helper_by_delica import *
 
-run_always_true_demo = True
-run_always_false_demo = True
-run_is_int_demo = True
-run_can_convert_to_int_demo = True
-run_list_has_val_demo = True
+run_always_true_demo = False
+run_always_false_demo = False
+run_is_int_demo = False
+run_is_int_error_if_false_demo = True
+run_can_convert_to_int_demo = False
+run_list_has_val_demo = False
 
 
 def always_true():
@@ -35,6 +38,13 @@ def always_false():
 def is_int(val):
     """Function that returns True if val is an integer and False if it is not."""
     return isinstance(val, int)
+
+def is_int_error_if_false(val):
+    """Function that returns True if val is an integer raises a TypeError if it is not."""
+    is_int_val = isinstance(val, int)
+    if not is_int_val:
+        raise TypeError(f"Value {val} of type {type(val)} is not an integer.")
+    return is_int_val
 
 def can_convert_to_int(val):
     """Function that returns True if val is an integer or can be converted to an integer and False otherwise."""
@@ -61,6 +71,12 @@ if run_always_false_demo:
 
 if run_is_int_demo:
     test_bool_func(is_int, true_inputs=[(1,),(2,),(-10,)], false_inputs=[(1.0,),(2.0,),("",),('a',),("abc",)], test_desc="is_int function")
+
+if run_is_int_error_if_false_demo:
+    test_bool_func(is_int_error_if_false, true_inputs=[(1,),(2,),(-10,)],
+                   false_inputs=[(1.0,),(2.0,),("",),('a',),("abc",)],
+                   error_if_false=True, error_type=TypeError, test_desc="is_int function")
+
 
 if run_can_convert_to_int_demo:
     test_bool_func(can_convert_to_int, true_inputs=[(1,),(2.0,),("-10",)], false_inputs=[("hello",),("1ab",),([],)],

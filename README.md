@@ -38,7 +38,7 @@ Similarly, we can test a function that always returns False.
 def always_false():    
     return False
     
-test_lib.test_bool_func(test_obj, always_false, false_inputs=[()], test_desc="always false function")
+test_lib.test_bool_func(always_false, false_inputs=[()], test_desc="always false function")
 ````
 We then have the following output:
 ````
@@ -60,7 +60,7 @@ Testing always_false function for input ()
 FAILURE: ALWAYS_FALSE FUNCTION FOR INPUT () FAILED WITH INPUT = () EXPECTED_OUTPUT = True, ACTUAL_OUTPUT = False
 ALL 1 TESTS COMPLETED FOR ALWAYS TRUE FUNCTION
 ````
-Now suppose we want to test a boolean function that takes an input parameter. For example, let's use the is_even   
+Now suppose we want to test a boolean function that takes an input parameter. For example, let's use the is_int   
 function below, which returns True if the input parameter is an integer and False if it is not.
 ````
 def is_int(val):
@@ -68,11 +68,42 @@ def is_int(val):
 ````
 For this function, we need to specify values that should yield True and values that should yield False. The test helper
 package expects the input parameters for each individual test (e.g, testing whether the number 2 yields True) to be 
-provided in the form of a tuple. If the input for a function only includes one parameter, please add a comma 
-(e.g., (1,) instead of (1)) to ensure that you pass a tuple when you call the boolean test helper function.
+provided in the form of a tuple. If your input or output tuple has only one element, you can pass the object on its 
+own without adding parentheses (e.g., can pass 1 instead of (1,) for an input tuple), because the test helper package 
+will take care of converting your single input or return parameter to a tuple format. 
 ````
-test_bool_func(test_obj, is_int, true_inputs=[(1,),(2,)], false_inputs=[(1.0,),(1.0)], test_desc="is_int function")
+test_bool_func(is_int, true_inputs=[1,2], false_inputs=[1.0,"2"], test_desc="is_int function")
 ````
+If we have a function with two parameters, such as the sum function below, we need to pass the inputs as tuples (e.g.,
+(1, 2), (0, 0), (3, 2), etc.). If we do not include the parentheses, the test helper function cannot accurately determine
+the number of input parameters that the test function should receive. 
+````
+def calc_sum(int1, int2):
+    return int1 + int2
+run_func_tests(calc_sum, [IOPair((1, 2), 3), IOPair((0, 0), 0), IOPair((3, 2), 5)], test_desc="sum calculator function")
+````
+In the above example, we use run_func_tests from the test helper package instead of test_bool_func because the sum
+function does not return a boolean value. The more general run_func_tests function can test whether any type of return
+value is correct based on user-provided criteria. If a user wants to verify whether their test function raises an 
+exception, they simply need to set the expected test output to the correct exception type (e.g., TypeError, ValueError,
+etc.), as demonstrated below. 
+````
+def is_int_error_if_false(val):
+    is_int_val = isinstance(val, int)
+    if not is_int_val:
+        raise TypeError("val is not an integer")
+    return is_int_val
+run_func_tests(is_int_error_if_false, [IOPair(1, True), IOPair(1.0, TypeError), IOPair((3, 2), 5)], 
+               test_desc="is integer error if false function")
+````
+The main difference between run_func_tests and test_bool_func, besides the types of 
+functions that they can validate, is that run_func_tests requires a list of IOPair objects to specify the 
+expected input-output pairs for the tests. For example, if our input numbers are 1 and 2 and we expect the sum value to
+be 3, we will pass this information to run_func_tests in the form IOPair((1, 2), 3). If we instead test a function that
+returns two numbers which equal an input parameter when added together, we could have a test with IOPair(3, (1, 2)).
+The test_bool_func function does not require IOPair objects to define expected outputs, because there are only two 
+possible outcomes for boolean functions. The test helper package class includes the IOPair class to facilitate cases
+in which we need to test a wide range of possible output types. 
 The Usage section below provides additional examples of how you can test your own functions with the test helper package.
 ## Usage
 
