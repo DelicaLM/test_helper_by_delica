@@ -21,7 +21,6 @@ concat_lists(list1, list2)
     Returns the result of concatenating two lists.
 
 """
-import test_helper_by_delica
 
 from test_helper_by_delica import *
 
@@ -98,5 +97,8 @@ if run_find_int_vals_in_list_demo:
 if run_concat_lists_demo:
     run_func_tests(concat_lists, [IOPair(([],[]), []),
                                         IOPair(([1],[2]), [1,2]),
-                                  IOPair(([1,2,3],[4,5,6]),[1,2,3,4,5,6])],
-                   test_desc="return nested list function")
+                                  IOPair(([1,2,3],[4,5,6]),[1,2,3,4,5,6]),
+                                  IOPair((["a"],["b"]),["a", "b"]),
+                                  IOPair((["1","2",True],["6","99",-111,-22222,"abcde*"]),["1","2",True,"6","99",-111,-22222,"abcde*"]),
+                                  IOPair([1,2],TypeError)],
+                   test_desc="return concat list function")

@@ -24,6 +24,8 @@ test_bool_func(test_func, true_inputs=None, false_inputs=None, error_if_false=Fa
 # Import the IOPair class to more easily create and pass input-output pairs for tests
 from test_helper_by_delica.IOPair import IOPair
 
+import time
+
 # Constants for assertion types (i.e., methods in which we determine whether a test was successful) that the user
 # can use for their tests.
 ASSERT_EQUAL = "assert_equal" # use if test outputs should be equal to the expected outputs
@@ -163,6 +165,9 @@ def run_single_test(test_func, test_input=(), expected_output=(), assert_type=AS
     if use_assert_raises:
         error_type = expected_output
     test_succeeded = False
+    test_runtime=0.0
+    start_time = 0.0
+    end_time = 0.0
 
     if use_assert_raises:
         assert error_type is not None
@@ -177,7 +182,9 @@ def run_single_test(test_func, test_input=(), expected_output=(), assert_type=AS
         unwanted_error_type = None
         test_output = None
         try:
+            start_time = time.time()
             test_output = test_func(*test_input)
+            end_time = time.time()
         except Exception as e:
             unwanted_error_raised = True
             unwanted_error_type = type(e)
@@ -197,6 +204,8 @@ def run_single_test(test_func, test_input=(), expected_output=(), assert_type=AS
             raise AssertionError(fail_msg)
     if test_succeeded:
         print(f"SUCCESS: input={input_string}\n         output={expected_output_string}")
+        test_runtime = end_time - start_time
+        print(f"TEST RUNTIME: {test_runtime:.20f} seconds")
     if add_new_line:
         print("")
     return test_succeeded
