@@ -11,20 +11,29 @@ return_single_char()
     Returns DEFAULT_CHAR (a char constant).
 return_multi_char_string()
     Returns DEFAULT_CHAR (a string constant with more than one character).
-return_concat_string(str1, str2)
-    Returns the concatenation of str1 and str2.
-return_mult_string(str_to_multiply, num_repeats)
+multiply_string(str_to_multiply, num_repeats)
     Returns the multiplication of a string by a requested number of repetitions
     (e.g., "ab" -> "ababab" if num_repeats == 3).
-return_string_without_vowels(str_val):
+concat_strings(str1, str2)
+    Returns the concatenation of str1 and str2.
+remove_vowels(str_val):
     Returns the string that we obtain after removing all vowels from the input parameter.
 
 """
-
+from test_helper_by_delica import *
 
 
 DEFAULT_CHAR = "a"
 DEFAULT_MULTI_CHAR_STR = "abc"
+
+run_all_demos = True
+run_return_empty_string_demo = run_all_demos or True
+run_return_single_char_demo = run_all_demos or True
+run_return_multi_char_string_demo = run_all_demos or True
+run_multiply_string_demo = run_all_demos or True
+run_concat_strings_demo = run_all_demos or True
+run_remove_vowels_demo = run_all_demos or True
+
 def return_empty_string():
     """Returns empty string."""
     return ""
@@ -37,19 +46,71 @@ def return_multi_char_string():
     """Return string with multiple characters (output depends on the value of the DEFAULT_MULTI_CHAR_STR constant)."""
     return DEFAULT_MULTI_CHAR_STR
 
-def return_concat_string(str1, str2):
+def concat_strings(str1, str2):
     """Returns the concatenation of two strings."""
     return str1 + str2
 
-def return_mult_string(str_to_multiply, num_repeats):
+def multiply_string(str_to_multiply, num_repeats):
     """Returns the inputted string multiplied by a requested number of repetitions."""
     return str_to_multiply * num_repeats
 
-def return_string_without_vowels(str_val):
+def remove_vowels(str_val):
     """Returns a copy of the input string with all vowels removed."""
     result = ""
-    str_copy = str_val.deepcopy()
+    str_copy = str_val + ""
     for char in str_copy:
         if char not in "aeiou":
             result += char
     return result
+
+if run_return_empty_string_demo:
+    run_func_tests(return_empty_string,
+                   [IOPair((), ""),
+                    IOPair(0, TypeError)],
+                   test_desc="function that always returns an empty string")
+
+if run_return_single_char_demo:
+    run_func_tests(return_single_char,
+                   [IOPair((), DEFAULT_CHAR),
+                    IOPair(0, TypeError)],
+                   test_desc="function that returns a single character string "
+                             + "(determined by the DEFAULT_CHAR constant)")
+
+if run_return_multi_char_string_demo:
+    run_func_tests(return_multi_char_string,
+                   [IOPair((), DEFAULT_MULTI_CHAR_STR),
+                    IOPair(0, TypeError)],
+                   test_desc="function that returns a string with more than one character "
+                             + "(determined by the DEFAULT_MULTI_CHAR_STR constant)")
+if run_multiply_string_demo:
+    run_func_tests(multiply_string,
+                   [IOPair(("",1), ""),
+                    IOPair(("a",1),"a"),
+                    IOPair(("b",2),"bb"),
+                    IOPair(("c", 3), "ccc"),
+                    IOPair(("12", 4), "12121212"),
+                    IOPair(0, TypeError)],
+                   test_desc="function that returns the multiplication of a string parameter by a requested number of "
+                              + "repetitions")
+
+if run_concat_strings_demo:
+    run_func_tests(concat_strings,
+                   [IOPair(("",""), ""),
+                    IOPair(("a",""),"a"),
+                    IOPair(("","a"), "a"),
+                    IOPair(("a","b"),"ab"),
+                    IOPair(("abc", "def"), "abcdef"),
+                    IOPair(0, TypeError)],
+                   test_desc="function that returns the concatenation of two strings")
+
+if run_remove_vowels_demo:
+    run_func_tests(remove_vowels,
+                   [IOPair("", ""),
+                    IOPair("a",""),
+                    IOPair("s","s"),
+                    IOPair("ab","b"),
+                    IOPair("abcdefgh","bcdfgh"),
+                    IOPair(0, TypeError)],
+                   test_desc="function that returns a copy of the string parameter with all vowels removed")
+
+

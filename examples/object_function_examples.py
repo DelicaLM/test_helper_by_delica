@@ -20,6 +20,8 @@ can_convert_to_int(val)
     Returns True if val is an integer or can be converted to an integer, False otherwise.
 """
 
+from test_helper_by_delica import *
+
 class EmptyClass:
     def __init__(self):
         pass
@@ -53,3 +55,6 @@ class TwoAttrTwoMethodClass:
 class ListAttrClass:
     def __init__(self, input_list):
         self.my_list = input_list
+
+
+

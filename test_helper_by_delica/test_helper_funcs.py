@@ -30,7 +30,8 @@ import time
 # can use for their tests.
 ASSERT_EQUAL = "assert_equal" # use if test outputs should be equal to the expected outputs
 ASSERT_RAISES = "assert_raises" # use if the tested function should raise an Exception
-ASSERT_TYPES = [ASSERT_EQUAL, ASSERT_RAISES]
+ASSERT_TYPE = "assert_output_is_type" # use if the test should verify whether the output is of a certain type
+ASSERT_TYPES = [ASSERT_EQUAL, ASSERT_RAISES, ASSERT_TYPE]
 
 def make_tuple_str(input_tuple):
     """Creates a more readable string representation of a tuple.
@@ -194,8 +195,8 @@ def run_single_test(test_func, test_input=(), expected_output=(), assert_type=AS
             print(f"TEST FUNCTION RAISED UNEXPECTED {unwanted_error_type_name}\n   ERROR MESSAGE: {e}")
 
         if not unwanted_error_raised:
-            output_is_correct = compare_output_tuples(test_output, expected_output, compare_type=assert_type)
-            test_succeeded = output_is_correct
+            test_succeeded = compare_output_tuples(test_output, expected_output, compare_type=assert_type)
+
         if not test_succeeded:
             fail_msg = f"{test_desc.upper()} FAILED "
             if include_input_in_error_msg:

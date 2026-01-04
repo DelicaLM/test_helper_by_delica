@@ -31,6 +31,7 @@ run_return_string_length_demo = run_all_demos or True
 run_add_ints_demo = run_all_demos or True
 run_calc_int_list_sum_demo = run_all_demos or True
 
+
 def return_zero():
     return 0
 
