@@ -30,6 +30,13 @@ class OneIntAttrClass:
     def __init__(self, int_val):
         self.int_val = int_val
 
+    def __eq__(self, other):
+        result = False
+        if isinstance(other, OneIntAttrClass):
+            result = self.int_val == other.int_val
+        return result
+
+
 class NoAttrOneStatMethodClass:
     def __init__(self):
         pass
@@ -58,3 +65,16 @@ class ListAttrClass:
 
 
 
+
+run_empty_class_demo = True
+run_one_int_attr_class_demo = True
+
+if run_empty_class_demo:
+    run_func_tests(EmptyClass, [IOPair((),EmptyClass)],assert_type=ASSERT_TYPE,
+                   test_desc="empty class constructor")
+
+if run_one_int_attr_class_demo:
+    run_func_tests(OneIntAttrClass, [IOPair(0,OneIntAttrClass(0)),
+                                     IOPair(1,OneIntAttrClass(1)),
+                                     IOPair(-1,OneIntAttrClass(-1))],assert_type=ASSERT_EQUAL,
+                   test_desc="constructor for class with one integer attribute")

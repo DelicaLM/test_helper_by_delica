@@ -106,10 +106,26 @@ def compare_output_tuples(output_tuple1, output_tuple2, compare_type=ASSERT_EQUA
     if type(output_tuple2) != tuple:
         output_tuple2 = (output_tuple2,)
     result = False
-    if compare_type == ASSERT_EQUAL:
-        result = output_tuple1 == output_tuple2
-        if output_tuple1 == () or output_tuple1 == (None,):
-            result = output_tuple2  == () or output_tuple2 == (None,)
+    same_length = len(output_tuple1) == len(output_tuple2)
+    if same_length:
+        if compare_type == ASSERT_EQUAL:
+            result = output_tuple1 == output_tuple2
+            if output_tuple1 == () or output_tuple1 == (None,):
+                result = output_tuple2  == () or output_tuple2 == (None,)
+        elif compare_type == ASSERT_TYPE:
+            tuple_1_types = []
+            tuple_2_types = []
+            for tuple_item in output_tuple1:
+                if isinstance(tuple_item, type):
+                    tuple_1_types.append(tuple_item)
+                else:
+                    tuple_1_types.append(type(tuple_item))
+            for tuple_item in output_tuple2:
+                if isinstance(tuple_item, type):
+                    tuple_2_types.append(tuple_item)
+                else:
+                    tuple_2_types.append(type(tuple_item))
+            result = tuple_1_types == tuple_2_types
     return result
 
 

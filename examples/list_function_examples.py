@@ -99,6 +99,7 @@ if run_concat_lists_demo:
                                         IOPair(([1],[2]), [1,2]),
                                   IOPair(([1,2,3],[4,5,6]),[1,2,3,4,5,6]),
                                   IOPair((["a"],["b"]),["a", "b"]),
-                                  IOPair((["1","2",True],["6","99",-111,-22222,"abcde*"]),["1","2",True,"6","99",-111,-22222,"abcde*"]),
+                                  IOPair((["1","2",True],["6","99",-111,-22222,"abcde*"]),
+                                         ["1","2",True,"6","99",-111,-22222,"abcde*"]),
                                   IOPair([1,2],TypeError)],
                    test_desc="return concat list function")
