@@ -36,6 +36,10 @@ class OneIntAttrClass:
             result = self.int_val == other.int_val
         return result
 
+    def __str__(self):
+        return f"OneIntAttrClass(int_val={self.int_val})"
+
+
 
 class NoAttrOneStatMethodClass:
     def __init__(self):
@@ -49,6 +53,13 @@ class OneAttrOneMethodClass:
         self.int_val = int_val
     def return_int_val(self):
         return self.int_val
+    def __eq__(self, other):
+        result = False
+        if isinstance(other, OneAttrOneMethodClass):
+            result = self.int_val == other.int_val
+        return result
+    def __str__(self):
+        return f"OneAttrOneMethodClass(int_val={self.int_val})"
 
 class TwoAttrTwoMethodClass:
     def __init__(self, int_val, str_val):
@@ -58,16 +69,33 @@ class TwoAttrTwoMethodClass:
         return self.int_val
     def return_str_val(self):
         return self.str_val
+    def __eq__(self, other):
+        result = False
+        if isinstance(other, TwoAttrTwoMethodClass):
+            result = self.int_val == other.int_val and self.str_val == other.str_val
+        return result
+    def __str__(self):
+        return f"TwoAttrTwoMethodClass(int_val={self.int_val}, str_val={self.str_val})"
 
 class ListAttrClass:
     def __init__(self, input_list):
         self.my_list = input_list
+    def calc_list_sum(self):
+        list_sum = 0
+        for list_item in self.my_list:
+            if type(list_item) == int or type(list_item) == float:
+                list_sum += list_item
+        return list_sum
 
 
 
 
 run_empty_class_demo = True
 run_one_int_attr_class_demo = True
+run_no_attr_one_stat_method_demo = True
+run_one_attr_one_method_demo = True
+run_two_attr_two_method_demo = True
+run_list_attr_class_demo = True
 
 if run_empty_class_demo:
     run_func_tests(EmptyClass, [IOPair((),EmptyClass)],assert_type=ASSERT_TYPE,
@@ -76,5 +104,21 @@ if run_empty_class_demo:
 if run_one_int_attr_class_demo:
     run_func_tests(OneIntAttrClass, [IOPair(0,OneIntAttrClass(0)),
                                      IOPair(1,OneIntAttrClass(1)),
-                                     IOPair(-1,OneIntAttrClass(-1))],assert_type=ASSERT_EQUAL,
+                                     IOPair(-1,OneIntAttrClass(-1))],
                    test_desc="constructor for class with one integer attribute")
+
+if run_no_attr_one_stat_method_demo:
+    run_func_tests(NoAttrOneStatMethodClass.return_zero,[IOPair((),0)],
+                   test_desc="static int method for class with no attribute")
+
+if run_one_attr_one_method_demo:
+    run_func_tests(OneAttrOneMethodClass, [IOPair(1, OneAttrOneMethodClass(1)),
+                                           IOPair(100, OneAttrOneMethodClass(100)),
+                                           IOPair((), TypeError)],
+                   test_desc="constructor for class with one int attribute and one get method")
+
+if run_two_attr_two_method_demo:
+    run_func_tests(TwoAttrTwoMethodClass, [IOPair((1,"hello"), TwoAttrTwoMethodClass(1,"hello")),
+                                           IOPair((100,"100"), TwoAttrTwoMethodClass(100,"100")),
+                                           IOPair((), TypeError), IOPair(1, TypeError)],
+                   test_desc="constructor for class with two attributes (one int and one string) and two get methods")
