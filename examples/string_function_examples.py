@@ -21,6 +21,7 @@ remove_vowels(str_val):
 
 """
 from test_helper_by_delica import *
+import argparse
 
 
 DEFAULT_CHAR = "a"
@@ -33,6 +34,22 @@ run_return_multi_char_string_demo = run_all_demos or True
 run_multiply_string_demo = run_all_demos or True
 run_concat_strings_demo = run_all_demos or True
 run_remove_vowels_demo = run_all_demos or True
+
+parser = argparse.ArgumentParser(description="Parser for integer examples script")
+parser.add_argument("--run_return_empty_string_demo", action="store_true",
+help="Boolean flag for whether the tests that call the return zero function should be executed (optional argument).")
+parser.add_argument("--run_return_single_char_demo", action="store_true",
+help="Boolean flag for whether the tests that call the return single character function should be executed (optional "
++"argument).")
+parser.add_argument("--run_return_multi_char_string_demo", action="store_true",
+help="Boolean flag for whether the tests that call the return a string with multiple characters function should be "
++"executed (optional argument).")
+parser.add_argument("--run_multiply_string_demo", action="store_true",
+help="Boolean flag for whether the tests that call the multiply string function should be executed (optional "
++"argument).")
+parser.add_argument("--run_concat_strings_demo", action="store_true",
+help="Boolean flag for whether the tests that call the return concatenate strings function should be executed "
++ "(optional argument).")
 
 def return_empty_string():
     """Returns empty string."""

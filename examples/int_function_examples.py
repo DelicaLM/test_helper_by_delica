@@ -22,6 +22,7 @@ calc_int_list_sum(int_list)
 """
 
 from test_helper_by_delica import *
+import argparse
 
 run_all_demos = True
 run_return_zero_demo = run_all_demos or True
@@ -30,6 +31,25 @@ run_return_neg_int_demo = run_all_demos or True
 run_return_string_length_demo = run_all_demos or True
 run_add_ints_demo = run_all_demos or True
 run_calc_int_list_sum_demo = run_all_demos or True
+
+parser = argparse.ArgumentParser(description="Parser for integer examples script")
+parser.add_argument("--run_return_zero_demo", action="store_true",
+help="Boolean flag for whether the tests that call the return zero function should be executed (optional argument).")
+parser.add_argument("--run_return_int_plus_one_demo", action="store_true",
+help="Boolean flag for whether the tests that call the return input plus one function should be executed (optional "
++"argument).")
+parser.add_argument("--run_return_neg_int_demo", action="store_true",
+help="Boolean flag for whether the tests that call the return negative of an input integer function should be executed "
++"(optional argument).")
+parser.add_argument("--run_return_string_length_demo", action="store_true",
+help="Boolean flag for whether the tests that call the return stringth length function should be executed (optional "
++"argument).")
+parser.add_argument("--run_add_ints_demo", action="store_true",
+help="Boolean flag for whether the tests that call the return add two integers function should be executed (optional "
++"argument).")
+parser.add_argument("--run_calc_int_list_sum_demo", action="store_true",
+help="Boolean flag for whether the tests that call the calculate sum of an integer list function should be executed "
++"(optional argument).")
 
 
 def return_zero():

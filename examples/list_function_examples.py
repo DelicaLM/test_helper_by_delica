@@ -48,32 +48,33 @@ run_return_nested_list_demo = True
 run_find_int_vals_in_list_demo = True
 run_concat_lists_demo = True
 
-if __name__ == "main":
-    parser = argparse.ArgumentParser(description="Parser for function examples script")
-    parser.add_argument("--run_empty_list_demo", action="store_true",
-        help="Boolean flag for whether the tests that use empty lists should be executed (optional argument).")
-    parser.add_argument("--run_single_element_list_demo", action="store_true",
-        help="Boolean flag for whether the tests that use lists of length one should be executed (optional argument).")
-    parser.add_argument("--run_multi_element_list_demo", action="store_true",
-    help="Boolean flag for whether the tests that use lists with multiple elements should be executed (optional "
-         + "argument).")
-    parser.add_argument("--run_nested_list_demo", action="store_true",
-        help="Boolean flag for whether the tests that use nested lists should be executed (optional argument).")
-    parser.add_argument("--run_search_list_demo", action="store_true",
-        help="Boolean flag for whether the tests that search for an item in an input list should be executed "
-             + "(optional argument).")
-    parser.add_argument("--run_concat_lists_demo", action="store_true",
-        help="Boolean flag for whether the tests concat two lists should be executed (optional argument).")
-    args = parser.parse_args()
-    run_return_empty_list_demo = args.run_empty_list_demo
-    run_return_single_element_list_demo = args.run_single_element_list_demo
-    run_return_multi_element_list_demo = args.run_multi_element_list_demo
-    run_return_nested_list_demo = args.run_nested_list_demo
-    run_search_list_demo = args.run_search_list_demo
-    run_concat_lists_demo = args.run_concat_lists_demo
-    any_demos = run_return_empty_list_demo or run_return_one_element_list_demo or run_return_multi_element_list_demo \
-                or run_return_nested_list_demo or run_find_int_vals_in_list_demo or run_concat_lists_demo
-    run_all_demos = not any_demos
+#if __name__ == "main":
+parser = argparse.ArgumentParser(description="Parser for function examples script")
+parser.add_argument("--run_empty_list_demo", action="store_true",
+    help="Boolean flag for whether the tests that use empty lists should be executed (optional argument).")
+parser.add_argument("--run_single_element_list_demo", action="store_true",
+    help="Boolean flag for whether the tests that use lists of length one should be executed (optional argument).")
+parser.add_argument("--run_multi_element_list_demo", action="store_true",
+help="Boolean flag for whether the tests that use lists with multiple elements should be executed (optional "
+     + "argument).")
+parser.add_argument("--run_nested_list_demo", action="store_true",
+    help="Boolean flag for whether the tests that use nested lists should be executed (optional argument).")
+parser.add_argument("--run_search_list_demo", action="store_true",
+    help="Boolean flag for whether the tests that search for an item in an input list should be executed "
+         + "(optional argument).")
+parser.add_argument("--run_concat_lists_demo", action="store_true",
+    help="Boolean flag for whether the tests concat two lists should be executed (optional argument).")
+args = parser.parse_args()
+run_return_empty_list_demo = args.run_empty_list_demo
+run_return_one_element_list_demo = args.run_single_element_list_demo
+run_return_multi_element_list_demo = args.run_multi_element_list_demo
+run_return_nested_list_demo = args.run_nested_list_demo
+run_find_int_vals_in_list_demo = args.run_search_list_demo
+run_concat_lists_demo = args.run_concat_lists_demo
+any_demos = run_return_empty_list_demo or run_return_one_element_list_demo or run_return_multi_element_list_demo \
+            or run_return_nested_list_demo or run_find_int_vals_in_list_demo or run_concat_lists_demo
+run_all_demos = not any_demos
+test = 0
 
 
 

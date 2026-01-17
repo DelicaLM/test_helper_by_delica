@@ -18,6 +18,7 @@ can_convert_to_int(val)
 """
 
 from test_helper_by_delica import *
+import argparse
 
 run_always_true_demo = False
 run_always_false_demo = False
@@ -25,6 +26,24 @@ run_is_int_demo = False
 run_is_int_error_if_false_demo = True
 run_can_convert_to_int_demo = False
 run_list_has_val_demo = False
+
+parser = argparse.ArgumentParser(description="Parser for boolean examples script")
+parser.add_argument("--run_always_true_demo", action="store_true",
+help="Boolean flag for whether the tests that call the always true function should be executed (optional argument).")
+parser.add_argument("--run_always_false_demo", action="store_true",
+help="Boolean flag for whether the tests that call the always false should be executed (optional argument).")
+parser.add_argument("--run_is_int_demo", action="store_true",
+help="Boolean flag for whether the tests that call the is integer function should be executed (optional "
++ "argument).")
+parser.add_argument("--run_is_int_error_if_false_demo", action="store_true",
+help="Boolean flag for whether the tests that call the is integer function with a TypeError if false should be "
++ "executed (optional argument).")
+parser.add_argument("--run_can_convert_to_int_demo", action="store_true",
+help="Boolean flag for whether the tests that check whether an input can be converted to an integer should be "
++ "executed (optional argument).")
+parser.add_argument("--run_list_has_val_demo", action="store_true",
+help="Boolean flag for whether the tests that check whether a list contains an input value should be expected "
++ "(optional argument).")
 
 
 def always_true():
