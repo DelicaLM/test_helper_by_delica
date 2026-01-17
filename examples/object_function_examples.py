@@ -13,6 +13,10 @@ OneIntAttrClass
     Class with one integer attribute and no instance methods.
 NoAttrOneStatMethodClass
     Class with no attributes and one static method.
+OneAttrOneMethodClass
+    Class with one integer attribute and one get method.
+TwoAttrTwoMethodClass
+    Class with two integer attributes and two get methods.
 
 
 
@@ -126,18 +130,57 @@ class OneAttrOneMethodClass:
         return f"OneAttrOneMethodClass(int_val={self.int_val})"
 
 class TwoAttrTwoMethodClass:
+    """Class with two attributes and two get instance methods.
+
+    Attributes
+    ----------
+    int_val : int
+        An integer attribute.
+    str_val : str
+        A string attribute.
+    """
     def __init__(self, int_val, str_val):
+        """TwoAttrTwoMethodClass constructor.
+
+        Parameters
+        ----------
+        int_val : int
+            The integer that should be stored in the new object.
+        str_val : str
+            The string that should be stored in the new object."""
         self.int_val = int_val
         self.str_val = str_val
+
     def return_int_val(self):
+        """Get method for the integer attribute."""
         return self.int_val
+
     def return_str_val(self):
+        """Get method for the string attribute."""
         return self.str_val
+
     def __eq__(self, other):
+        """Equality instance method (checks equality with another object).
+
+        This equality function concludes that two TwoAttrTwoMethodClass instances are equal if their integer attributes
+        and their string attributes are both identical.
+
+        Parameters
+        ----------
+        other : TwoAttrTwoMethodClass
+            The other instance of this class (which contains the integer and string attributes that must be compared
+            against the attributes values of the calling object).
+
+        Returns
+        -------
+        bool
+            Returns True if the two instance have the same integer and string attribute values.
+        """
         result = False
         if isinstance(other, TwoAttrTwoMethodClass):
             result = self.int_val == other.int_val and self.str_val == other.str_val
         return result
+
     def __str__(self):
         return f"TwoAttrTwoMethodClass(int_val={self.int_val}, str_val={self.str_val})"
 
