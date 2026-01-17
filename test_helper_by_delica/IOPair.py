@@ -34,4 +34,5 @@ class IOPair:
         self.output_tuple = output_tuple
 
     def __str__(self):
+        """Convert-to-string instance method"""
         return f"IOPair(input={self.input_tuple}, output={self.output_tuple})"

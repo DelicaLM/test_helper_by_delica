@@ -2,61 +2,127 @@
 Script demonstrating how we can use the test helper package to validate object-oriented functions.
 
 
-Functions
----------
-return_zero()
-    Returns 0.
-return_int_plus_one(int_val)
-    Returns int_val + 1.
-return_calc_int_list_sum(int_val)
-    Returns int_val + 1.
-is_int(val)
-    Returns True if val is an integer and False if it is not.
-is_int_error_if_false(val)
-    Returns True if val is an integer and raises a TypeError if it is not.
-can_convert_to_int(val)
-    Returns True if val is an integer or can be converted to an integer, False otherwise.
+The following classes are defined in this file to show the diversity of class structures that the test helper package
+can evaluate.
+
+Classes
+-------
+EmptyClass
+    Class with no attributes and no instance methods.
+OneIntAttrClass
+    Class with one integer attribute and no instance methods.
+NoAttrOneStatMethodClass
+    Class with no attributes and one static method.
+
+
+
+
 """
 
+# Import the test helper package.
 from test_helper_by_delica import *
 
+# Import argparse for parsing runtimes flags (which determine whether each class demo is executed).
+import argparse
+
+
 class EmptyClass:
+    """Class with no attributes and no instance methods."""
     def __init__(self):
         pass
 
+
 class OneIntAttrClass:
+    """Class with one integer attribute.
+
+    Attributes
+    ----------
+    int_val : int
+        Integer attribute value.
+    """
     def __init__(self, int_val):
+        """OneIntAttrClass constructor.
+
+        Parameters
+        ----------
+        int_val : int
+            The integer that should be stored in the new object.
+        """
         self.int_val = int_val
 
     def __eq__(self, other):
+        """Equality instance method (checks equality with another object).
+
+        This equality function concludes that two OneIntAttrClass instances are equal if their
+        integer attributes are equal.
+        Parameters
+        ----------
+        other : OneIntAttrClass
+            The other instance of this class (which contains the integer attribute that must be compared against the
+            attribute value of the calling object).
+
+        Returns
+        -------
+        bool
+            Returns True if the two instance have the same integer attribute value.
+        """
         result = False
         if isinstance(other, OneIntAttrClass):
             result = self.int_val == other.int_val
         return result
 
     def __str__(self):
+        """Convert-to-string instance method."""
         return f"OneIntAttrClass(int_val={self.int_val})"
 
 
-
 class NoAttrOneStatMethodClass:
+    """Class with no attributes and one static method.
+    """
     def __init__(self):
+        """NoAttrOneStatMethodClass constructor (empty)."""
         pass
+
     @staticmethod
     def return_zero():
+        """Static method that always returns zero."""
         return 0
 
 class OneAttrOneMethodClass:
+    """Class with one attribute and one get instance method."""
     def __init__(self, int_val):
+        """OneAttrOneMethodClass constructor.
+
+        Parameters
+        ---------
+        int_val : int
+            The integer that should be stored in the new object.
+        """
         self.int_val = int_val
+
     def return_int_val(self):
+        """Get method for the integer attribute."""
         return self.int_val
+
     def __eq__(self, other):
+        """Equality instance method (checks equality with another object).
+
+        This equality function concludes that two OneAttrOneMethodClass instances are equal if their integer attributes
+        are equal.
+
+        Parameters
+        ----------
+        other : OneAttrOneMethodClass
+            The other instance of this class (which contains the integer attribute that must be compared against the
+            attribute value of the calling object).
+        """
         result = False
         if isinstance(other, OneAttrOneMethodClass):
             result = self.int_val == other.int_val
         return result
+
     def __str__(self):
+        """Convert-to-string instance method."""
         return f"OneAttrOneMethodClass(int_val={self.int_val})"
 
 class TwoAttrTwoMethodClass:
