@@ -1,8 +1,6 @@
 """
-This script provides several examples of how one can use test_helper_by_delica to test object-oriented programming
-functions (i.e., functions that return or use an instance of a class). We use the sample functions below to demonstrate
-how run_func_tests from the test helper package allows us to quickly verify that Python code accurately uses and returns
-objects for a wide range of input types.
+Script demonstrating how we can use the test helper package to validate object-oriented functions.
+
 
 Functions
 ---------
@@ -116,9 +114,18 @@ if run_one_attr_one_method_demo:
                                            IOPair(100, OneAttrOneMethodClass(100)),
                                            IOPair((), TypeError)],
                    test_desc="constructor for class with one int attribute and one get method")
+    run_func_tests(OneAttrOneMethodClass(30).return_int_val, [IOPair((), 30),
+                                           IOPair((2), TypeError)],
+                   test_desc="get method for class with one int attribute")
 
 if run_two_attr_two_method_demo:
     run_func_tests(TwoAttrTwoMethodClass, [IOPair((1,"hello"), TwoAttrTwoMethodClass(1,"hello")),
                                            IOPair((100,"100"), TwoAttrTwoMethodClass(100,"100")),
                                            IOPair((), TypeError), IOPair(1, TypeError)],
                    test_desc="constructor for class with two attributes (one int and one string) and two get methods")
+    run_func_tests(TwoAttrTwoMethodClass(500, "hi").return_int_val,
+                   [IOPair((), 500)],
+                   test_desc="get int method for class with two int attributes and two get methods")
+    run_func_tests(TwoAttrTwoMethodClass(500, "hi").return_str_val,
+                   [IOPair((), "hi")],
+                   test_desc="get string method for class with two int attributes and two get methods")

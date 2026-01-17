@@ -1,3 +1,7 @@
+"""
+Class file for input-output pair objects.
+"""
+
 class IOPair:
     """
     Class for easily defining input-output pairs.
