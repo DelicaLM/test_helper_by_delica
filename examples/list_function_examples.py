@@ -40,13 +40,13 @@ DEFAULT_NESTED_LIST = [[DEFAULT_INT_VAL],
                        [DEFAULT_INT_VAL+1, DEFAULT_INT_VAL+2],
                        [DEFAULT_INT_VAL-1,DEFAULT_INT_VAL-2,DEFAULT_INT_VAL-3]]
 
-run_all_demos = True
-run_return_empty_list_demo = True
-run_return_one_element_list_demo = True
-run_return_multi_element_list_demo = True
-run_return_nested_list_demo = True
-run_find_int_vals_in_list_demo = True
-run_concat_lists_demo = True
+# run_all_demos = True
+# run_return_empty_list_demo = True
+# run_return_one_element_list_demo = True
+# run_return_multi_element_list_demo = True
+# run_return_nested_list_demo = True
+# run_find_int_vals_in_list_demo = True
+# run_concat_lists_demo = True
 
 #if __name__ == "main":
 parser = argparse.ArgumentParser(description="Parser for function examples script")

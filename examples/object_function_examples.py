@@ -182,12 +182,29 @@ class TwoAttrTwoMethodClass:
         return result
 
     def __str__(self):
+        """Convert-to-string instance method."""
         return f"TwoAttrTwoMethodClass(int_val={self.int_val}, str_val={self.str_val})"
 
 class ListAttrClass:
+    """Class with one integer list attribute and a get list sum function.
+
+    Attributes
+    ----------
+    my_list : list[int]
+        A list of integers.
+    """
     def __init__(self, input_list):
+        """ListAttrClass constructor.
+
+        Parameters
+        ----------
+        input_list : list[int]
+            The list of integers that should be stored in the new object.
+        """
         self.my_list = input_list
+
     def calc_list_sum(self):
+        """Instance method for calculating the sum of all the values in the integer list."""
         list_sum = 0
         for list_item in self.my_list:
             if type(list_item) == int or type(list_item) == float:
@@ -195,20 +212,50 @@ class ListAttrClass:
         return list_sum
 
 
-
-
-run_empty_class_demo = True
-run_one_int_attr_class_demo = True
-run_no_attr_one_stat_method_demo = True
-run_one_attr_one_method_demo = True
-run_two_attr_two_method_demo = True
-run_list_attr_class_demo = True
+# Define runtime flags for determining which classes should be tested.
+parser = argparse.ArgumentParser(description="Parser for object examples script")
+# Definition of the flag for running the empty class demo.
+parser.add_argument("--run_empty_class_demo", action="store_true",
+    help="Boolean flag for whether the tests that use the empty class (no attributes & no methods) should be executed "
+         + "(optional argument).")
+# Definition of the flag for running the class with one integer attribute demo.
+parser.add_argument("--run_one_int_attr_demo", action="store_true",
+    help="Boolean flag for whether the tests that use the one integer attribute class should be executed (optional "
+         + "argument).")
+# Definition of the flag for running the no attribute one static method class demo.
+parser.add_argument("--run_no_attr_one_stat_method_demo", action="store_true",
+    help="Boolean flag for whether the tests that use the class with no attributes and one static method should be "
+         + "executed (optional argument).")
+# Definition of the flag for running the one attribute one get method class demo.
+parser.add_argument("--run_one_attr_one_method_demo", action="store_true",
+    help="Boolean flag for whether the tests that use the class with one attribute and one get method should be "
+         + "executed (optional argument).")
+# Definition of the flag for running two attribute two get method class demo.
+parser.add_argument("--run_two_attr_two_method_demo", action="store_true",
+    help="Boolean flag for whether the tests that use the class with two attributes and two get methods should be "
+         + "executed (optional argument).")
+# Definition of the flag for running the list attribute class demo
+parser.add_argument("--run_list_attr_demo", action="store_true",
+    help="Boolean flag for whether the tests that use the class with one list attribute should be executed (optional "
+         + "argument).")
+args = parser.parse_args()
+run_empty_class_demo = args.run_empty_class_demo
+run_one_int_attr_demo = args.run_one_int_attr_demo
+run_no_attr_one_stat_method_demo = args.run_no_attr_one_stat_method_demo
+run_one_attr_one_method_demo = args.run_one_attr_one_method_demo
+run_two_attr_two_method_demo = args.run_two_attr_two_method_demo
+run_list_attr_demo = args.run_list_attr_demo
+# Check if the user requested to run any of the demos.
+any_demos = run_empty_class_demo or run_one_int_attr_demo or run_no_attr_one_stat_method_demo \
+            or run_one_attr_one_method_demo or run_two_attr_two_method_demo or run_list_attr_demo
+# By default (if no runtime flags are provided), the script will run all of the class demos.
+run_all_demos = not any_demos
 
 if run_empty_class_demo:
     run_func_tests(EmptyClass, [IOPair((),EmptyClass)],assert_type=ASSERT_TYPE,
                    test_desc="empty class constructor")
 
-if run_one_int_attr_class_demo:
+if run_one_int_attr_demo:
     run_func_tests(OneIntAttrClass, [IOPair(0,OneIntAttrClass(0)),
                                      IOPair(1,OneIntAttrClass(1)),
                                      IOPair(-1,OneIntAttrClass(-1))],
