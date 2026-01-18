@@ -9,7 +9,7 @@ compare_output_tuples(output_tuple1, output_tuple2, compare_type=ASSERT_EQUAL)
     Returns True if two tuples match based on a user-specified comparison (e.g., "==", "<", ">", etc.) and False
     otherwise (used to check whether tested functions yield the correct output).
 run_single_test(test_func, test_input=(), expected_output=(), assert_type=ASSERT_EQUAL, test_desc="",
-                add_new_line=True,include_input_in_error_msg=True):
+                add_new_line=True, include_input_in_error_msg=True):
     Runs a single test of a function. Returns True if all the tests succeed and raises an AssertionError if
     any of the tests fail.
 run_func_tests(test_func, correct_io_pairs, assert_type=ASSERT_EQUAL, test_desc="")
@@ -24,14 +24,20 @@ test_bool_func(test_func, true_inputs=None, false_inputs=None, error_if_false=Fa
 # Import the IOPair class to more easily create and pass input-output pairs for tests
 from test_helper_by_delica.IOPair import IOPair
 
+# Import the time library to measure test runtimes.
 import time
 
 # Constants for assertion types (i.e., methods in which we determine whether a test was successful) that the user
 # can use for their tests.
 ASSERT_EQUAL = "assert_equal" # use if test outputs should be equal to the expected outputs
+ASSERT_LESS = "assert_less_than" # use if the actual outputs should be less than the expected output values
+ASSERT_LESS_OR_EQUAL = "assert_less_or_equal" # use if the actual outputs should be <= to the expected output values
+ASSERT_GREATER = "assert_greater_than" # use if the actual outputs should be more than the expected output values
+ASSERT_GREATER_OR_EQUAL = "assert_greater_or_equal" # use if the actual outputs should be >= to the expected outputs
 ASSERT_RAISES = "assert_raises" # use if the tested function should raise an Exception
 ASSERT_TYPE = "assert_output_is_type" # use if the test should verify whether the output is of a certain type
-ASSERT_TYPES = [ASSERT_EQUAL, ASSERT_RAISES, ASSERT_TYPE]
+ASSERT_TYPES = [ASSERT_EQUAL, ASSERT_LESS, ASSERT_LESS_OR_EQUAL, ASSERT_GREATER, ASSERT_GREATER_OR_EQUAL,
+                ASSERT_RAISES, ASSERT_TYPE]
 
 def make_tuple_str(input_tuple):
     """Creates a more readable string representation of a tuple.
@@ -56,7 +62,7 @@ def make_tuple_str(input_tuple):
     if not is_tuple:
         # If the parameter is not a tuple, we only have one element.
         input_items.append(input_tuple)
-    else: # if the parameter is a tuple
+    else: # If the parameter is a tuple
         for item in input_tuple: # iterate over all the elements in the tuple
             input_items.append(item)
     # Add each tuple item to the string.
@@ -82,50 +88,83 @@ def make_tuple_str(input_tuple):
     return result
 
 def compare_output_tuples(output_tuple1, output_tuple2, compare_type=ASSERT_EQUAL):
-    """Checks whether two tuples agree with each other based on a specified comparison type (e.g., "==", "<", ">", etc.).
+    """Checks whether two tuples agree with each other based on a specified comparison type ("==", "<", ">", etc.).
 
     Parameters
     ----------
     output_tuple1 : tuple | any
-        The first tuple in comparison. If it is not passed as a tuple, this function will convert it to a tuple with a
-        single element.
+        The first tuple in the comparison. If it is not passed as a tuple, this function will convert it to a tuple with
+        a single element.
     output_tuple2 : tuple | any
-        The second tuple in comparison. If it is not passed as a tuple, this function will convert it to a tuple with a
-        single element.
-    compare_type : str
+        The second tuple in the comparison. If it is not passed as a tuple, this function will convert it to a tuple
+        with a single element.
+    compare_type : str | list[str], default ASSERT_EQUAL
         The name of the comparison type that should be used (must be a value from the ASSERT_TYPES list at the start
-        of this file (test_helper_funcs.py)).
+        of this file (test_helper_funcs.py)). If you want your outputs to be checked with different assertion types,
+        you can instead provide a list of comparison methods. For example, if you have two integer outputs and you want
+        to check if one is greater than a certain value and if the other is less than another value, then you can
+        provide the list [ASSERT_GREATER, ASSERT_LESS] for this parameter. If your list is shorter than the number of
+        outputs, the last comparison type in the list will be used for the remaining output values.
 
     Returns
     -------
     bool
         Returns True if the tuples match based on the comparison type and False if they do not.
     """
+    # Convert the outputs to tuples if they are not already in that form.
     if type(output_tuple1) != tuple:
         output_tuple1 = (output_tuple1,)
     if type(output_tuple2) != tuple:
         output_tuple2 = (output_tuple2,)
     result = False
-    same_length = len(output_tuple1) == len(output_tuple2)
-    if same_length:
-        if compare_type == ASSERT_EQUAL:
-            result = output_tuple1 == output_tuple2
-            if output_tuple1 == () or output_tuple1 == (None,):
-                result = output_tuple2  == () or output_tuple2 == (None,)
-        elif compare_type == ASSERT_TYPE:
-            tuple_1_types = []
-            tuple_2_types = []
-            for tuple_item in output_tuple1:
-                if isinstance(tuple_item, type):
-                    tuple_1_types.append(tuple_item)
-                else:
-                    tuple_1_types.append(type(tuple_item))
-            for tuple_item in output_tuple2:
-                if isinstance(tuple_item, type):
-                    tuple_2_types.append(tuple_item)
-                else:
-                    tuple_2_types.append(type(tuple_item))
-            result = tuple_1_types == tuple_2_types
+    # Make a list of the comparison types that should be used for the outputs
+    compare_types = []
+    # If the user passes a single string for the comparison type, we just need to add it to our list.
+    if type(compare_type) == str:
+        if compare_type not in ASSERT_TYPES:
+            raise ValueError(f"The comparison type '{compare_type}' is not supported. Please choose from the following "
+                             + f"options: {', '.join(ASSERT_TYPES)}")
+        compare_types.append(compare_type)
+    elif type(compare_type) == list: # If the user provides a list of comparison types, we need to check whether each
+                                     # element is a valid comparison type and then add it to the list.
+        for assert_type in compare_types:
+            if assert_type not in ASSERT_TYPES:
+                raise ValueError(f"The comparison type '{assert_type}' is not supported. Please choose from the "
+                                 f"following options: {', '.join(ASSERT_TYPES)}")
+            compare_types.append(assert_type)
+    # If the number of comparison types is less than the number of outputs, we use the last comparison type in the
+    # list for the remaining output values.
+    if len(compare_types) < len(output_tuple1):
+        assert len(compare_types) > 0
+        last_compare_type = compare_types[-1]
+        while len(compare_types) < len(output_tuple1):
+            compare_types.append(last_compare_type)
+    # Check if the tuples have the same lengths (if not, we instantly know that the comparison result will be false).
+    if len(output_tuple1) == len(output_tuple2):
+        # Make sure that we have the correct number of comparison types.
+        assert len(compare_types) == len(output_tuple1)
+        # Start by assuming that the outputs are all correct.
+        all_outputs_correct = True
+        # Iterate over the output values.
+        for comp_num in range(len(output_tuple1)):
+            # Use the comparison type that the user has requested for this output.
+            comp_type = compare_types[comp_num]
+            output_val_1 = output_tuple1[comp_num]
+            output_val_2 = output_tuple2[comp_num]
+            if comp_type == ASSERT_EQUAL:
+                all_outputs_correct &= output_val_1 == output_val_2
+            elif comp_type == ASSERT_LESS:
+                all_outputs_correct &= output_val_1 < output_val_2
+            elif comp_type == ASSERT_LESS_OR_EQUAL:
+                all_outputs_correct &= output_val_1 <= output_val_2
+            elif comp_type == ASSERT_GREATER:
+                all_outputs_correct &= output_val_1 > output_val_2
+            elif comp_type == ASSERT_GREATER_OR_EQUAL:
+                all_outputs_correct &= output_val_1 >= output_val_2
+            elif comp_type == ASSERT_TYPE:
+                all_outputs_correct &= type(output_val_1) == type(output_val_2)
+        # Only return True if all of the outputs were correct based on their comparison type.
+        result = all_outputs_correct
     return result
 
 
@@ -241,14 +280,14 @@ def run_func_tests(test_func, correct_io_pairs, assert_type=ASSERT_EQUAL, test_d
         will pass the input to the function that we are testing. It will then use the requested assertion function to
         check whether the actual output matches the expected output from the input-output pair.
     assert_type : str, optional, default=ASSERT_EQUAL
-        The name of the assertion type (e.g., ASSERT_EQUAL, ASSERT_RAISES) that should be used to check whether the
-        test was successful. This parameter must be a value from the ASSERT_TYPES constants list at the top of
-        this file (test_helper_funcs.py).
+        The name of the assertion type (e.g., ASSERT_EQUAL, ASSERT_LESS, ASSERT_TYPE, etc.) that should be used to
+        check whether the test was successful. This parameter must be a value from the ASSERT_TYPES constants list at
+        the top of this file (test_helper_funcs.py).
     test_desc : str, optional default="",
         A description of the tests that should be printed to stdout.
     Returns
     -------
-    bool all_tests_succeeded
+    all_tests_succeeded : bool
         A boolean flag indicating whether all of the tests were successful.
 
     Raises
@@ -278,12 +317,12 @@ def run_func_tests(test_func, correct_io_pairs, assert_type=ASSERT_EQUAL, test_d
         assert type(test_input) == tuple, "Test input must be a tuple."
         expected_output = io_pair.output_tuple
         assert type(expected_output) == tuple, "Expected test output must be a tuple."
-        if len(expected_output) > 0:
-            try:
-                if expected_output[0] is Exception or issubclass(expected_output[0], Exception):
-                    curr_assert_type = ASSERT_RAISES
-            except TypeError:
-                curr_assert_type = assert_type
+        # if len(expected_output) > 0:
+        #     try:
+        #         if expected_output[0] is Exception or issubclass(expected_output[0], Exception):
+        #             curr_assert_type = ASSERT_RAISES
+        #     except TypeError:
+        #         curr_assert_type = assert_type
         print(f"Test #{test_num} of {num_tests}")
         is_success = run_single_test(test_func, test_input, expected_output, assert_type=curr_assert_type,
                                      test_desc=f"{test_func.__name__} function for input " + str(test_input),
