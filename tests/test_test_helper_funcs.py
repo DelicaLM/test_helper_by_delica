@@ -1,3 +1,10 @@
+"""Script to test the functions in the test helper package.
+
+The following functions are defined to help us evaluate the package on a wide range of function types.
+Functions
+---------
+
+"""
 import test_helper_by_delica.test_helper_funcs as test_lib
 from test_helper_by_delica.IOPair import IOPair
 

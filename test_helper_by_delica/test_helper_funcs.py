@@ -395,7 +395,8 @@ def run_func_tests(test_func, correct_io_pairs, assert_type=ASSERT_EQUAL, test_d
         print(f"Test #{test_num} of {num_tests}")
         is_success = run_single_test(test_func, test_input, expected_output, assert_type=curr_assert_type,
                                      test_desc=f"{test_func.__name__} function for input " + str(test_input),
-                                     add_new_line=False, include_input_in_error_msg=False)
+                                     raise_error_on_fail=raise_error_on_fail, add_new_line=False,
+                                     include_input_in_error_msg=False)
         test_num += 1
         if is_success:
             num_succeeded += 1
