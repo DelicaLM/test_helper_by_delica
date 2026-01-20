@@ -98,7 +98,7 @@ def compare_output_tuples(output_tuple1, output_tuple2, compare_type=ASSERT_EQUA
     output_tuple2 : tuple | any
         The second tuple in the comparison. If it is not passed as a tuple, this function will convert it to a tuple
         with a single element.
-    compare_type : str | list[str], default ASSERT_EQUAL
+    compare_type : str | list[str], optional, default ASSERT_EQUAL
         The name of the comparison type that should be used (must be a value from the ASSERT_TYPES list at the start
         of this file (test_helper_funcs.py)). If you want your outputs to be checked with different assertion types,
         you can instead provide a list of comparison methods. For example, if you have two integer outputs and you want
@@ -180,10 +180,14 @@ def run_single_test(test_func, test_input=(), expected_output=(), assert_type=AS
         The input tuple that will be passed to the test function.
     expected_output : tuple, optional, default=()
         The expected output that should be returned by the test function.
-    assert_type : str, optional, default=ASSERT_EQUAL
-        The name of the assertion type (e.g., ASSERT_EQUAL, ASSERT_RAISES) that should be used to check whether the
-        test was successful. This parameter must be a value from the ASSERT_TYPES constants list at the top of
-        this file (test_helper_funcs.py).
+    assert_type : str | list[str], default ASSERT_EQUAL
+        The name of the assertion type that should be used for checking whether a test was successful (must be a value
+        from the ASSERT_TYPES list at the start of this file (test_helper_funcs.py)). If you want your outputs to be
+        checked with different assertion types, you can instead provide a list of comparison methods. For example,
+        if you have two integer outputs and you want to check if one is greater than a certain value and if the other
+        is less than another value, then you can provide the list [ASSERT_GREATER, ASSERT_LESS] for this parameter.
+        If your list is shorter than the number of outputs, the last comparison type in the list will be used for the
+        remaining output values.
     test_desc : str, default=""
         A description of the test that should be printed to stdout.
     add_new_line : bool, optional, default=True
@@ -279,10 +283,14 @@ def run_func_tests(test_func, correct_io_pairs, assert_type=ASSERT_EQUAL, test_d
         input-output pairs determines the number of tests that will be run. For each input-output pair, this function
         will pass the input to the function that we are testing. It will then use the requested assertion function to
         check whether the actual output matches the expected output from the input-output pair.
-    assert_type : str, optional, default=ASSERT_EQUAL
-        The name of the assertion type (e.g., ASSERT_EQUAL, ASSERT_LESS, ASSERT_TYPE, etc.) that should be used to
-        check whether the test was successful. This parameter must be a value from the ASSERT_TYPES constants list at
-        the top of this file (test_helper_funcs.py).
+    assert_type : str | list[str], default ASSERT_EQUAL
+        The name of the assertion type that should be used for checking whether a test was successful (must be a value
+        from the ASSERT_TYPES list at the start of this file (test_helper_funcs.py)). If you want your outputs to be
+        checked with different assertion types, you can instead provide a list of comparison methods. For example,
+        if you have two integer outputs and you want to check if one is greater than a certain value and if the other
+        is less than another value, then you can provide the list [ASSERT_GREATER, ASSERT_LESS] for this parameter.
+        If your list is shorter than the number of outputs, the last comparison type in the list will be used for the
+        remaining output values.
     test_desc : str, optional default="",
         A description of the tests that should be printed to stdout.
     Returns
@@ -295,20 +303,36 @@ def run_func_tests(test_func, correct_io_pairs, assert_type=ASSERT_EQUAL, test_d
     AssertionError
         Raised if any of the tests fail (stdout messages allow the user to easily determine which test case failed).
     """
-    assert callable(test_func), "Test function must be callable."
-    assert assert_type in ASSERT_TYPES, "Assertion type must be a value from the ASSERT_TYPES constants list."
+    # Make sure that the test function is callable.
+    if not callable(test_func):
+        raise TypeError("Test function must be callable.")
+    # Make sure that the user chose a valid assertion type.
+    if assert_type not in ASSERT_TYPES:
+        raise ValueError(f"{assert_type} is not a valid assertion type. Please select one of the following options: "
+                        + f"{ASSERT_TYPES}")
+    # If the user passed a single IOPair that is not in a list, we make it the single element in a list of length one.
     if isinstance(correct_io_pairs, IOPair):
         correct_io_pairs = [correct_io_pairs]
     else:
-        assert type(correct_io_pairs) == list, "Input-output pairs must be passed as a list of IO_Pair objects."
+        # If the user did not provide a lone IOPair, we need to make sure that they passed a list of IOPairs.
+        if type(correct_io_pairs) != list:
+            raise TypeError("You must provide a list of IOPair objects (one for each test).")
         for io_pair in correct_io_pairs:
-            assert isinstance(io_pair, IOPair), "Every item in the input-output pairs list must be an IO_Pair object."
-    assert type(test_desc) == str, "Test description must be a string."
+            if not isinstance(io_pair, IOPair):
+                raise TypeError("Every item in the input-output pairs list must be an IOPair object.")
+    # Make sure that the test description is a string.
+    if type(test_desc) != str:
+        raise TypeError("Test description must be a string.")
+    # Start by printing the test description
     print("TESTING " + test_desc.upper())
+    # Get the total number of tests that should be run.
     num_tests = len(correct_io_pairs)
+    # Keep track of how many tests succeeded and how many failed.
     num_succeeded = 0
     num_failed = 0
+    # Keep track of which tests failed.
     failed_test_nums = []
+    # Keep track of the current test number.
     test_num = 1
     for io_pair in correct_io_pairs:
         curr_assert_type = assert_type
@@ -350,8 +374,8 @@ def run_func_tests(test_func, correct_io_pairs, assert_type=ASSERT_EQUAL, test_d
 
 
 def test_bool_func(test_func, true_inputs=None, false_inputs=None, error_if_false=False, error_type=Exception,
-                   test_desc="", success_desc=""):
-    """Runs a set of unittest tests for a function that returns a boolean value.
+                   test_desc=""):
+    """Runs a sequence of tests for a function that returns a boolean value.
 
     Parameters
     ----------
@@ -361,11 +385,11 @@ def test_bool_func(test_func, true_inputs=None, false_inputs=None, error_if_fals
         List of input tuples that should cause the test function to return True.
     false_inputs : list[tuple], optional, default=None
         List of input tuples that should cause the test function to return False.
-    error_if_false : bool, default=False
+    error_if_false : bool, optional, default=False
         Boolean flag for whether the function should raise an error when the condition it evaluates is False.
-    error_type : type, default=Exception
-        The type of exception that should be raised for False results.
-    test_desc : str, default="",
+    error_type : type, optional, default=Exception
+        The type of exception that should be raised for False results (if error_if_false is True).
+    test_desc : str, optional, default=""
         A description of the tests that should be printed to stdout.
 
     Returns
@@ -377,22 +401,38 @@ def test_bool_func(test_func, true_inputs=None, false_inputs=None, error_if_fals
     ______
     AssertionError
         Raised if any of the tests fail (stdout messages allow the user to easily determine which test case failed).
-
     """
-    assert callable(test_func)
+    # Make sure that the test function is callable.
+    if not callable(test_func):
+        raise TypeError("Test function must be callable.")
+    # Make sure that the user provided lists (or nothing) for the true and false inputs.
     if true_inputs is None:
         true_inputs = []
     else:
-        assert type(true_inputs) == list
+        if type(true_inputs) != list:
+            raise TypeError("You need to provide a list of input tuples for the true test cases.")
     if false_inputs is None:
         false_inputs = []
     else:
-        assert type(false_inputs) == list
-    assert type(false_inputs) == list
-    assert type(error_if_false) == bool
-    assert issubclass(error_type, Exception)
-    assert type(test_desc) == str
-    assert type(success_desc) == str
+        if type(true_inputs) != list:
+            raise TypeError("You need to provide a list of input tuples for the false test cases.")
+    # Make sure that the error if false flag is a boolean.
+    if type(error_if_false) != bool:
+        raise TypeError("Error if false flag must be a boolean (True or False).")
+    if error_if_false:
+        # If the test function should raise an exception for False outputs, we need to check whether the user provided
+        # a valid exception type.
+        is_exception = True
+        try:
+            is_exception = issubclass(error_type, Exception)
+        except TypeError:
+            is_exception = False
+        if not is_exception:
+            raise TypeError("Error type must be a valid exception type in Python (e.g., TypeError, ValueError, etc.).")
+    # Make sure that the user provided a string for the test description.
+    if type(test_desc) != str:
+        raise TypeError("Test description must be a string.")
+    # Convert the input tuples into IOPair objects.
     io_pairs = []
     for true_input in true_inputs:
         if type(true_input) != tuple:
@@ -407,5 +447,6 @@ def test_bool_func(test_func, true_inputs=None, false_inputs=None, error_if_fals
             false_input = (false_input,)
         new_io_pair = IOPair(false_input, (false_result,))
         io_pairs.append(new_io_pair)
+    # Run the boolean function tests.
     run_func_tests(test_func, io_pairs, assert_type=ASSERT_EQUAL, test_desc=test_desc)
 
