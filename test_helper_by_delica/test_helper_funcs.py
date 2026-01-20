@@ -169,7 +169,7 @@ def compare_output_tuples(output_tuple1, output_tuple2, compare_type=ASSERT_EQUA
 
 
 def run_single_test(test_func, test_input=(), expected_output=(), assert_type=ASSERT_EQUAL, test_desc="",
-                    add_new_line=True,include_input_in_error_msg=True):
+                    raise_error_on_fail=True, add_new_line=True, include_input_in_error_msg=True):
     """Runs a single unit test for a given function.
 
     Parameters
@@ -180,7 +180,7 @@ def run_single_test(test_func, test_input=(), expected_output=(), assert_type=AS
         The input tuple that will be passed to the test function.
     expected_output : tuple, optional, default=()
         The expected output that should be returned by the test function.
-    assert_type : str | list[str], default ASSERT_EQUAL
+    assert_type : str | list[str], optional, default ASSERT_EQUAL
         The name of the assertion type that should be used for checking whether a test was successful (must be a value
         from the ASSERT_TYPES list at the start of this file (test_helper_funcs.py)). If you want your outputs to be
         checked with different assertion types, you can instead provide a list of comparison methods. For example,
@@ -188,8 +188,10 @@ def run_single_test(test_func, test_input=(), expected_output=(), assert_type=AS
         is less than another value, then you can provide the list [ASSERT_GREATER, ASSERT_LESS] for this parameter.
         If your list is shorter than the number of outputs, the last comparison type in the list will be used for the
         remaining output values.
-    test_desc : str, default=""
+    test_desc : str, optional, default=""
         A description of the test that should be printed to stdout.
+    raise_error_on_fail : bool, optional, default=True
+        A boolean flag indicating whether an AssertionError should be raised if the test fails.
     add_new_line : bool, optional, default=True
         Boolean flag indicating whether we should add a blank line after we finish printing the test results to stdout
         (useful for readability).
@@ -206,38 +208,76 @@ def run_single_test(test_func, test_input=(), expected_output=(), assert_type=AS
     Raises
     ______
     AssertionError
-        Raised if the test fails.
+        Raised if the test fails and the raise_error_on_fail flag is set to True.
     """
-    assert callable(test_func)
+    # Make sure that the test function is callable.
+    if not callable(test_func):
+        raise TypeError("Test function must be callable.")
+    # Make sure that the assertion type(s) are valid.
+    if type(assert_type) != list:
+        if assert_type not in ASSERT_TYPES:
+            raise ValueError(f"{assert_type} is not a valid assertion type. Please select one of the following options:"
+                             + f" {ASSERT_TYPES}")
+    else:
+        for compare_type in assert_type:
+            if compare_type not in ASSERT_TYPES:
+                raise ValueError("{compare_type} is not a valid assertion type. Please select one of the following "
+                                + f"options: {ASSERT_TYPES}")
+    # Make sure that the test description is a string.
+    if type(test_desc) != str:
+        raise TypeError(f"Test description must be a string.")
+    # Make sure that the flag for whether we should raise an AssertionError if the test fails is a boolean.
+    if type(raise_error_on_fail) != bool:
+        raise TypeError(f"Raise error on failure flag must be a boolean (True or False).")
+    # Make sure that the flag for whether we should print a new line after the test is a boolean.
+    if type(add_new_line) != bool:
+        raise TypeError(f"Add new line flag must be a boolean (True or False).")
+    # Make sure that the flag for whether we should include the inputs when we print the test results is a boolean
+    if type(include_input_in_error_msg) != bool:
+        raise TypeError(f"Include input in error message flag must be a boolean (True or False).")
+    # If the expected output is a tuple of length one, we extract the single element (particularly useful when the
+    # expected output is an Exception type).
     if type(expected_output) == tuple:
         if len(expected_output) == 1:
             expected_output = expected_output[0]
+    # Start by printing the test description.
     print("Testing " + test_desc)
+    # Make string representations of the input and expected output tuples
     input_string = make_tuple_str(test_input)
     expected_output_string = make_tuple_str(expected_output)
-    use_assert_raises = False
+    # Determine if the expected output is an Exception.
+    should_raise_error = False
     error_type = None
-    use_assert_raises = False
     try:
-        use_assert_raises = expected_output is Exception or issubclass(expected_output, Exception)
+        should_raise_error = expected_output is Exception or issubclass(expected_output, Exception)
     except TypeError:
         pass
-    if use_assert_raises:
+    if should_raise_error:
         error_type = expected_output
+    # Assume that the test fails by default.
     test_succeeded = False
-    test_runtime=0.0
+    test_output = None
+    # Keep track of how long the test takes.
+    test_runtime= 0.0
     start_time = 0.0
     end_time = 0.0
-
-    if use_assert_raises:
+    # We need to run the test a bit differently depending on whether the expected output is an Exception.
+    if should_raise_error: #if the expected output is an Exception
         assert error_type is not None
         assert error_type is Exception or issubclass(error_type, Exception)
         try:
-            test_func(*test_input)
+            start_time = time.time()
+            test_output = test_func(*test_input)
+            end_time = time.time()
         except error_type as e:
+            # In this case, the test succeeds if we end up in the except branch for the
+            # error type defined by expected output.
             test_succeeded = True
+            test_output = error_type
+            end_time = time.time()
             print(f"ERROR MESSAGE: {e}")
-    else:
+    else: #if the expected output is not an Exception
+        # In this scenario, the test fails if any Exceptions are raised.
         unwanted_error_raised = False
         unwanted_error_type = None
         test_output = None
@@ -246,23 +286,26 @@ def run_single_test(test_func, test_input=(), expected_output=(), assert_type=AS
             test_output = test_func(*test_input)
             end_time = time.time()
         except Exception as e:
+            # If an unexpected error is raised, we print the information out to the user.
             unwanted_error_raised = True
             unwanted_error_type = type(e)
             test_output = unwanted_error_type
             test_succeeded = False
             unwanted_error_type_name = unwanted_error_type.__name__
             print(f"TEST FUNCTION RAISED UNEXPECTED {unwanted_error_type_name}\n   ERROR MESSAGE: {e}")
-
         if not unwanted_error_raised:
+            # If no Exceptions were raised, we need to check whether the actual output matches the expected output.
             test_succeeded = compare_output_tuples(test_output, expected_output, compare_type=assert_type)
-
-        if not test_succeeded:
-            fail_msg = f"{test_desc.upper()} FAILED "
-            if include_input_in_error_msg:
-                fail_msg += f"WITH INPUT = {input_string} "
-            fail_msg += f"(EXPECTED OUTPUT = {expected_output}, ACTUAL_OUTPUT = {test_output})"
+    if not test_succeeded:
+        fail_msg = f"{test_desc.upper()} FAILED "
+        if include_input_in_error_msg:
+            fail_msg += f"WITH INPUT = {input_string} "
+        fail_msg += f"(EXPECTED OUTPUT = {expected_output}, ACTUAL_OUTPUT = {test_output})"
+        if raise_error_on_fail:
             raise AssertionError(fail_msg)
-    if test_succeeded:
+        else:
+            print(fail_msg)
+    else:
         print(f"SUCCESS: input={input_string}\n         output={expected_output_string}")
         test_runtime = end_time - start_time
         print(f"TEST RUNTIME: {test_runtime:.20f} seconds")
@@ -271,7 +314,7 @@ def run_single_test(test_func, test_input=(), expected_output=(), assert_type=AS
     return test_succeeded
 
 
-def run_func_tests(test_func, correct_io_pairs, assert_type=ASSERT_EQUAL, test_desc=""):
+def run_func_tests(test_func, correct_io_pairs, assert_type=ASSERT_EQUAL, test_desc="", raise_error_on_fail=True):
     """Runs a set of unit tests for a specified function.
 
     Parameters
@@ -293,6 +336,8 @@ def run_func_tests(test_func, correct_io_pairs, assert_type=ASSERT_EQUAL, test_d
         remaining output values.
     test_desc : str, optional default="",
         A description of the tests that should be printed to stdout.
+    raise_error_on_fail : bool, optional, default=True
+        A boolean flag indicating whether an AssertionError should be raised if the test fails.
     Returns
     -------
     all_tests_succeeded : bool
