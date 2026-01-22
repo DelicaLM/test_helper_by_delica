@@ -30,17 +30,18 @@ from test_helper_by_delica.IOPair import IOPair
 DEFAULT_INT = 0
 DEFAULT_RETURN_VAL = DEFAULT_INT
 
-test_run_single_test = True
+test_run_single_test = False
 test_run_func_tests = False
-test_test_bool_func = False
+test_test_bool_func = True
 
 test_with_no_param_no_return = False
 test_with_one_param_no_return = False
 test_with_two_param_no_return = False
 test_with_no_param_one_return = False
 test_with_no_param_two_return = False
-test_with_always_true = True
+test_with_always_true = False
 test_with_always_false = False
+test_with_is_even = True
 
 
 def no_param_no_return():
@@ -94,6 +95,62 @@ def no_param_two_return():
         The next integer value after the default integer constant.
     """
     return DEFAULT_INT, DEFAULT_INT + 1
+
+def one_param_one_return(int_val):
+    """Function with one integer parameter and one integer return value.
+
+    Parameters
+    ----------
+    int_val : int
+        An integer parameter.
+
+    Returns
+    -------
+    int
+        Returns the sum of one and the integer parameter (int_val + 1).
+    """
+    return int_val + 1
+
+def two_param_two_return(int_val, str_val):
+    """Function with two parameters and two return values.
+
+    Parameters
+    ----------
+    int_val : int
+        An integer parameter.
+    str_val : str
+        A string parameter.
+    Returns
+    -------
+    int
+        The sum of one and the integer parameter (int_val + 1).
+    str
+        The concatenation of the string parameter and "a".
+    """
+    return int_val + 1, str_val + "a"
+
+def always_true():
+    """Returns True."""
+    return True
+
+def always_false():
+    """Returns False."""
+    return False
+
+def is_even(int_val):
+    """Returns true if the input parameter is an even integer.
+
+    Parameters
+    ----------
+    int_val : int
+        The integer value that we need to check for evenness.
+    Returns
+    -------
+    bool
+        A boolean indicating if the input parameter is an even integer.
+    """
+    return type(int_val) == int and int_val % 2 == 0
+
 
 # Test the run-single-test function in the test helper package.
 if test_run_single_test:
@@ -277,37 +334,156 @@ if test_run_func_tests:
                                  test_desc="run-func-tests function on test function with no parameters and no return "
                                            +"value (mixed success/fail case)")
     if test_with_one_param_no_return:
-        # Test whether the run-func-test function correctly handles a test function with no parameters and no return values.
+        # Test whether the run-func-test function correctly handles a test function with one parameter and no output.
         # Success Case: The run-single-test function should conclude that the no-param-no-return function
         #              is working properly when it returns nothing.
         test_lib.run_single_test(test_lib.run_func_tests,
-                                 test_input=(one_param_no_return, [IOPair((DEFAULT_INT,), ())], test_lib.ASSERT_EQUAL,
-                                             "function with one parameter and no return value"),
+                                 test_input=(one_param_no_return, [IOPair((DEFAULT_INT,), ())],
+                                             test_lib.ASSERT_EQUAL,"function with one parameter and no return value"),
                                  expected_output=(True,),
-                                 test_desc="run-func-tests function on test function with one parameter and no return value (success case)")
+                                 test_desc="run-func-tests function on test function with one parameter and no return "
+                                           + "value (success case)")
         # Fail Case: Make sure that the run-func_tests function raises an Assertion error if the expected output from
         #            one-param-one-return does not match the actual output (expects something, receives nothing).
         test_lib.run_single_test(test_lib.run_func_tests,
-                                 test_input=(one_param_no_return, [IOPair((DEFAULT_INT,), (True,))], test_lib.ASSERT_EQUAL,
-                                             "function with one parameter and no return value"),
+                                 test_input=(one_param_no_return,
+                                             [IOPair((DEFAULT_INT,), (True,))],
+                                             test_lib.ASSERT_EQUAL,"function with one parameter and no return value"),
                                  expected_output=(AssertionError,),
-                                 test_desc="run-func-tests function on test function with one parameter and no return value (fail case)")
-        # Fail Case: Make sure that the run-func-tests function raises an Assertion error if the no-param-no-return
-        #            function itself raises an unexpected error (which we trigger by not passing a required input argument).
+                                 test_desc="run-func-tests function on test function with one parameter and no return "
+                                           "value (fail case)")
+        # Fail Case: Make sure that the run-func-tests function raises an Assertion error if the required input
+        #            argument is missing.
         test_lib.run_single_test(test_lib.run_func_tests,
                                  test_input=(no_param_no_return, [IOPair((), ())], test_lib.ASSERT_EQUAL,
                                              "function with no parameters and no return value"),
                                  expected_output=(AssertionError,),
-                                 test_desc="run-func-tests function on test function with one parameter and no return value (fail case)")
+                                 test_desc="run-func-tests function on test function with one parameter and no return "
+                                           + "value (fail case)")
         # Mixed Success/Fail Case: Make sure that the run-func-tests function raises an Assertion error if a second
         #                          test fails after the first test is successful.
         test_lib.run_single_test(test_lib.run_func_tests,
                                  test_input=(one_param_no_return, [IOPair((DEFAULT_INT,), ()),
-                                                                  IOPair((), (True,))], test_lib.ASSERT_EQUAL,
-                                             "function with one parameter and no return value"),
+                                                                  IOPair((), (True,))],
+                                             test_lib.ASSERT_EQUAL, "function with one parameter and no return value"),
                                  expected_output=(AssertionError,),
                                  test_desc="run-func-tests function on test function with one parameter and no return "
                                            + "value (mixed success/fail case)")
+
+if test_test_bool_func:
+    if test_with_always_true:
+        # Test whether the test-bool-func function correctly handles a test function that always returns True.
+        # Success Case: The test-bool-func function should conclude that the always-true function is working properly
+        #               when it returns True.
+        test_lib.run_single_test(test_lib.test_bool_func,
+                                 test_input=(always_true, [()], [], "always true function"),
+                                 expected_output=(True,),
+                                 test_desc="test-bool-func on test function that always returns True (success case)")
+        # Fail Case: Make sure that test-bool-func function raises an AssertionError if the actual output (True) does
+        #            not match the expected output (False) and the raise_error_on_fail flag is True.
+        test_lib.run_single_test(test_lib.test_bool_func,
+                                 test_input=(always_true, [], [()], "always true function"),
+                                 expected_output=(AssertionError,),
+                                 test_desc="test-bool-func on test function that always returns True (fail case)")
+        # Fail Case: Make sure that test-bool-func function returns False instead of an AssertionError if a test fails
+        #            and the raise_error_on_fail flag is True.
+        test_lib.run_single_test(test_lib.test_bool_func,
+                                 test_input=(always_true, [], [()], "always true function", False, None, False),
+                                 expected_output=(False,),
+                                 test_desc="test-bool-func on test function that always returns True (fail case)")
+        # Fail Case: Make sure that test-bool-func function returns an Assertion error if a second test fails after
+        #            the first one passed.
+        test_lib.run_single_test(test_lib.test_bool_func,
+                                 test_input=(always_true, [()], [()], "always true function"),
+                                 expected_output=(AssertionError,),
+                                 test_desc="test-bool-func on test function that always returns True (fail case)")
+    if test_with_always_false:
+        # Test whether the test-bool-func function correctly handles a test function that always returns False.
+        # Success Case: The test-bool-func function should conclude that the always-false function is working properly
+        #               when it returns False.
+        test_lib.run_single_test(test_lib.test_bool_func,
+                                 test_input=(always_false, [], [()], "always false function"),
+                                 expected_output=(True,),
+                                 test_desc="test-bool-func on test function that always returns False (success case)")
+        # Fail Case: Make sure that test-bool-func function raises an AssertionError if the actual output (False) does
+        #            not match the expected output (True) and the raise_error_on_fail flag is True.
+        test_lib.run_single_test(test_lib.test_bool_func,
+                                 test_input=(always_false, [()], [], "always false function"),
+                                 expected_output=(AssertionError,),
+                                 test_desc="test-bool-func on test function that always returns False (fail case)")
+        # Fail Case: Make sure that test-bool-func function returns False instead of an AssertionError if a test fails
+        #            and the raise_error_on_fail flag is True.
+        test_lib.run_single_test(test_lib.test_bool_func,
+                                 test_input=(always_false, [()], [], "always false function", False, None, False),
+                                 expected_output=(False,),
+                                 test_desc="test-bool-func on test function that always returns False (fail case)")
+        # Fail Case: Make sure that test-bool-func function returns an Assertion error if a second test fails after
+        #            the first one passed.
+        test_lib.run_single_test(test_lib.test_bool_func,
+                                 test_input=(always_false, [()], [()], "always false function"),
+                                 expected_output=(AssertionError,),
+                                 test_desc="test-bool-func on test function that always returns False (fail case)")
+    if test_with_is_even:
+        # Test whether the test-bool-func function correctly handles a test function checks whether an integer is even.
+        # Success Case: The test-bool-func function should conclude that the is-even function is working properly
+        #               when it returns True for even integers and False for odd integers.
+        test_lib.run_single_test(test_lib.test_bool_func,
+                                 test_input=(is_even, [2, 4, 6, 8, 10, 100], [-1, 1, 3, 101], "is even function"),
+                                 expected_output=(True,),
+                                 test_desc="test-bool-func on test function that determines whether an integer is even "
+                                           + "(success case)")
+        # Fail Case: Make sure that the test-bool-func raises an error if the expected output is True when the actual
+        #            output is False and the raise_error_on_fail flag is True.
+        test_lib.run_single_test(test_lib.test_bool_func,
+                                 test_input=(is_even, [1], [], "is even function"),
+                                 expected_output=(AssertionError,),
+                                 test_desc="test-bool-func on test function that determines whether an integer is even "
+                                           + "(fail case)")
+        # Fail Case: Make sure that the test-bool-func raises an error if the expected output is False when the actual
+        #            output is True and the raise_error_on_fail flag is True.
+        test_lib.run_single_test(test_lib.test_bool_func,
+                                 test_input=(is_even, [], [2], "is even function"),
+                                 expected_output=(AssertionError,),
+                                 test_desc="test-bool-func on test function that determines whether an integer is even "
+                                           + "(fail case)")
+        # Fail Case: Make sure that the test-bool-func returns False and does not raise an error if a test fails and
+        #            the raise_error_on_fail flag is False.
+        test_lib.run_single_test(test_lib.test_bool_func,
+                                 test_input=(is_even, [], [2], "is even function", False, None, False),
+                                 expected_output=(False,),
+                                 test_desc="test-bool-func on test function that determines whether an integer is even "
+                                           + "(fail case)")
+        # Fail Case: Make sure that the test-bool-func raises an Assertion Error if one of many tests fail and the
+        #            raise_error_on_fail flag is True.
+        test_lib.run_single_test(test_lib.test_bool_func,
+                                 test_input=(is_even, [2, 4, 5, 6], [1, 3, 5], "is even function"),
+                                 expected_output=(AssertionError,),
+                                 test_desc="test-bool-func on test function that determines whether an integer is even "
+                                           + "(fail case)")
+        # Fail Case: Make sure that the test-bool-func raises an AssertionError if multiple tests fail and the
+        #            raise_error_on_fail flag is True.
+        test_lib.run_single_test(test_lib.test_bool_func,
+                                 test_input=(is_even, [2, 4, 5, 6, 7], [1, 3, 5, 4, 6], "is even function"),
+                                 expected_output=(AssertionError,),
+                                 test_desc="test-bool-func on test function that determines whether an integer is even "
+                                           + "(fail case)")
+        # Fail Case: Make sure that the test-bool-func returns False and does not raise an error if one of many tests
+        #            fail and the raise_error_on_fail flag is False.
+        test_lib.run_single_test(test_lib.test_bool_func,
+                                 test_input=(is_even, [2,4,5,6], [1,3,5], "is even function", False, None, False),
+                                 expected_output=(False,),
+                                 test_desc="test-bool-func on test function that determines whether an integer is even "
+                                           + "(fail case)")
+        # Fail Case: Make sure that the test-bool-func returns False and does not raise an error if multiple tests
+        #            fail and the raise_error_on_fail flag is False.
+        test_lib.run_single_test(test_lib.test_bool_func,
+                                 test_input=(is_even, [2, 4, 5, 6, 7], [1, 3, 5, 4, 6], "is even function", False, None,
+                                             False),
+                                 expected_output=(False,),
+                                 test_desc="test-bool-func on test function that determines whether an integer is even "
+                                           + "(fail case)")
+
+
 
 def always_true_no_param():
     return True

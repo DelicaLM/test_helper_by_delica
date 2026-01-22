@@ -281,10 +281,9 @@ def run_single_test(test_func, test_input=(), expected_output=(), assert_type=AS
         unwanted_error_raised = False
         unwanted_error_type = None
         test_output = None
+        start_time = time.time()
         try:
-            start_time = time.time()
             test_output = test_func(*test_input)
-            end_time = time.time()
         except Exception as e:
             # If an unexpected error is raised, we print the information out to the user.
             unwanted_error_raised = True
@@ -296,8 +295,9 @@ def run_single_test(test_func, test_input=(), expected_output=(), assert_type=AS
         if not unwanted_error_raised:
             # If no Exceptions were raised, we need to check whether the actual output matches the expected output.
             test_succeeded = compare_output_tuples(test_output, expected_output, compare_type=assert_type)
+    end_time = time.time()
     if not test_succeeded:
-        fail_msg = f"{test_desc.upper()} FAILED "
+        fail_msg = f"FAIL: {test_desc.upper()} FAILED "
         if include_input_in_error_msg:
             fail_msg += f"WITH INPUT = {input_string} "
         fail_msg += f"(EXPECTED OUTPUT = {expected_output}, ACTUAL_OUTPUT = {test_output})"
@@ -334,10 +334,10 @@ def run_func_tests(test_func, correct_io_pairs, assert_type=ASSERT_EQUAL, test_d
         is less than another value, then you can provide the list [ASSERT_GREATER, ASSERT_LESS] for this parameter.
         If your list is shorter than the number of outputs, the last comparison type in the list will be used for the
         remaining output values.
-    test_desc : str, optional default="",
+    test_desc : str, optional, default="",
         A description of the tests that should be printed to stdout.
     raise_error_on_fail : bool, optional, default=True
-        A boolean flag indicating whether an AssertionError should be raised if the test fails.
+        A boolean flag indicating whether an AssertionError should be raised if a test fails.
     Returns
     -------
     all_tests_succeeded : bool
@@ -419,8 +419,8 @@ def run_func_tests(test_func, correct_io_pairs, assert_type=ASSERT_EQUAL, test_d
     return all_tests_succeeded
 
 
-def test_bool_func(test_func, true_inputs=None, false_inputs=None, error_if_false=False, error_type=Exception,
-                   test_desc=""):
+def test_bool_func(test_func, true_inputs=None, false_inputs=None, test_desc="", error_if_false=False,
+                   error_type=Exception, raise_error_on_fail=True):
     """Runs a sequence of tests for a function that returns a boolean value.
 
     Parameters
@@ -431,22 +431,25 @@ def test_bool_func(test_func, true_inputs=None, false_inputs=None, error_if_fals
         List of input tuples that should cause the test function to return True.
     false_inputs : list[tuple], optional, default=None
         List of input tuples that should cause the test function to return False.
+    test_desc : str, optional, default=""
+        A description of the tests that should be printed to stdout.
     error_if_false : bool, optional, default=False
         Boolean flag for whether the function should raise an error when the condition it evaluates is False.
     error_type : type, optional, default=Exception
         The type of exception that should be raised for False results (if error_if_false is True).
-    test_desc : str, optional, default=""
-        A description of the tests that should be printed to stdout.
+    raise_error_on_fail : bool, optional, default=True
+        A boolean flag indicating whether an AssertionError should be raised if a test fails.
 
     Returns
     -------
-    None
-    (Test results are printed to stdout.)
+    bool
+        Returns True if all tests were successful, False otherwise.
 
     Raises
     ______
     AssertionError
-        Raised if any of the tests fail (stdout messages allow the user to easily determine which test case failed).
+        Raised if raise_error_on_fail is True and  any of the tests fail (stdout messages allow the user to easily
+        determine which test case failed).
     """
     # Make sure that the test function is callable.
     if not callable(test_func):
@@ -494,5 +497,8 @@ def test_bool_func(test_func, true_inputs=None, false_inputs=None, error_if_fals
         new_io_pair = IOPair(false_input, (false_result,))
         io_pairs.append(new_io_pair)
     # Run the boolean function tests.
-    run_func_tests(test_func, io_pairs, assert_type=ASSERT_EQUAL, test_desc=test_desc)
+    all_tests_succeeded = False
+    all_tests_succeeded = run_func_tests(test_func, io_pairs, assert_type=ASSERT_EQUAL, test_desc=test_desc,
+                                         raise_error_on_fail=raise_error_on_fail)
+    return all_tests_succeeded
 
