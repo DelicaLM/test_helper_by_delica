@@ -420,7 +420,8 @@ def run_func_tests(test_func, correct_io_pairs, assert_type=ASSERT_EQUAL, test_d
 
 
 def test_bool_func(test_func, true_inputs=None, false_inputs=None, test_desc="", error_if_false=False,
-                   error_type=Exception, raise_error_on_fail=True):
+                   error_type=Exception, raise_error_on_fail=True, type_error_inputs=None, value_error_inputs=None,
+                   assert_error_inputs =None,):
     """Runs a sequence of tests for a function that returns a boolean value.
 
     Parameters
@@ -439,6 +440,12 @@ def test_bool_func(test_func, true_inputs=None, false_inputs=None, test_desc="",
         The type of exception that should be raised for False results (if error_if_false is True).
     raise_error_on_fail : bool, optional, default=True
         A boolean flag indicating whether an AssertionError should be raised if a test fails.
+    type_error_inputs : list[tuple], optional, default=None
+        List of input tuples that should cause the test function to raise a TypeError.
+    value_error_inputs : list[tuple], optional, default=None
+        List of input tuples that should cause the test function to raise a ValueError.
+    assert_error_inputs : list[tuple], optional, default=None
+        List of input tuples that should cause the test function to raise an AssertionError.
 
     Returns
     -------
@@ -463,8 +470,23 @@ def test_bool_func(test_func, true_inputs=None, false_inputs=None, test_desc="",
     if false_inputs is None:
         false_inputs = []
     else:
-        if type(true_inputs) != list:
+        if type(false_inputs) != list:
             raise TypeError("You need to provide a list of input tuples for the false test cases.")
+    if type_error_inputs is None:
+        type_error_inputs = []
+    else:
+        if type(type_error_inputs) != list:
+            raise TypeError("You need to provide a list of input tuples for the TypeError test cases.")
+    if value_error_inputs is None:
+        value_error_inputs = []
+    else:
+        if type(value_error_inputs) != list:
+            raise TypeError("You need to provide a list of input tuples for the ValueError test cases.")
+    if assert_error_inputs is None:
+        assert_error_inputs = []
+    else:
+        if type(assert_error_inputs) != list:
+            raise TypeError("You need to provide a list of input tuples for the AssertError test cases.")
     # Make sure that the error if false flag is a boolean.
     if type(error_if_false) != bool:
         raise TypeError("Error if false flag must be a boolean (True or False).")
@@ -483,11 +505,13 @@ def test_bool_func(test_func, true_inputs=None, false_inputs=None, test_desc="",
         raise TypeError("Test description must be a string.")
     # Convert the input tuples into IOPair objects.
     io_pairs = []
+    # Make IOPairs for inputs that should yield True.
     for true_input in true_inputs:
         if type(true_input) != tuple:
             true_input = (true_input,)
         new_io_pair = IOPair(true_input, (True,))
         io_pairs.append(new_io_pair)
+    # Make IOPairs for inputs that should yield False (or an error).
     false_result = False
     if error_if_false:
         false_result = error_type
@@ -495,6 +519,24 @@ def test_bool_func(test_func, true_inputs=None, false_inputs=None, test_desc="",
         if type(false_input) != tuple:
             false_input = (false_input,)
         new_io_pair = IOPair(false_input, (false_result,))
+        io_pairs.append(new_io_pair)
+    # Make IOPairs for inputs that should yield a TypeError.
+    for type_error_input in type_error_inputs:
+        if type(type_error_input) != tuple:
+            type_error_input = (type_error_input,)
+        new_io_pair = IOPair(type_error_input, (TypeError,))
+        io_pairs.append(new_io_pair)
+    # Make IOPairs for inputs that should yield a ValueError.
+    for value_error_input in value_error_inputs:
+        if type(value_error_input) != tuple:
+            value_error_input = (value_error_input,)
+        new_io_pair = IOPair(value_error_input, (ValueError,))
+        io_pairs.append(new_io_pair)
+    # Make IOPairs for inputs that should yield a AssertionError.
+    for assert_error_input in assert_error_inputs:
+        if type(assert_error_input) != tuple:
+            assert_error_input = (assert_error_input,)
+        new_io_pair = IOPair(assert_error_input, (AssertionError,))
         io_pairs.append(new_io_pair)
     # Run the boolean function tests.
     all_tests_succeeded = False

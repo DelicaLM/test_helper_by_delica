@@ -41,7 +41,8 @@ test_with_no_param_one_return = False
 test_with_no_param_two_return = False
 test_with_always_true = False
 test_with_always_false = False
-test_with_is_even = True
+test_with_is_even = False
+test_with_list_has_val_with_type_errors = True
 
 
 def no_param_no_return():
@@ -138,7 +139,7 @@ def always_false():
     return False
 
 def is_even(int_val):
-    """Returns true if the input parameter is an even integer.
+    """Returns True if the input parameter is an even integer.
 
     Parameters
     ----------
@@ -150,6 +151,27 @@ def is_even(int_val):
         A boolean indicating if the input parameter is an even integer.
     """
     return type(int_val) == int and int_val % 2 == 0
+
+def list_has_val_with_type_errors(list_to_search, int_val):
+    """Returns True if the list contains the specified integer value.
+
+    Parameters
+    ----------
+    list_to_search : list
+        The list in which we should look for the value.
+    int_val : int
+        The integer value that we will try to find in the list.
+
+    Returns
+    -------
+    bool
+        A boolean indicating if the list contains the specified integer value.
+    """
+    if type(list_to_search) != list:
+        raise TypeError("list_to_search must be of type list")
+    if type(int_val) != int:
+        raise TypeError("int_val must be of type int")
+    return int_val in list_to_search
 
 
 # Test the run-single-test function in the test helper package.
@@ -424,7 +446,7 @@ if test_test_bool_func:
                                  expected_output=(AssertionError,),
                                  test_desc="test-bool-func on test function that always returns False (fail case)")
     if test_with_is_even:
-        # Test whether the test-bool-func function correctly handles a test function checks whether an integer is even.
+        # Test whether the test-bool-func function correctly handles a test function that checks if an integer is even.
         # Success Case: The test-bool-func function should conclude that the is-even function is working properly
         #               when it returns True for even integers and False for odd integers.
         test_lib.run_single_test(test_lib.test_bool_func,
@@ -482,6 +504,20 @@ if test_test_bool_func:
                                  expected_output=(False,),
                                  test_desc="test-bool-func on test function that determines whether an integer is even "
                                            + "(fail case)")
+    if test_with_list_has_val_with_type_errors:
+        # Test whether the test-bool-func function correctly handles a test function that checks if an integer value
+        # is in a list and raises TypeErrors if the two parameters are not, respectively, a list and an integer.
+        # Success Case: The test-bool-func function should conclude that the is-even function is working properly
+        #               when it returns True for even integers and False for odd integers.
+        test_lib.run_single_test(test_lib.test_bool_func,
+                                 test_input=(list_has_val_with_type_errors,
+                                             [([1],1),([1,2],1),([1,2,3,4,5],5)], [([],1), ([1],2), ([1,2,3], 4)],
+                                             "list has val with type errors function", False, Exception, True,
+                                             [([1,2], 1.0), ([],1.0), (1,[])]),
+                                 expected_output=(True,),
+                                 test_desc="test-bool-func on test function that determines whether a list contains a "
+                                           + "particular integer value with type errors if the parameters are "
+                                           + "incorrect (i.e., not a list and an integer) (success case)")
 
 
 
