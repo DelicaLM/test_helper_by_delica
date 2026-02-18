@@ -507,8 +507,8 @@ if test_test_bool_func:
     if test_with_list_has_val_with_type_errors:
         # Test whether the test-bool-func function correctly handles a test function that checks if an integer value
         # is in a list and raises TypeErrors if the two parameters are not, respectively, a list and an integer.
-        # Success Case: The test-bool-func function should conclude that the is-even function is working properly
-        #               when it returns True for even integers and False for odd integers.
+        # Success Case: The test-bool-func function should conclude that the value in list function is working properly
+        #               when it returns True when a list contains the target value and False when it does not.
         test_lib.run_single_test(test_lib.test_bool_func,
                                  test_input=(list_has_val_with_type_errors,
                                              [([1],1),([1,2],1),([1,2,3,4,5],5)], [([],1), ([1],2), ([1,2,3], 4)],
@@ -516,8 +516,41 @@ if test_test_bool_func:
                                              [([1,2], 1.0), ([],1.0), (1,[])]),
                                  expected_output=(True,),
                                  test_desc="test-bool-func on test function that determines whether a list contains a "
-                                           + "particular integer value with type errors if the parameters are "
+                                           + "particular integer value with type errors\nif the parameters are "
                                            + "incorrect (i.e., not a list and an integer) (success case)")
+        # Fail Case: The test-bool-func function should conclude that the value in list function is not working properly
+        #            if we expect a True result for a list that does not contain the target value.
+        test_lib.run_single_test(test_lib.test_bool_func,
+                                 test_input=(list_has_val_with_type_errors,
+                                             [([1], 2)],[],
+                                             "list has val with type errors function", False, Exception, True,
+                                             []),
+                                 expected_output=(AssertionError,),
+                                 test_desc="test-bool-func on test function that determines whether a list contains a "
+                                           + "particular integer value with type errors\nif the parameters are "
+                                           + "incorrect (i.e., not a list and an integer) (fail case)")
+        # Fail Case: The test-bool-func function should conclude that the value in list function is not working properly
+        #            if we expect a False result for a list that does contain the target value.
+        test_lib.run_single_test(test_lib.test_bool_func,
+                                 test_input=(list_has_val_with_type_errors,
+                                             [], [([1], 1)],
+                                             "list has val with type errors function", False, Exception, True,
+                                             []),
+                                 expected_output=(AssertionError,),
+                                 test_desc="test-bool-func on test function that determines whether a list contains a "
+                                           + "particular integer value with type errors\nif the parameters are "
+                                           + "incorrect (i.e., not a list and an integer) (fail case)")
+        # Fail Case: The test-bool-func function should conclude that the value in list function is not working properly
+        #            if we expect the function to raise a TypeError and it does not.
+        test_lib.run_single_test(test_lib.test_bool_func,
+                                 test_input=(list_has_val_with_type_errors,
+                                             [], [],
+                                             "list has val with type errors function", False, Exception, True,
+                                             [([1,2], 1)]),
+                                 expected_output=(AssertionError,),
+                                 test_desc="test-bool-func on test function that determines whether a list contains a "
+                                           + "particular integer value with type errors\nif the parameters are "
+                                           + "incorrect (i.e., not a list and an integer) (fail case)")
 
 
 
