@@ -8,7 +8,7 @@ One can easily download the package with the following pip install statement:
 `pip install test_helper_by_delica`   
 
 If you are a contributor who needs to test changes from the development branch,    
-you can install the test version of the library from TestPyPI with the following line:   
+you can install the test version of the library from TestPyPI with the following command:   
 `pip install --index-url https://test.pypi.org/simple/test_helper_by_delica`    
 
 If you are not a contributor to this project, please only use the production version     
@@ -48,7 +48,7 @@ Testing always_false function for input ()
 SUCCESS: input=() -> output=False
 ALL 1 TESTS COMPLETED FOR ALWAYS FALSE FUNCTION
 ````
-To see what happens if a test fails, we can try using the always_true function in our always_false test.
+To see what happens if a test fails, we can try using the always_false function in our always_true test.
 ````
 test_lib.test_bool_func(test_obj, always_false, true_inputs=[()], test_desc="always true function")
 ````
@@ -96,8 +96,8 @@ def is_int_error_if_false(val):
 run_func_tests(is_int_error_if_false, [IOPair(1, True), IOPair(1.0, TypeError), IOPair((3, 2), 5)], 
                test_desc="is integer error if false function")
 ````
-The main difference between run_func_tests and test_bool_func, besides the types of 
-functions that they can validate, is that run_func_tests requires a list of IOPair objects to specify the 
+The main difference between run_func_tests and test_bool_func, besides the types of functions that they can validate, 
+is that run_func_tests requires a list of IOPair objects to specify the 
 expected input-output pairs for the tests. For example, if our input numbers are 1 and 2 and we expect the sum value to
 be 3, we will pass this information to run_func_tests in the form IOPair((1, 2), 3). If we instead test a function that
 returns two numbers which equal an input parameter when added together, we could have a test with IOPair(3, (1, 2)).

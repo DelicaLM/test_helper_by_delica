@@ -1,0 +1,22 @@
+.. test-helper-by-delica documentation master file, created by
+   sphinx-quickstart on Thu Feb 19 20:38:37 2026.
+   You can adapt this file completely to your liking, but it should at least
+   contain the root `toctree` directive.
+
+
+test-helper-by-delica documentation
+===================================
+.. toctree::
+   :maxdepth: 2
+   :caption: Contents:
+
+   README
+
+Indices and tables
+==================
+* :ref:`genindex`
+* :ref:`modindex`
+* :ref:`search`
+
+
+
