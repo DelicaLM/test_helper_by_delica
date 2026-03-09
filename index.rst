@@ -10,8 +10,7 @@ test-helper-by-delica documentation
    :maxdepth: 2
    :caption: Contents:
 
-   README
-   api/index
+   modules
 
 Indices and tables
 ==================
