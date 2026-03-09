@@ -1,5 +1,5 @@
 """
-This script provides several examples of how one can use test_helper_by_delica to test boolean functions (i.e.,
+This script provides several examples of how one can use src to test boolean functions (i.e.,
 functions that return True or False). We use the sample functions below to demonstrate how test_bool_func from the test
 helper package allows us to quickly verify that Python code accurately returns True or False for a wide range of inputs.
 
@@ -17,7 +17,7 @@ can_convert_to_int(val)
     Returns True if val is an integer or can be converted to an integer, False otherwise.
 """
 
-from test_helper_by_delica import *
+from src import *
 import argparse
 
 run_always_true_demo = False

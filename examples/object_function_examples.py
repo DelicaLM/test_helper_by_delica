@@ -24,7 +24,7 @@ TwoAttrTwoMethodClass
 """
 
 # Import the test helper package.
-from test_helper_by_delica import *
+from src import *
 
 # Import argparse for parsing runtimes flags (which determine whether each class demo is executed).
 import argparse

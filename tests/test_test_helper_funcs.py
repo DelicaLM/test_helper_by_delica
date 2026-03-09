@@ -24,8 +24,8 @@ DEFAULT_INT : int
     The default integer value that should be returned by a function (makes it easier to standardize tests).
 
 """
-import test_helper_by_delica.test_helper_funcs as test_lib
-from test_helper_by_delica.IOPair import IOPair
+import src.test_helper_funcs as test_lib
+from src.IOPair import IOPair
 
 DEFAULT_INT = 0
 DEFAULT_RETURN_VAL = DEFAULT_INT

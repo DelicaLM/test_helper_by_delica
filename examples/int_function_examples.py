@@ -1,5 +1,5 @@
 """
-This script provides several examples of how one can use test_helper_by_delica to test integer functions (i.e.,
+This script provides several examples of how one can use src to test integer functions (i.e.,
 functions that return an integer value). We use the sample functions below to demonstrate how run_func_tests from the
 test helper package allows us to quickly verify that Python code returns accurate integer values for a wide range of
 inputs.
@@ -21,7 +21,7 @@ calc_int_list_sum(int_list)
 
 """
 
-from test_helper_by_delica import *
+from src import *
 import argparse
 
 run_all_demos = True

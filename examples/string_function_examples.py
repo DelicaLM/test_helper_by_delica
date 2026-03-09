@@ -1,5 +1,5 @@
 """
-This script provides several examples of how one can use test_helper_by_delica to test string functions (i.e.,
+This script provides several examples of how one can use src to test string functions (i.e.,
 functions with a string return value). We use the sample functions below to demonstrate how run_func_tests from the
 test helper package allows us to quickly verify that Python code returns accurate strings for a wide range of inputs.
 
@@ -20,7 +20,7 @@ remove_vowels(str_val):
     Returns the string that we obtain after removing all vowels from the input parameter.
 
 """
-from test_helper_by_delica import *
+from src import *
 import argparse
 
 

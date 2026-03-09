@@ -30,7 +30,7 @@ DEFAULT_INT_VALUE : int
 """
 import argparse
 
-from test_helper_by_delica import *
+from src import *
 import sys
 
 DEFAULT_INT_VAL = 0
