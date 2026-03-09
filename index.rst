@@ -11,6 +11,7 @@ test-helper-by-delica documentation
    :caption: Contents:
 
    README
+   api/index
 
 Indices and tables
 ==================
