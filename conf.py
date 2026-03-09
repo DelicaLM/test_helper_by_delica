@@ -9,7 +9,7 @@
 import os
 import sys
 
-sys.path.insert(0, os.path.abspath('.'))
+sys.path.insert(0, os.path.abspath('./test_helper_by_delica/'))
 project = 'test-helper-by-delica'
 copyright = '2026, Delica Leboe-McGowan'
 author = 'Delica Leboe-McGowan'
@@ -32,3 +32,5 @@ exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 
 html_theme = 'alabaster'
 html_static_path = ['_static']
+
+
