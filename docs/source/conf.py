@@ -8,7 +8,7 @@
 
 import os
 import sys
-sys.path.insert(0, os.path.abspath('../..'))
+sys.path.insert(0, os.path.abspath('../../src'))
 
 project = 'test-helper-by-delica'
 copyright = '2026, Delica Leboe-McGowan'
