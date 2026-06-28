@@ -20,7 +20,7 @@ release = '1.0.2'
 
 extensions = ['sphinx.ext.autodoc',
     'sphinx.ext.napoleon',  # For Google and NumPy style docstrings
-    'sphinx.ext.viewcode']
+    'sphinx.ext.githubpages']
 
 templates_path = ['_templates']
 exclude_patterns = []
