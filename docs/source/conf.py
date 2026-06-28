@@ -33,7 +33,7 @@ exclude_patterns = []
 html_theme = 'basic'
 html_sidebars = {
     '**': [
-        'searchbox.html',
+        'globaltoc.html',
     ]
 }
 html_static_path = []
