@@ -36,4 +36,4 @@ html_sidebars = {
         'localtoc.html',
     ]
 }
-#html_static_path = []
+html_static_path = []
