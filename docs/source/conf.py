@@ -26,6 +26,8 @@ autodoc2_docstring_parser_regexes = [
     (r".*", "rst"),
 ]
 
+primary_domain = 'py'
+
 napoleon_google_docstring = False
 napoleon_numpy_docstring = True
 
