@@ -343,6 +343,7 @@ def run_func_tests(test_func, correct_io_pairs, assert_type=ASSERT_EQUAL, test_d
         A description of the tests that should be printed to stdout.
     raise_error_on_fail : bool, optional, default=True
         A boolean flag indicating whether an AssertionError should be raised if a test fails.
+
     Returns
     -------
     all_tests_succeeded : bool
