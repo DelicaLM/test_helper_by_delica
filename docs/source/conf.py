@@ -31,6 +31,8 @@ autodoc_type_aliases = {
 }
 primary_domain = 'py'
 
+suppress_warnings = ["ref.*"]
+
 napoleon_google_docstring = False
 napoleon_numpy_docstring = True
 
