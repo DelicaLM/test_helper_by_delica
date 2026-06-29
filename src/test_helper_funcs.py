@@ -27,7 +27,7 @@ test_bool_func(test_func, true_inputs=None, false_inputs=None, error_if_false=Fa
 """
 
 # Import the IOPair class to more easily create and pass input-output pairs for tests
-from src.IOPair import IOPair
+import IOPair
 #import IOPair as IOPair
 #import src.IOPair.IOPair
 
