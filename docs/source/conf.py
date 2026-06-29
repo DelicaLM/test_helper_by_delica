@@ -20,7 +20,8 @@ release = '1.0.2'
 
 extensions = ['autodoc2',
     'sphinx.ext.napoleon',  # For Google and NumPy style docstrings
-    'sphinx.ext.githubpages']
+    'sphinx.ext.githubpages',
+              "numpydoc"]
 
 autodoc2_docstring_parser_regexes = [
     (r".*", "rst"),
