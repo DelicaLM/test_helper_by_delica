@@ -27,7 +27,7 @@ autodoc2_docstring_parser_regexes = [
 ]
 
 autodoc2_type_aliases = {
-    'IOPair': 'src.IOPair'
+    'IOPair.IOPair': 'src.IOPair.IOPair'
 }
 primary_domain = 'py'
 
