@@ -25,7 +25,9 @@ extensions = ['autodoc2',
 autodoc2_docstring_parser_regexes = [
     (r".*", "rst"),
 ]
-
+autodoc_type_aliases = {
+    'IOPair': 'src.IOPair',
+}
 primary_domain = 'py'
 
 napoleon_google_docstring = False

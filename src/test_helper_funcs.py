@@ -27,9 +27,9 @@ test_bool_func(test_func, true_inputs=None, false_inputs=None, error_if_false=Fa
 """
 
 # Import the IOPair class to more easily create and pass input-output pairs for tests
-#from src.IOPair import IOPair
-#import src.IOPair as IOPair
-import src.IOPair
+from src.IOPair import IOPair
+#import IOPair as IOPair
+#import src.IOPair.IOPair
 
 # Import the time library to measure test runtimes.
 import time
@@ -364,14 +364,14 @@ def run_func_tests(test_func, correct_io_pairs, assert_type=ASSERT_EQUAL, test_d
         raise ValueError(f"{assert_type} is not a valid assertion type. Please select one of the following options: "
                         + f"{ASSERT_TYPES}")
     # If the user passed a single IOPair that is not in a list, we make it the single element in a list of length one.
-    if isinstance(correct_io_pairs, src.IOPair):
+    if isinstance(correct_io_pairs, IOPair):
         correct_io_pairs = [correct_io_pairs]
     else:
         # If the user did not provide a lone IOPair, we need to make sure that they passed a list of IOPairs.
         if type(correct_io_pairs) != list:
             raise TypeError("You must provide a list of IOPair objects (one for each test).")
         for io_pair in correct_io_pairs:
-            if not isinstance(io_pair, src.IOPair):
+            if not isinstance(io_pair, IOPair):
                 raise TypeError("Every item in the input-output pairs list must be an IOPair object.")
     # Make sure that the test description is a string.
     if type(test_desc) != str:
@@ -389,7 +389,7 @@ def run_func_tests(test_func, correct_io_pairs, assert_type=ASSERT_EQUAL, test_d
     test_num = 1
     for io_pair in correct_io_pairs:
         curr_assert_type = assert_type
-        assert isinstance(io_pair, src.IOPair)
+        assert isinstance(io_pair, IOPair)
         test_input = io_pair.input_tuple
         assert type(test_input) == tuple, "Test input must be a tuple."
         expected_output = io_pair.output_tuple
@@ -517,7 +517,7 @@ def test_bool_func(test_func, true_inputs=None, false_inputs=None, test_desc="",
     for true_input in true_inputs:
         if type(true_input) != tuple:
             true_input = (true_input,)
-        new_io_pair = src.IOPair(true_input, (True,))
+        new_io_pair = IOPair(true_input, (True,))
         io_pairs.append(new_io_pair)
     # Make IOPairs for inputs that should yield False (or an error).
     false_result = False
@@ -526,25 +526,25 @@ def test_bool_func(test_func, true_inputs=None, false_inputs=None, test_desc="",
     for false_input in false_inputs:
         if type(false_input) != tuple:
             false_input = (false_input,)
-        new_io_pair = src.IOPair(false_input, (false_result,))
+        new_io_pair = IOPair(false_input, (false_result,))
         io_pairs.append(new_io_pair)
     # Make IOPairs for inputs that should yield a TypeError.
     for type_error_input in type_error_inputs:
         if type(type_error_input) != tuple:
             type_error_input = (type_error_input,)
-        new_io_pair = src.IOPair(type_error_input, (TypeError,))
+        new_io_pair = IOPair(type_error_input, (TypeError,))
         io_pairs.append(new_io_pair)
     # Make IOPairs for inputs that should yield a ValueError.
     for value_error_input in value_error_inputs:
         if type(value_error_input) != tuple:
             value_error_input = (value_error_input,)
-        new_io_pair = src.IOPair(value_error_input, (ValueError,))
+        new_io_pair = IOPair(value_error_input, (ValueError,))
         io_pairs.append(new_io_pair)
     # Make IOPairs for inputs that should yield a AssertionError.
     for assert_error_input in assert_error_inputs:
         if type(assert_error_input) != tuple:
             assert_error_input = (assert_error_input,)
-        new_io_pair = src.IOPair(assert_error_input, (AssertionError,))
+        new_io_pair = IOPair(assert_error_input, (AssertionError,))
         io_pairs.append(new_io_pair)
     # Run the boolean function tests.
     all_tests_succeeded = False
