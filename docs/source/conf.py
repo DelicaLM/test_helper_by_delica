@@ -22,6 +22,9 @@ extensions = ['autodoc2',
     'sphinx.ext.napoleon',  # For Google and NumPy style docstrings
     'sphinx.ext.githubpages']
 
+napoleon_google_docstring = False
+napoleon_numpy_docstring = True
+
 autodoc2_packages = [
     "../../src/IOPair.py",
 "../../src/test_helper_funcs.py"
