@@ -16,7 +16,7 @@ documentation for details.
    :includehidden:
    :caption: Contents:
 
-   modules
+   apidocs/index
 
 Indices and tables
 ==================
