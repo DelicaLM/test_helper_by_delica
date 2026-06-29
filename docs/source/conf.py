@@ -23,7 +23,8 @@ extensions = ['autodoc2',
     'sphinx.ext.githubpages']
 
 autodoc2_packages = [
-    "../../src/IOPair.py"
+    "../../src/IOPair.py",
+"../../src/test_helper_funcs.py"
 ]
 templates_path = ['_templates']
 exclude_patterns = []
