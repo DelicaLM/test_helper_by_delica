@@ -6,17 +6,13 @@
 test-helper-by-delica documentation
 ===================================
 
-Add your content using ``reStructuredText`` syntax. See the
-`reStructuredText <https://www.sphinx-doc.org/en/master/usage/restructuredtext/index.html>`_
-documentation for details.
-
-
 .. toctree::
    :maxdepth: 2
    :includehidden:
    :caption: Contents:
 
    apidocs/index
+   modules
 
 Indices and tables
 ==================
