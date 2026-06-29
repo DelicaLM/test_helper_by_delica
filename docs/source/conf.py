@@ -22,6 +22,9 @@ extensions = ['autodoc2',
     'sphinx.ext.napoleon',  # For Google and NumPy style docstrings
     'sphinx.ext.githubpages']
 
+autodoc2_packages = [
+    "IOPair.py"
+]
 templates_path = ['_templates']
 exclude_patterns = []
 
