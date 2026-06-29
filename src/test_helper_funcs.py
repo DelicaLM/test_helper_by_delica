@@ -28,7 +28,7 @@ test_bool_func(test_func, true_inputs=None, false_inputs=None, error_if_false=Fa
 
 # Import the IOPair class to more easily create and pass input-output pairs for tests
 #from src.IOPair import IOPair
-import IOPair
+import src.IOPair as IOPair
 
 # Import the time library to measure test runtimes.
 import time
