@@ -22,6 +22,10 @@ extensions = ['autodoc2',
     'sphinx.ext.napoleon',  # For Google and NumPy style docstrings
     'sphinx.ext.githubpages']
 
+autodoc2_docstring_parser_regexes = [
+    (r".*", "rst"),
+]
+
 napoleon_google_docstring = False
 napoleon_numpy_docstring = True
 
@@ -31,7 +35,6 @@ autodoc2_packages = [
 ]
 templates_path = ['_templates']
 exclude_patterns = []
-
 
 
 # -- Options for HTML output -------------------------------------------------
