@@ -18,7 +18,7 @@ release = '1.0.2'
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
 
-extensions = ['sphinx.ext.autodoc',
+extensions = ['sphinx.ext.autodoc2',
     'sphinx.ext.napoleon',  # For Google and NumPy style docstrings
     'sphinx.ext.githubpages']
 
