@@ -2,7 +2,7 @@
 # Reference: This file is closely based on the documentation.yml file provided by Jonathan Arias Busto in
 # their extremely helpful Medium article #(https://medium.com/@ariassbustojonathan/automate-python-documentation-with
 # -sphinx-for-github-3dda2ca690ec).
-
+#sphinx-apidoc -o ./source ../src -f
 name: documentation
 
 on: [push, pull_request, workflow_dispatch]
@@ -23,8 +23,7 @@ jobs:
         run: |
           cd docs
           make clean
-          sphinx-apidoc -o ./source ../src -f
-          make html
+          sphinx-build doc docs/build/html
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
         if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
