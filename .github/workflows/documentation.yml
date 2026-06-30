@@ -23,13 +23,13 @@ jobs:
         run: |
           cd docs
           make clean
-          sphinx-build source docs/build/html
+          sphinx-build source doc/build/html
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
         if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
         with:
           publish_branch: gh-pages
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: docs/build/html
+          publish_dir: doc/build/html
           force_orphan: true
           enable_jekyll: false
