@@ -12,7 +12,7 @@ test-helper-by-delica documentation
    :caption: Contents:
 
    apidocs/index
-   modules
+
 
 
 Indices and tables
