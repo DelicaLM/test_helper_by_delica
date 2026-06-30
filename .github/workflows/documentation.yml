@@ -23,7 +23,7 @@ jobs:
         run: |
           cd docs
           make clean
-          sphinx-build docs docs/build/html
+          sphinx-build src docs/build/html
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
         if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
