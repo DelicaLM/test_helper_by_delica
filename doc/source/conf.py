@@ -42,7 +42,7 @@ autodoc2_packages = [
     "../../src/IOPair.py",
 "../../src/test_helper_funcs.py"
 ]
-templates_path = ['_templates']
+#templates_path = ['_templates']
 exclude_patterns = []
 
 
