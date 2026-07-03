@@ -44,6 +44,10 @@ autodoc2_packages = [
     "../../src/IOPair.py",
 "../../src/test_helper_funcs.py",
     "../../examples/bool_function_examples.py",
+"../../examples/int_function_examples.py",
+"../../examples/list_function_examples.py",
+"../../examples/string_function_examples.py",
+"../../examples/object_function_examples.py",
 ]
 #templates_path = ['_templates']
 exclude_patterns = []
