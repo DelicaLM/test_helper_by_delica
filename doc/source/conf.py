@@ -60,6 +60,7 @@ html_theme = 'classic'
 html_theme_options = {
     'sidebar_width': '350px',
 }
+
 #html_static_path = ['_static']
 # html_sidebars = {
 #     '**': [
