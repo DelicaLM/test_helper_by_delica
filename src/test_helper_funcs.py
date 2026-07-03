@@ -10,8 +10,8 @@ compare_output_tuples(output_tuple1, output_tuple2, compare_type=ASSERT_EQUAL)
     Returns True if two tuples match based on a user-specified comparison (e.g., "==", "<", ">", etc.) and False
     otherwise (used to check whether tested functions yield the correct output).
 
-run_single_test(test_func, test_input=(), expected_output=(), assert_type=ASSERT_EQUAL, test_desc="", add_new_line=True,
-    include_input_in_error_msg=True)
+run_single_test(test_func, test_input=(), expected_output=(), assert_type=ASSERT_EQUAL, test_desc="",
+    add_new_line=True, include_input_in_error_msg=True)
     Runs a single test of a function. Returns True if all the tests succeed and raises an AssertionError if
     any of the tests fail.
 
