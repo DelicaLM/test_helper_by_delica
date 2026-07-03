@@ -42,7 +42,8 @@ napoleon_numpy_docstring = True
 
 autodoc2_packages = [
     "../../src/IOPair.py",
-"../../src/test_helper_funcs.py"
+"../../src/test_helper_funcs.py",
+    "../../examples/bool_function_examples.py",
 ]
 #templates_path = ['_templates']
 exclude_patterns = []
