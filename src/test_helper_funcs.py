@@ -16,7 +16,11 @@ import time
 
 # Constants for assertion types (i.e., methods in which we determine whether a test was successful) that the user
 # can use for their tests.
-ASSERT_EQUAL = "assert_equal" # use if test outputs should be equal to the expected outputs
+ASSERT_EQUAL = "assert_equal"
+"""str: Constant string label for the assertion type that checks whether test outputs are equal
+to the expected outputs."""
+#: String label for the assertion type that checks whether test outputs are equal
+                                 # use if test outputs should be equal to the expected outputs
 ASSERT_LESS = "assert_less_than" # use if the actual outputs should be less than the expected output values
 ASSERT_LESS_OR_EQUAL = "assert_less_or_equal" # use if the actual outputs should be <= to the expected output values
 ASSERT_GREATER = "assert_greater_than" # use if the actual outputs should be more than the expected output values
