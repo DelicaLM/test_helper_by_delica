@@ -56,7 +56,7 @@ exclude_patterns = []
 # -- Options for HTML output -------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
 
-html_theme = 'bizstyle'
+html_theme = 'classic'
 html_theme_options = {
     'sidebar_width': '350px',
 }
