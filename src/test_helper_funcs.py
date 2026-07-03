@@ -19,14 +19,22 @@ import time
 ASSERT_EQUAL = "assert_equal"
 """str: Constant string label for the assertion type that checks whether test outputs are equal
 to the expected outputs."""
-#: String label for the assertion type that checks whether test outputs are equal
-                                 # use if test outputs should be equal to the expected outputs
-ASSERT_LESS = "assert_less_than" # use if the actual outputs should be less than the expected output values
-ASSERT_LESS_OR_EQUAL = "assert_less_or_equal" # use if the actual outputs should be <= to the expected output values
-ASSERT_GREATER = "assert_greater_than" # use if the actual outputs should be more than the expected output values
-ASSERT_GREATER_OR_EQUAL = "assert_greater_or_equal" # use if the actual outputs should be >= to the expected outputs
-ASSERT_RAISES = "assert_raises" # use if the tested function should raise an Exception
+ASSERT_LESS = "assert_less_than"
+"""str: Constant string label for the assertion type that checks whether test outputs are less than
+expected output values."""
+ASSERT_LESS_OR_EQUAL = "assert_less_or_equal"
+"""str: Constant string label for the assertion type that checks whether test outputs are less than or equal
+to the expected outputs."""
+ASSERT_GREATER = "assert_greater_than"
+"""str: Constant string label for the assertion type that checks whether test outputs are greater
+than the expected output values."""
+ASSERT_GREATER_OR_EQUAL = "assert_greater_or_equal"
+"""str: Constant string label for the assertion type that checks whether test outputs are greater than or equal
+to the expected outputs."""
+ASSERT_RAISES = "assert_raises"
+"""str: Constant string label for the assertion type that checks whether the test function raises an Exception."""
 ASSERT_TYPE = "assert_output_is_type" # use if the test should verify whether the output is of a certain type
+"""str: Constant string label for the assertion type that checks whether test outputs have the expected data types."""
 ASSERT_TYPES = [ASSERT_EQUAL, ASSERT_LESS, ASSERT_LESS_OR_EQUAL, ASSERT_GREATER, ASSERT_GREATER_OR_EQUAL,
                 ASSERT_RAISES, ASSERT_TYPE]
 
