@@ -4,12 +4,8 @@ This module provides functions to help users easily create and run unit tests fo
 """
 
 # Import the IOPair class to more easily create and pass input-output pairs for tests
-import os
-print(os.getcwd())
 from src.IOPair import IOPair
-#import IOPair as IOPair
-#import src.IOPair.IOPair
-#from src.IOPair import IOPair
+
 
 # Import the time library to measure test runtimes.
 import time
