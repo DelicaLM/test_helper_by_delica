@@ -1,4 +1,4 @@
-# test-helper-by-delica README
+# test-helper-by-delica
 ## Purpose
 This package simplifies the creation, execution, and analysis of unit tests in Python,
 in order to help programmers more efficiently develop and validate their software.
