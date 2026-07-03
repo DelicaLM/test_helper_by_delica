@@ -6,6 +6,8 @@
 test-helper-by-delica documentation
 ===================================
 
+.. include:: ../../README.md
+
 
 .. toctree::
    :maxdepth: 2
