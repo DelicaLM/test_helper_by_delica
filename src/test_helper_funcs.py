@@ -37,6 +37,7 @@ ASSERT_TYPE = "assert_output_is_type" # use if the test should verify whether th
 """str: Constant string label for the assertion type that checks whether test outputs have the expected data types."""
 ASSERT_TYPES = [ASSERT_EQUAL, ASSERT_LESS, ASSERT_LESS_OR_EQUAL, ASSERT_GREATER, ASSERT_GREATER_OR_EQUAL,
                 ASSERT_RAISES, ASSERT_TYPE]
+"""list: List of all the assertion types that are currently supported in this module."""
 
 def make_tuple_str(input_tuple):
     """Creates a more readable string representation of a tuple.
