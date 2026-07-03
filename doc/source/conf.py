@@ -20,6 +20,7 @@ release = '1.0.2'
 #
 
 extensions = ['autodoc2',
+              'myst_parser',
     'sphinx.ext.napoleon',  # For Google and NumPy style docstrings
     'sphinx.ext.githubpages',]
 
