@@ -1,29 +1,6 @@
 """
 This module provides functions to help users easily create and run unit tests for their Python software.
 
-Functions
----------
-make_tuple_str(input_tuple)
-    Returns a string representation of an input tuple (improves readability of test outputs).
-
-compare_output_tuples(output_tuple1, output_tuple2, compare_type=ASSERT_EQUAL)
-    Returns True if two tuples match based on a user-specified comparison (e.g., "==", "<", ">", etc.) and False
-    otherwise (used to check whether tested functions yield the correct output).
-
-run_single_test(test_func, test_input=(), expected_output=(), assert_type=ASSERT_EQUAL, test_desc="",
-    add_new_line=True, include_input_in_error_msg=True)
-    Runs a single test of a function. Returns True if all the tests succeed and raises an AssertionError if
-    any of the tests fail.
-
-run_func_tests(test_func, correct_io_pairs, assert_type=ASSERT_EQUAL, test_desc="")
-    Runs one or more tests for a function. Returns True if all the tests succeed and raises an AssertionError if
-    any of the tests fail.
-
-test_bool_func(test_func, true_inputs=None, false_inputs=None, error_if_false=False, error_type=Exception,
-    test_desc="", success_desc="")
-    Runs one or more tests for a boolean function. Returns True if all the tests succeed and raises an AssertionError if
-    any of the tests fail.
-
 """
 
 # Import the IOPair class to more easily create and pass input-output pairs for tests
