@@ -7,8 +7,6 @@ test-helper-by-delica documentation
 ===================================
 
 
-
-
 .. toctree::
    :maxdepth: 2
    :includehidden:
