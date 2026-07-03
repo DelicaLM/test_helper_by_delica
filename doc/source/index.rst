@@ -11,6 +11,7 @@ test-helper-by-delica documentation
    :includehidden:
    :caption: Contents:
 
+   readme
    apidocs/index
 
 
