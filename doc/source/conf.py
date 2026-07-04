@@ -59,7 +59,7 @@ exclude_patterns = []
 
 html_theme = 'classic'
 html_theme_options = {
-    "rightsidebar": "true",
+    "rightsidebar": "false",
     "relbarbgcolor": "black"
 }
 # html_theme_options = {
