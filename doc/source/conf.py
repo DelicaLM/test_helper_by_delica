@@ -59,6 +59,7 @@ exclude_patterns = []
 
 html_theme = 'sphinxdoc'
 html_theme_options = {
+    'sidebarwidth': 300,
 }
 # html_theme_options = {
 #     'sidebarwidth': '350px',
