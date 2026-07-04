@@ -17,10 +17,6 @@ OneAttrOneMethodClass
     Class with one integer attribute and one get method.
 TwoAttrTwoMethodClass
     Class with two integer attributes and two get methods.
-
-
-
-
 """
 
 # Import the test helper package.
@@ -100,7 +96,7 @@ class OneAttrOneMethodClass:
         """OneAttrOneMethodClass constructor.
 
         Parameters
-        ---------
+        ----------
         int_val : int
             The integer that should be stored in the new object.
         """
