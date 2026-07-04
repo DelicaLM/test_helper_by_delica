@@ -57,6 +57,9 @@ exclude_patterns = []
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
 
 html_theme = 'basic'
+html_theme_options = {
+    'nosidebar': False,
+}
 # html_theme_options = {
 #     'sidebarwidth': '350px',
 # }
