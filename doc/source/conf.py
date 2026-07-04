@@ -59,6 +59,7 @@ exclude_patterns = []
 
 html_theme = 'classic'
 html_theme_options = {
+    'rightsidebar': True,
 }
 # html_theme_options = {
 #     'sidebarwidth': '350px',
