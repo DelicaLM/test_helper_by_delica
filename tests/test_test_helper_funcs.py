@@ -1,33 +1,12 @@
 """Script to test the functions in the test helper package.
 
-The following functions are defined to help us evaluate the package on a wide range of code.
-Functions
----------
-no_param_no_return()
-    Function with no parameters and no return value.
-one_param_no_return(int_val)
-    Function with one integer parameter and no return value.
-two_param_no_return(int_val1, int_val2)
-    Function with two integer parameters and no return value.
-no_param_one_return()
-    Returns the default integer constant defined below.
-no_param_two_return()
-    Function with two integer return values (the default integer constant and the default integer constant plus one).
-always_true()
-    Returns True.
-always_false()
-    Returns False.
-
-Constants
----------
-DEFAULT_INT : int
-    The default integer value that should be returned by a function (makes it easier to standardize tests).
-
 """
+
 import src.test_helper_funcs as test_lib
 from src.IOPair import IOPair
 
 DEFAULT_INT = 0
+"int : Default integer value that should be returned by a function (makes it easier to standardize tests)."
 DEFAULT_RETURN_VAL = DEFAULT_INT
 
 test_run_single_test = False
