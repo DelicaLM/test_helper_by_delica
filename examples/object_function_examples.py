@@ -24,7 +24,9 @@ TwoAttrTwoMethodClass
 """
 
 # Import the test helper package.
-from src import *
+import src.test_helper_funcs as test_helper
+
+from src.IOPair import IOPair
 
 # Import argparse for parsing runtimes flags (which determine whether each class demo is executed).
 import argparse
@@ -252,36 +254,36 @@ any_demos = run_empty_class_demo or run_one_int_attr_demo or run_no_attr_one_sta
 run_all_demos = not any_demos
 
 if run_empty_class_demo:
-    run_func_tests(EmptyClass, [IOPair((),EmptyClass)],assert_type=ASSERT_TYPE,
+    test_helper.run_func_tests(EmptyClass, [IOPair((),EmptyClass)],assert_type=test_helper.ASSERT_TYPE,
                    test_desc="empty class constructor")
 
 if run_one_int_attr_demo:
-    run_func_tests(OneIntAttrClass, [IOPair(0,OneIntAttrClass(0)),
+    test_helper.run_func_tests(OneIntAttrClass, [IOPair(0,OneIntAttrClass(0)),
                                      IOPair(1,OneIntAttrClass(1)),
                                      IOPair(-1,OneIntAttrClass(-1))],
                    test_desc="constructor for class with one integer attribute")
 
 if run_no_attr_one_stat_method_demo:
-    run_func_tests(NoAttrOneStatMethodClass.return_zero,[IOPair((),0)],
+    test_helper.run_func_tests(NoAttrOneStatMethodClass.return_zero,[IOPair((),0)],
                    test_desc="static int method for class with no attribute")
 
 if run_one_attr_one_method_demo:
-    run_func_tests(OneAttrOneMethodClass, [IOPair(1, OneAttrOneMethodClass(1)),
+    test_helper.run_func_tests(OneAttrOneMethodClass, [IOPair(1, OneAttrOneMethodClass(1)),
                                            IOPair(100, OneAttrOneMethodClass(100)),
                                            IOPair((), TypeError)],
                    test_desc="constructor for class with one int attribute and one get method")
-    run_func_tests(OneAttrOneMethodClass(30).return_int_val, [IOPair((), 30),
+    test_helper.run_func_tests(OneAttrOneMethodClass(30).return_int_val, [IOPair((), 30),
                                            IOPair((2), TypeError)],
                    test_desc="get method for class with one int attribute")
 
 if run_two_attr_two_method_demo:
-    run_func_tests(TwoAttrTwoMethodClass, [IOPair((1,"hello"), TwoAttrTwoMethodClass(1,"hello")),
+    test_helper.run_func_tests(TwoAttrTwoMethodClass, [IOPair((1,"hello"), TwoAttrTwoMethodClass(1,"hello")),
                                            IOPair((100,"100"), TwoAttrTwoMethodClass(100,"100")),
                                            IOPair((), TypeError), IOPair(1, TypeError)],
                    test_desc="constructor for class with two attributes (one int and one string) and two get methods")
-    run_func_tests(TwoAttrTwoMethodClass(500, "hi").return_int_val,
+    test_helper.run_func_tests(TwoAttrTwoMethodClass(500, "hi").return_int_val,
                    [IOPair((), 500)],
                    test_desc="get int method for class with two int attributes and two get methods")
-    run_func_tests(TwoAttrTwoMethodClass(500, "hi").return_str_val,
+    test_helper.run_func_tests(TwoAttrTwoMethodClass(500, "hi").return_str_val,
                    [IOPair((), "hi")],
                    test_desc="get string method for class with two int attributes and two get methods")
