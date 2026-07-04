@@ -59,7 +59,8 @@ exclude_patterns = []
 
 html_theme = 'classic'
 html_theme_options = {
-    'rightsidebar': True,
+    "rightsidebar": "true",
+    "relbarbgcolor": "black"
 }
 # html_theme_options = {
 #     'sidebarwidth': '350px',
