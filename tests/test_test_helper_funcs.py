@@ -1,6 +1,4 @@
-"""Script to test the functions in the test helper package.
-
-"""
+"""Script to test the functions in the test helper package (test_helper_funcs.py)."""
 
 import src.test_helper_funcs as test_lib
 from src.IOPair import IOPair
@@ -8,20 +6,33 @@ from src.IOPair import IOPair
 DEFAULT_INT = 0
 "int : Default integer value that should be returned by a function (makes it easier to standardize tests)."
 DEFAULT_RETURN_VAL = DEFAULT_INT
+"int : Default return value returned by functions in this test suite."
 
 test_run_single_test = False
+"bool : Boolean flag for whether or not to run the tests for the run_single_test function."
 test_run_func_tests = False
+"bool : Boolean flag for whether or not to run the tests for the run_func_tests function."
 test_test_bool_func = True
+"bool : Boolean flag for whether or not to run the tests for the test_bool_func function."
 
 test_with_no_param_no_return = False
+"bool : Boolean flag for whether to test the testing library on a function with no parameters and no outputs."
 test_with_one_param_no_return = False
+"bool : Boolean flag for whether to test the testing library on a function with one parameter and no outputs."
 test_with_two_param_no_return = False
+"bool : Boolean flag for whether to test the testing library on a function with two parameters and no outputs."
 test_with_no_param_one_return = False
+"bool : Boolean flag for whether to test the testing library on a function with no parameters and one return value."
 test_with_no_param_two_return = False
+"bool : Boolean flag for whether to test the testing library on a function with no parameters and two return values."
 test_with_always_true = False
+"bool : Boolean flag for whether to test the testing library on a function than always returns True."
 test_with_always_false = False
+"bool : Boolean flag for whether to test the testing library on a function than always returns False."
 test_with_is_even = False
+"bool : Boolean flag for whether to test the testing library on a function than outputs whether an integer is even."
 test_with_list_has_val_with_type_errors = True
+"bool : Boolean flag for whether to test the library on a function that checks if a list contains a certain value."
 
 
 def no_param_no_return():
