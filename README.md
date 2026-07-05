@@ -104,7 +104,11 @@ returns two numbers which equal an input parameter when added together, we could
 The test_bool_func function does not require IOPair objects to define expected outputs, because there are only two 
 possible outcomes for boolean functions. The test helper package class includes the IOPair class to facilitate cases
 in which we need to test a wide range of possible output types. 
-The Usage section below provides additional examples of how you can test your own functions with the test helper package.
+The Usage section below provides additional examples of how you can test your own functions with the test helper 
+package.
 ## Usage
 
 ## Citation
+To reference this Python package, please use the following citation.
+# APA Format
+Leboe-McGowan, D. S. (2026). Test helper by delica (Version 1.0.2) [Source code]. GitHub. url
