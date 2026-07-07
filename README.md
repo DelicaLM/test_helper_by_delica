@@ -107,6 +107,7 @@ returns two numbers which equal an input parameter when added together, we could
 The test_bool_func function does not require IOPair objects to define expected outputs, because there are only two 
 possible outcomes for boolean functions. The test helper package class includes the IOPair class to facilitate cases
 in which we need to test a wide range of possible output types. 
+
 The Usage section below provides additional examples of how you can test your own functions with the test helper 
 package.
 ## Usage
@@ -127,6 +128,7 @@ test_lib.run_func_tests(calc_sum, [IOPair((1, 2), 3), IOPair((2, 2), 4)], expect
 Although the above example only uses integers, the IOPair class accepts any data types for test inputs and outputs. The 
 package currently does not support file-based output checking (e.g., checking if a function creates a file or that the
 contents of an output file are correct). However, file IO will be included in a future version. 
+
 If your function returns a boolean output (True or False), you can skip the creation of IOPair objects by using the
 test_bool_func function in this package.
 
