@@ -1,5 +1,10 @@
 """
 Script demonstrating how we can use the test helper package to validate object-oriented functions.
+
+Parameters
+----------
+--run_empty_class_demo : bool, default False
+
 """
 
 # Import the test helper package.
