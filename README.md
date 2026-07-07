@@ -23,7 +23,8 @@ def always_true():
 ````
 Now we can call the boolean testing function from the package to check whether always_true returns the expected result.
 ````
-test_lib.test_bool_func(always_true, true_inputs=[()], test_desc="always true function")
+import test_helper_by_delica 
+test_helper_by_delica.test_bool_func(always_true, true_inputs=[()], test_desc="always true function")
 ````
 This function call generates the following output:
 ````
@@ -38,7 +39,7 @@ Similarly, we can test a function that always returns False.
 def always_false():    
     return False
     
-test_lib.test_bool_func(always_false, false_inputs=[()], test_desc="always false function")
+test_helper_by_delica.test_bool_func(always_false, false_inputs=[()], test_desc="always false function")
 ````
 We then have the following output:
 ````
@@ -50,7 +51,7 @@ ALL 1 TESTS COMPLETED FOR ALWAYS FALSE FUNCTION
 ````
 To see what happens if a test fails, we can try using the always_false function in our always_true test.
 ````
-test_lib.test_bool_func(test_obj, always_false, true_inputs=[()], test_desc="always true function")
+test_helper_by_delica.test_bool_func(test_obj, always_false, true_inputs=[()], test_desc="always true function")
 ````
 This call prints the following stdout output to inform the user that the test has failed:
 ````
@@ -72,7 +73,7 @@ provided in the form of a tuple. If your input or output tuple has only one elem
 own without adding parentheses (e.g., can pass 1 instead of (1,) for an input tuple), because the test helper package 
 will take care of converting your single input or return parameter to a tuple format. 
 ````
-test_bool_func(is_int, true_inputs=[1,2], false_inputs=[1.0,"2"], test_desc="is_int function")
+test_helper_by_delica.test_bool_func(is_int, true_inputs=[1,2], false_inputs=[1.0,"2"], test_desc="is_int function")
 ````
 If we have a function with two parameters, such as the sum function below, we need to pass the inputs as tuples (e.g.,
 (1, 2), (0, 0), (3, 2), etc.). If we do not include the parentheses, the test helper function cannot accurately determine
@@ -80,7 +81,8 @@ the number of input parameters that the test function should receive.
 ````
 def calc_sum(int1, int2):
     return int1 + int2
-run_func_tests(calc_sum, [IOPair((1, 2), 3), IOPair((0, 0), 0), IOPair((3, 2), 5)], test_desc="sum calculator function")
+test_helper_by_delica.run_func_tests(calc_sum, [IOPair((1, 2), 3), IOPair((0, 0), 0), IOPair((3, 2), 5)], 
+test_desc="sum calculator function")
 ````
 In the above example, we use run_func_tests from the test helper package instead of test_bool_func because the sum
 function does not return a boolean value. The more general run_func_tests function can test whether any type of return
@@ -93,7 +95,8 @@ def is_int_error_if_false(val):
     if not is_int_val:
         raise TypeError("val is not an integer")
     return is_int_val
-run_func_tests(is_int_error_if_false, [IOPair(1, True), IOPair(1.0, TypeError), IOPair((3, 2), 5)], 
+    
+test_helper_by_delica.run_func_tests(is_int_error_if_false, [IOPair(1, True), IOPair(1.0, TypeError), IOPair((3, 2), 5)], 
                test_desc="is integer error if false function")
 ````
 The main difference between run_func_tests and test_bool_func, besides the types of functions that they can validate, 
@@ -107,8 +110,28 @@ in which we need to test a wide range of possible output types.
 The Usage section below provides additional examples of how you can test your own functions with the test helper 
 package.
 ## Usage
+This package supports three different methods for testing Python code. If you only need to run one test, use the 
+run_single_test function, as demonstrated below with a test function that returns the sum of two numbers.
+````
+def calc_sum(int1, int2):
+    return int1 + int2
+
+test_lib.run_single_test(calc_sum, test_input=(1, 2), expected_output=3, test_desc="Sum Test 1")
+````
+If you need to run multiple tests, use run_func_tests to check how your function responds to multiple input scenarios.
+For each test case, provide an IOPair object that contains the input for the test and the expected output. The code
+segment below provides an example of how to format these IOPair objects for our sum calculator function.
+````
+test_lib.run_func_tests(calc_sum, [IOPair((1, 2), 3), IOPair((2, 2), 4)], expected_output=3, test_desc="Sum Test 1")
+````
+Although the above example only uses integers, the IOPair class accepts any data types for test inputs and outputs. The 
+package currently does not support file-based output checking (e.g., checking if a function creates a file or that the
+contents of an output file are correct). However, file IO will be included in a future version. 
+If your function returns a boolean output (True or False), you can skip the creation of IOPair objects by using the
+test_bool_func function in this package.
 
 ## Citation
 To reference this Python package, please use the following citation.
 # APA Format
-Leboe-McGowan, D. S. (2026). Test helper by delica (Version 1.0.2) [Source code]. GitHub. url
+Leboe-McGowan, D. S. (2026). Test helper by delica (Version 1.0.2) [Source code]. GitHub. 
+https://github.com/DelicaLM/test_helper_by_delica
