@@ -1,22 +1,5 @@
 """
 Script demonstrating how we can use the test helper package to validate object-oriented functions.
-
-
-The following classes are defined in this file to show the diversity of class structures that the test helper package
-can evaluate.
-
-Classes
--------
-EmptyClass
-    Class with no attributes and no instance methods.
-OneIntAttrClass
-    Class with one integer attribute and no instance methods.
-NoAttrOneStatMethodClass
-    Class with no attributes and one static method.
-OneAttrOneMethodClass
-    Class with one integer attribute and one get method.
-TwoAttrTwoMethodClass
-    Class with two integer attributes and two get methods.
 """
 
 # Import the test helper package.

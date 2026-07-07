@@ -111,6 +111,7 @@ def two_param_two_return(int_val, str_val):
         An integer parameter.
     str_val : str
         A string parameter.
+
     Returns
     -------
     int
@@ -135,6 +136,7 @@ def is_even(int_val):
     ----------
     int_val : int
         The integer value that we need to check for evenness.
+
     Returns
     -------
     bool
