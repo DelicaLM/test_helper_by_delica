@@ -5,6 +5,7 @@ Script demonstrating how we can use the test helper package to validate object-o
 # Import the test helper package.
 import src.test_helper_funcs as test_helper
 
+# Import the IOPair class
 from src.IOPair import IOPair
 
 # Import argparse for parsing runtimes flags (which determine whether each class demo is executed).
@@ -195,6 +196,7 @@ class ListAttrClass:
 
 # Define runtime flags for determining which classes should be tested.
 parser = argparse.ArgumentParser(description="Parser for object examples script")
+"Parser for runtime arguments"
 # Definition of the flag for running the empty class demo.
 parser.add_argument("--run_empty_class_demo", action="store_true",
     help="Boolean flag for whether the tests that use the empty class (no attributes & no methods) should be executed "
@@ -220,7 +222,9 @@ parser.add_argument("--run_list_attr_demo", action="store_true",
     help="Boolean flag for whether the tests that use the class with one list attribute should be executed (optional "
          + "argument).")
 args = parser.parse_args()
+"Parsed runtime arguments"
 run_empty_class_demo = args.run_empty_class_demo
+"Runtime flag for whether we should run the empty class (no attributes & no methods) example"
 run_one_int_attr_demo = args.run_one_int_attr_demo
 run_no_attr_one_stat_method_demo = args.run_no_attr_one_stat_method_demo
 run_one_attr_one_method_demo = args.run_one_attr_one_method_demo

@@ -151,10 +151,10 @@ def is_pos_with_error(num)
 test_helper_by_delica.test_bool_func(is_pos, true_inputs=[1, 2, 0.1, 100], false_inputs=[-1, -0.1, -100, -1203], 
 test_desc="Bool Function Tests With Value Error", error_if_false=True, error_type=ValueError)
 ````
-For additional information on this package can accommodate your testing needs, please see the full documentation at
+For additional information on how this package can accommodate your testing needs, please see the full documentation at
 [https://delicalm.github.io/test_helper_by_delica/](https://delicalm.github.io/test_helper_by_delica/).
 ## Citation
 To reference this Python package, please use the following citation.
 ### APA Format
 Leboe-McGowan, D. S. (2026). Test helper by delica (Version 1.0.2) [Source code]. GitHub. 
-https://github.com/DelicaLM/test_helper_by_delica
+[https://github.com/DelicaLM/test_helper_by_delica](https://github.com/DelicaLM/test_helper_by_delica)
