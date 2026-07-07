@@ -117,13 +117,13 @@ run_single_test function, as demonstrated below with a test function that return
 def calc_sum(int1, int2):
     return int1 + int2
 
-test_lib.run_single_test(calc_sum, test_input=(1, 2), expected_output=3, test_desc="Sum Test 1")
+test_helper_by_delica.run_single_test(calc_sum, test_input=(1, 2), expected_output=3, test_desc="Sum Test 1")
 ````
 If you need to run multiple tests, use run_func_tests to check how your function responds to multiple input scenarios.
 For each test case, provide an IOPair object that contains the input for the test and the expected output. The code
 segment below provides an example of how to format these IOPair objects for our sum calculator function.
 ````
-test_lib.run_func_tests(calc_sum, [IOPair((1, 2), 3), IOPair((2, 2), 4)], expected_output=3, test_desc="Sum Test 1")
+test_helper_by_delica.run_func_tests(calc_sum, [IOPair((1, 2), 3), IOPair((2, 2), 4)], test_desc="Sum Test Suite")
 ````
 Although the above example only uses integers, the IOPair class accepts any data types for test inputs and outputs. The 
 package currently does not support file-based output checking (e.g., checking if a function creates a file or that the
@@ -131,9 +131,16 @@ contents of an output file are correct). However, file IO will be included in a 
 
 If your function returns a boolean output (True or False), you can skip the creation of IOPair objects by using the
 test_bool_func function in this package.
+````
+def is_pos(num):
+    return num > 0
+    
+test_helper_by_delica.test_bool_func(is_pos, true_inputs=[1, 2, 0.1, 100], false_inputs=[-1, -0.1, -100, -1203], 
+test_desc="Bool Function Tests")
+````
 
 ## Citation
 To reference this Python package, please use the following citation.
-# APA Format
+### APA Format
 Leboe-McGowan, D. S. (2026). Test helper by delica (Version 1.0.2) [Source code]. GitHub. 
 https://github.com/DelicaLM/test_helper_by_delica
