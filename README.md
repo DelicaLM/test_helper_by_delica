@@ -152,7 +152,7 @@ test_helper_by_delica.test_bool_func(is_pos, true_inputs=[1, 2, 0.1, 100], false
 test_desc="Bool Function Tests With Value Error", error_if_false=True, error_type=ValueError)
 ````
 For additional information on this package can accommodate your testing needs, please see the full documentation at
-https://delicalm.github.io/test_helper_by_delica/index.html.
+[https://delicalm.github.io/test_helper_by_delica/](https://delicalm.github.io/test_helper_by_delica/).
 ## Citation
 To reference this Python package, please use the following citation.
 ### APA Format
