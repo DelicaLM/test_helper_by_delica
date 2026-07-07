@@ -226,15 +226,22 @@ args = parser.parse_args()
 run_empty_class_demo = args.run_empty_class_demo
 "Runtime flag for whether we should run the empty class (no attributes & no methods) example"
 run_one_int_attr_demo = args.run_one_int_attr_demo
+"Runtime flag for whether we should run the one integer attribute class example"
 run_no_attr_one_stat_method_demo = args.run_no_attr_one_stat_method_demo
+"Runtime flag for whether we should run the no attributes and one static method class example"
 run_one_attr_one_method_demo = args.run_one_attr_one_method_demo
+"Runtime flag for whether we should run the one attribute and one method class example"
 run_two_attr_two_method_demo = args.run_two_attr_two_method_demo
+"Runtime flag for whether we should run the two attributes and two methods class example"
 run_list_attr_demo = args.run_list_attr_demo
+"Runtime flag for whether we should run the list attribute class example"
 # Check if the user requested to run any of the demos.
 any_demos = run_empty_class_demo or run_one_int_attr_demo or run_no_attr_one_stat_method_demo \
             or run_one_attr_one_method_demo or run_two_attr_two_method_demo or run_list_attr_demo
+"Boolean for whether any demos were requested by the user (through the runtime arguments)"
 # By default (if no runtime flags are provided), the script will run all of the class demos.
 run_all_demos = not any_demos
+"Boolean for whether all demos should be run (default behaviour if no specific demos are requested)"
 
 if run_empty_class_demo:
     test_helper.run_func_tests(EmptyClass, [IOPair((),EmptyClass)],assert_type=test_helper.ASSERT_TYPE,
