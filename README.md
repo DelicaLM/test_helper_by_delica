@@ -138,7 +138,21 @@ def is_pos(num):
 test_helper_by_delica.test_bool_func(is_pos, true_inputs=[1, 2, 0.1, 100], false_inputs=[-1, -0.1, -100, -1203], 
 test_desc="Bool Function Tests")
 ````
+Each of the three aforementioned functions (run_single_test, run_func_tests, and test_bool_func) can also verify that
+your functions throw errors in the correct circumstances. For example, suppose that we want our boolean function to
+throw a ValueError if the input is zero or negative.
+````
+def is_pos_with_error(num)
+    result = num > 0
+    if not result:
+        raise ValueError()
+    return result
 
+test_helper_by_delica.test_bool_func(is_pos, true_inputs=[1, 2, 0.1, 100], false_inputs=[-1, -0.1, -100, -1203], 
+test_desc="Bool Function Tests With Value Error", error_if_false=True, error_type=ValueError)
+````
+For additional information on this package can accommodate your testing needs, please see the full documentation at
+https://delicalm.github.io/test_helper_by_delica/index.html.
 ## Citation
 To reference this Python package, please use the following citation.
 ### APA Format
