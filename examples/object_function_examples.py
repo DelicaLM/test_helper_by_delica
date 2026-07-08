@@ -1,10 +1,16 @@
 """
 Script demonstrating how we can use the test helper package to validate object-oriented functions.
+By default, (i.e., if you do not include any of the optional runtime flags described below) executing
+this script will run all of the demos for object-oriented tests.
 
 Parameters
 ----------
---run_empty_class_demo : bool, default False
-
+---run_empty_class_demo : bool, default False
+---run_one_int_attr_demo : bool, default False
+---run_no_attr_one_method_demo : bool, default False
+---run_one_attr_one_method_demo : bool, default False
+---run_two_attr_two_method_demo : bool, default False
+---run_list_attr_demo : bool, default False
 """
 
 # Import the test helper package.
