@@ -36,6 +36,7 @@ import argparse
 
 # Define the optional runtime arguments
 parser = argparse.ArgumentParser(description="Parser for boolean examples script")
+"Runtime argument parser"
 parser.add_argument("--run_always_true_demo", action="store_true",
 help="Boolean flag for whether the tests that call the always true function should be executed (optional argument).")
 parser.add_argument("--run_always_false_demo", action="store_true",

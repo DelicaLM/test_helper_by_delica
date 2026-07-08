@@ -30,7 +30,11 @@ DEFAULT_INT_VALUE : int
 """
 import argparse
 
-from src import *
+# Import the test helper functions
+from src import test_helper_funcs as test_lib
+
+# Import the IOPair class
+from src import IOPair
 import sys
 
 DEFAULT_INT_VAL = 0
@@ -108,27 +112,27 @@ def concat_lists(list1, list2):
 
 
 if run_all_demos or run_return_empty_list_demo:
-    run_func_tests(return_empty_list, [IOPair((),([],)),IOPair(DEFAULT_INT_VAL,TypeError)],
+    test_lib.run_func_tests(return_empty_list, [IOPair((),([],)),IOPair(DEFAULT_INT_VAL,TypeError)],
                    test_desc="return empty list function")
 
 if run_all_demos or run_return_one_element_list_demo:
-    run_func_tests(return_one_element_list, [IOPair((),DEFAULT_ONE_ELEMENT_LIST),
+    test_lib.run_func_tests(return_one_element_list, [IOPair((),DEFAULT_ONE_ELEMENT_LIST),
                                              IOPair(DEFAULT_INT_VAL,TypeError)],
                    test_desc="return single-element list function")
 
 if run_all_demos or run_return_multi_element_list_demo:
-    run_func_tests(return_multi_element_list, [IOPair((),DEFAULT_MULTI_ELEMENT_LIST),
+    test_lib.run_func_tests(return_multi_element_list, [IOPair((),DEFAULT_MULTI_ELEMENT_LIST),
                                              IOPair(DEFAULT_INT_VAL,TypeError)],
                    test_desc="return multi-element list function")
 
 
 if run_all_demos or run_return_nested_list_demo:
-    run_func_tests(return_nested_list, [IOPair((), DEFAULT_NESTED_LIST),
+    test_lib.run_func_tests(return_nested_list, [IOPair((), DEFAULT_NESTED_LIST),
                                              IOPair(DEFAULT_INT_VAL, TypeError)],
                    test_desc="return nested list function")
 
 if run_all_demos or run_find_int_vals_in_list_demo:
-    run_func_tests(find_int_vals_in_list, [IOPair([], []),
+    test_lib.run_func_tests(find_int_vals_in_list, [IOPair([], []),
                                            IOPair([DEFAULT_INT_VAL], [DEFAULT_INT_VAL]),
                                              IOPair([1,2,3], [1,2,3]),
                                            IOPair([1,"a",1.0,2],[1,2]),
@@ -137,7 +141,7 @@ if run_all_demos or run_find_int_vals_in_list_demo:
                    test_desc="find int values in list function")
 
 if run_all_demos or run_concat_lists_demo:
-    run_func_tests(concat_lists, [IOPair(([],[]), []),
+    test_lib.run_func_tests(concat_lists, [IOPair(([],[]), []),
                                         IOPair(([1],[2]), [1,2]),
                                   IOPair(([1,2,3],[4,5,6]),[1,2,3,4,5,6]),
                                   IOPair((["a"],["b"]),["a", "b"]),

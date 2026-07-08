@@ -4,35 +4,33 @@ functions that return an integer value). We use the sample functions below to de
 test helper package allows us to quickly verify that Python code returns accurate integer values for a wide range of
 inputs.
 
-Functions
----------
-return_zero()
-    Returns 0.
-return_int_plus_one(int_val)
-    Returns the sum of one and the integer parameter.
-return_neg_int(int_val)
-    Returns the negative of the integer parameter.
-return_string_length(input_str)
-    Returns the number of characters in the string parameter.
-add_ints(int1, int2)
-    Returns the sum of two integers.
-calc_int_list_sum(int_list)
-    Returns the sum of all the values in a list of integers.
-
+Parameters
+----------
+---run_return_zero_demo : bool, default False
+    Boolean flag for whether the return zero function example should be run.
+---run_return_int_plus_one_demo : bool, default False
+    Boolean flag for whether the return int plus one function example should be run.
+---run_return_neg_int_demo : bool, default False
+    Boolean flag for whether the return negative integer function example should be run.
+---run_return_string_length_demo : bool, default False
+    Boolean flag for whether the return string length function example should be run.
+---run_add_ints_demo : bool, default False
+    Boolean flag for whether the add integers function example should be run.
+---run_calc_int_list_sum_demo : bool, default False
+    Boolean flag for whether the calculate list sume function example should be run.
 """
 
-from src import *
+# Import the test helper package
+from src import test_helper_funcs as test_lib
+
+# Import the IOPair class
+from src import IOPair
+
+# Import argparse for the optional runtime arguments (which allow the user to choose which demos they want to run)
 import argparse
 
-run_all_demos = True
-run_return_zero_demo = run_all_demos or True
-run_return_int_plus_one_demo = run_all_demos or True
-run_return_neg_int_demo = run_all_demos or True
-run_return_string_length_demo = run_all_demos or True
-run_add_ints_demo = run_all_demos or True
-run_calc_int_list_sum_demo = run_all_demos or True
-
 parser = argparse.ArgumentParser(description="Parser for integer examples script")
+"Runtime argument parser"
 parser.add_argument("--run_return_zero_demo", action="store_true",
 help="Boolean flag for whether the tests that call the return zero function should be executed (optional argument).")
 parser.add_argument("--run_return_int_plus_one_demo", action="store_true",
@@ -51,23 +49,60 @@ parser.add_argument("--run_calc_int_list_sum_demo", action="store_true",
 help="Boolean flag for whether the tests that call the calculate sum of an integer list function should be executed "
 +"(optional argument).")
 
+# Parse the runtime arguments
+args = parser.parse_args()
+"Parsed runtime arguments"
+run_return_zero_demo = args.run_return_zero_demo
+"Runtime flag for whether we should run the return zero function example"
+run_return_int_plus_one_demo = args.run_return_int_plus_one_demo
+"Runtime flag for whether we should run the return int plus one function example"
+run_return_neg_int_demo = args.run_return_neg_int_demo
+"Runtime flag for whether we should run the return negative integer function example"
+run_return_string_length_demo = args.run_return_string_length_demo
+"Runtime flag for whether we should run the return string length function example"
+run_add_ints_demo = args.run_add_ints_demo
+"Runtime flag for whether we should run the return add integers function example"
+run_calc_int_list_sum_demo = args.run_calc_int_list_sum_demo
+"Runtime flag for whether we should run the return calculate integer list sum function example"
+
+# Check if the user requested to run any of the demos.
+any_demos = run_return_zero_demo or run_return_int_plus_one_demo or run_return_neg_int_demo or\
+            run_return_string_length_demo or run_add_ints_demo or run_calc_int_list_sum_demo
+
+"Boolean for whether any demos were requested by the user (through the runtime arguments)"
+# By default, (if no runtime flags are provided) the script will run all of the class demos.
+run_all_demos = not any_demos
+"Boolean for whether all demos should be run (default behaviour if no specific demos are requested)"
+# If no demos are selected, we will run all of them.
+run_return_zero_demo = run_return_zero_demo or run_all_demos
+run_return_int_plus_one_demo = run_return_int_plus_one_demo or run_all_demos
+run_return_neg_int_demo = run_return_neg_int_demo or run_all_demos
+run_return_string_length_demo = run_return_string_length_demo or run_all_demos
+run_add_ints_demo = run_add_ints_demo or run_all_demos
+run_calc_int_list_sum_demo = run_calc_int_list_sum_demo or run_all_demos
 
 def return_zero():
+    """Returns zero."""
     return 0
 
 def return_int_plus_one(int_val):
+    """Returns the input parameter int_val plus one."""
     return int_val + 1
 
 def return_neg_int(int_val):
+    """Returns the negative of the input parameter int_val."""
     return -int_val
 
 def return_string_length(input_str):
+    """Returns the length of the string parameter input_str."""
     return len(input_str)
 
 def add_ints(int1, int2):
+    """Returns the sum of two integers (int1 and int2)."""
     return int1 + int2
 
 def calc_int_list_sum(input_list):
+    """Returns the sum of all integers in a list of integers (input_list)."""
     list_sum = 0
     if type(input_list) == list:
         for item in input_list:
@@ -76,13 +111,13 @@ def calc_int_list_sum(input_list):
     return list_sum
 
 if run_return_zero_demo:
-    run_func_tests(return_zero,
+    test_lib.run_func_tests(return_zero,
                    [IOPair((),0),
                                  IOPair(0,TypeError)],
                    test_desc="function that always returns zero (as an int)")
 
 if run_return_int_plus_one_demo:
-    run_func_tests(return_int_plus_one,
+    test_lib.run_func_tests(return_int_plus_one,
                    [IOPair(0,1),
                     IOPair(5,6),
                     IOPair(100,101),
@@ -90,7 +125,7 @@ if run_return_int_plus_one_demo:
                    test_desc="function that returns the sum of one and an integer parameter")
 
 if run_return_neg_int_demo:
-    run_func_tests(return_neg_int,
+    test_lib.run_func_tests(return_neg_int,
                    [IOPair(0,0),
                     IOPair(-1,1),
                     IOPair(6,-6),
@@ -99,7 +134,7 @@ if run_return_neg_int_demo:
                    test_desc="function that returns the negative of an integer parameter")
 
 if run_return_string_length_demo:
-    run_func_tests(return_string_length,
+    test_lib.run_func_tests(return_string_length,
                    [IOPair("",0),
                     IOPair("a",1),
                     IOPair("abc",3),
@@ -108,7 +143,7 @@ if run_return_string_length_demo:
                    test_desc="function that returns the number of characters in a string parameter")
 
 if run_add_ints_demo:
-    run_func_tests(add_ints,[IOPair((2, 2), 4),
+    test_lib.run_func_tests(add_ints,[IOPair((2, 2), 4),
                              IOPair((1, 7), 8),
                              IOPair((-10, 5), -5),
                              IOPair((-100000, -150000),-250000),

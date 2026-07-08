@@ -20,7 +20,13 @@ remove_vowels(str_val):
     Returns the string that we obtain after removing all vowels from the input parameter.
 
 """
-from src import *
+
+# Import the test helper package.
+import src.test_helper_funcs as test_lib
+
+# Import the IOPair class
+from src.IOPair import IOPair
+
 import argparse
 
 
@@ -81,26 +87,26 @@ def remove_vowels(str_val):
     return result
 
 if run_return_empty_string_demo:
-    run_func_tests(return_empty_string,
+    test_lib.run_func_tests(return_empty_string,
                    [IOPair((), ""),
                     IOPair(0, TypeError)],
                    test_desc="function that always returns an empty string")
 
 if run_return_single_char_demo:
-    run_func_tests(return_single_char,
+    test_lib.run_func_tests(return_single_char,
                    [IOPair((), DEFAULT_CHAR),
                     IOPair(0, TypeError)],
                    test_desc="function that returns a single character string "
                              + "(determined by the DEFAULT_CHAR constant)")
 
 if run_return_multi_char_string_demo:
-    run_func_tests(return_multi_char_string,
+    test_lib.run_func_tests(return_multi_char_string,
                    [IOPair((), DEFAULT_MULTI_CHAR_STR),
                     IOPair(0, TypeError)],
                    test_desc="function that returns a string with more than one character "
                              + "(determined by the DEFAULT_MULTI_CHAR_STR constant)")
 if run_multiply_string_demo:
-    run_func_tests(multiply_string,
+    test_lib.run_func_tests(multiply_string,
                    [IOPair(("",1), ""),
                     IOPair(("a",1),"a"),
                     IOPair(("b",2),"bb"),
@@ -111,7 +117,7 @@ if run_multiply_string_demo:
                               + "repetitions")
 
 if run_concat_strings_demo:
-    run_func_tests(concat_strings,
+    test_lib.run_func_tests(concat_strings,
                    [IOPair(("",""), ""),
                     IOPair(("a",""),"a"),
                     IOPair(("","a"), "a"),
@@ -121,7 +127,7 @@ if run_concat_strings_demo:
                    test_desc="function that returns the concatenation of two strings")
 
 if run_remove_vowels_demo:
-    run_func_tests(remove_vowels,
+    test_lib.run_func_tests(remove_vowels,
                    [IOPair("", ""),
                     IOPair("a",""),
                     IOPair("s","s"),
