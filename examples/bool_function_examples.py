@@ -1,32 +1,40 @@
 """
-This script provides several examples of how one can use src to test boolean functions (i.e.,
+This script provides several examples of how one can use the test helper package to test boolean functions (i.e.,
 functions that return True or False). We use the sample functions below to demonstrate how test_bool_func from the test
 helper package allows us to quickly verify that Python code accurately returns True or False for a wide range of inputs.
 
-Functions
+Parameters
 ---------
-always_true()
-    Returns True.
-always_false()
-    Returns False.
-is_int(val)
-    Returns True if val is an integer and False if it is not.
-is_int_error_if_false(val)
-    Returns True if val is an integer and raises a TypeError if it is not.
-can_convert_to_int(val)
-    Returns True if val is an integer or can be converted to an integer, False otherwise.
+---run_always_true_demo : bool, default False
+    Boolean flag for whether the always true function example should be run.
+---run_always_false_demo : bool, default False
+    Boolean flag for whether the always false function example should be run.
+---run_is_int_demo : bool, default False
+    Boolean flag for whether the is int function example should be run.
+---run_is_int_error_if_false_demo : bool, default False
+    Boolean flag for whether the is int with type error if false function example should be run.
+---run_can_convert_to_int_demo : bool, default False
+    Boolean flag for whether the can conver to int function example should be run.
+---run_list_has_val_demo : bool, default False
+    Boolean flag for whether the list has value function example should be run.
+
 """
 
+# Import the test helper package.
 from src import test_helper_funcs as test_lib
+
+# Import argparse to parse runtime arguments (which allow the user to select which demos they want to run).
 import argparse
 
-run_always_true_demo = False
-run_always_false_demo = False
-run_is_int_demo = False
-run_is_int_error_if_false_demo = True
-run_can_convert_to_int_demo = False
-run_list_has_val_demo = False
+# # Variables for the runtime arguments
+# run_always_true_demo = False
+# run_always_false_demo = False
+# run_is_int_demo = False
+# run_is_int_error_if_false_demo = False
+# run_can_convert_to_int_demo = False
+# run_list_has_val_demo = False
 
+# Define the optional runtime arguments
 parser = argparse.ArgumentParser(description="Parser for boolean examples script")
 parser.add_argument("--run_always_true_demo", action="store_true",
 help="Boolean flag for whether the tests that call the always true function should be executed (optional argument).")
@@ -44,6 +52,30 @@ help="Boolean flag for whether the tests that check whether an input can be conv
 parser.add_argument("--run_list_has_val_demo", action="store_true",
 help="Boolean flag for whether the tests that check whether a list contains an input value should be expected "
 + "(optional argument).")
+
+# Parse the runtime arguments
+args = parser.parse_args()
+"Parsed runtime arguments"
+run_always_true_demo = args.run_always_true_demo
+"Runtime flag for whether we should run the always true function example"
+run_always_false_demo = args.run_always_false_demo
+"Runtime flag for whether we should run the always false function example"
+run_is_int_demo = args.run_is_int_demo
+"Runtime flag for whether we should run the is integer function example"
+run_is_int_error_if_false_demo = args.run_is_int_error_if_false_demo
+"Runtime flag for whether we should run the is integer error if false function example"
+run_can_convert_to_int_demo = args.run_can_convert_to_int_demo
+"Runtime flag for whether we should run the can convert to int function example"
+run_list_has_val_demo = args.run_list_has_val_demo
+"Runtime flag for whether we should run the list has value function example"
+
+# Check if the user requested to run any of the demos.
+any_demos = run_always_true_demo or run_always_false_demo or run_is_int_demo or run_is_int_error_if_false_demo\
+            or run_can_convert_to_int_demo or run_list_has_val_demo
+"Boolean for whether any demos were requested by the user (through the runtime arguments)"
+# By default, (if no runtime flags are provided) the script will run all of the class demos.
+run_all_demos = not any_demos
+"Boolean for whether all demos should be run (default behaviour if no specific demos are requested)"
 
 
 def always_true():
