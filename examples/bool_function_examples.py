@@ -77,6 +77,14 @@ any_demos = run_always_true_demo or run_always_false_demo or run_is_int_demo or 
 run_all_demos = not any_demos
 "Boolean for whether all demos should be run (default behaviour if no specific demos are requested)"
 
+# If no demos are selected, we will run all of them.
+run_always_true_demo = run_always_true_demo or run_all_demos
+run_always_false_demo = run_always_false_demo or run_all_demos
+run_is_int_demo = run_is_int_demo or run_all_demos
+run_is_int_error_if_false_demo = run_is_int_error_if_false_demo or run_all_demos
+run_can_convert_to_int_demo = run_can_convert_to_int_demo or run_all_demos
+run_list_has_val_demo = run_list_has_val_demo or run_all_demos
+
 
 def always_true():
     """Function that always returns True"""

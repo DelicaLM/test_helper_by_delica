@@ -29,6 +29,63 @@ from src.IOPair import IOPair
 # Import argparse for parsing runtimes flags (which determine whether each class demo is executed).
 import argparse
 
+# Define runtime flags for determining which classes should be tested.
+parser = argparse.ArgumentParser(description="Parser for object examples script")
+"Parser for runtime arguments"
+# Definition of the flag for running the empty class demo.
+parser.add_argument("--run_empty_class_demo", action="store_true",
+    help="Boolean flag for whether the tests that use the empty class (no attributes & no methods) should be executed "
+         + "(optional argument).")
+# Definition of the flag for running the class with one integer attribute demo.
+parser.add_argument("--run_one_int_attr_demo", action="store_true",
+    help="Boolean flag for whether the tests that use the one integer attribute class should be executed (optional "
+         + "argument).")
+# Definition of the flag for running the no attribute one static method class demo.
+parser.add_argument("--run_no_attr_one_method_demo", action="store_true",
+    help="Boolean flag for whether the tests that use the class with no attributes and one static method should be "
+         + "executed (optional argument).")
+# Definition of the flag for running the one attribute one get method class demo.
+parser.add_argument("--run_one_attr_one_method_demo", action="store_true",
+    help="Boolean flag for whether the tests that use the class with one attribute and one get method should be "
+         + "executed (optional argument).")
+# Definition of the flag for running two attribute two get method class demo.
+parser.add_argument("--run_two_attr_two_method_demo", action="store_true",
+    help="Boolean flag for whether the tests that use the class with two attributes and two get methods should be "
+         + "executed (optional argument).")
+# Definition of the flag for running the list attribute class demo
+parser.add_argument("--run_list_attr_demo", action="store_true",
+    help="Boolean flag for whether the tests that use the class with one list attribute should be executed (optional "
+         + "argument).")
+args = parser.parse_args()
+"Parsed runtime arguments"
+run_empty_class_demo = args.run_empty_class_demo
+"Runtime flag for whether we should run the empty class (no attributes & no methods) example"
+run_one_int_attr_demo = args.run_one_int_attr_demo
+"Runtime flag for whether we should run the one integer attribute class example"
+run_no_attr_one_method_demo = args.run_no_attr_one_stat_method_demo
+"Runtime flag for whether we should run the no attributes and one static method class example"
+run_one_attr_one_method_demo = args.run_one_attr_one_method_demo
+"Runtime flag for whether we should run the one attribute and one method class example"
+run_two_attr_two_method_demo = args.run_two_attr_two_method_demo
+"Runtime flag for whether we should run the two attributes and two methods class example"
+run_list_attr_demo = args.run_list_attr_demo
+"Runtime flag for whether we should run the list attribute class example"
+# Check if the user requested to run any of the demos.
+any_demos = run_empty_class_demo or run_one_int_attr_demo or run_no_attr_one_method_demo \
+            or run_one_attr_one_method_demo or run_two_attr_two_method_demo or run_list_attr_demo
+"Boolean for whether any demos were requested by the user (through the runtime arguments)"
+# By default (if no runtime flags are provided), the script will run all of the class demos.
+run_all_demos = not any_demos
+"Boolean for whether all demos should be run (default behaviour if no specific demos are requested)"
+
+# If no demos are selected, we will run all of them.
+run_empty_class_demo = run_empty_class_demo or run_all_demos
+run_one_int_attr_demo = run_one_int_attr_demo or run_all_demos
+run_no_attr_one_method_demo = run_no_attr_one_method_demo or run_all_demos
+run_one_attr_one_method_demo = run_one_attr_one_method_demo or run_all_demos
+run_two_attr_two_method_demo = run_two_attr_two_method_demo or run_all_demos
+run_list_attr_demo = run_list_attr_demo or run_all_demos
+
 
 class EmptyClass:
     """Class with no attributes and no instance methods."""
@@ -212,54 +269,7 @@ class ListAttrClass:
         return list_sum
 
 
-# Define runtime flags for determining which classes should be tested.
-parser = argparse.ArgumentParser(description="Parser for object examples script")
-"Parser for runtime arguments"
-# Definition of the flag for running the empty class demo.
-parser.add_argument("--run_empty_class_demo", action="store_true",
-    help="Boolean flag for whether the tests that use the empty class (no attributes & no methods) should be executed "
-         + "(optional argument).")
-# Definition of the flag for running the class with one integer attribute demo.
-parser.add_argument("--run_one_int_attr_demo", action="store_true",
-    help="Boolean flag for whether the tests that use the one integer attribute class should be executed (optional "
-         + "argument).")
-# Definition of the flag for running the no attribute one static method class demo.
-parser.add_argument("--run_no_attr_one_stat_method_demo", action="store_true",
-    help="Boolean flag for whether the tests that use the class with no attributes and one static method should be "
-         + "executed (optional argument).")
-# Definition of the flag for running the one attribute one get method class demo.
-parser.add_argument("--run_one_attr_one_method_demo", action="store_true",
-    help="Boolean flag for whether the tests that use the class with one attribute and one get method should be "
-         + "executed (optional argument).")
-# Definition of the flag for running two attribute two get method class demo.
-parser.add_argument("--run_two_attr_two_method_demo", action="store_true",
-    help="Boolean flag for whether the tests that use the class with two attributes and two get methods should be "
-         + "executed (optional argument).")
-# Definition of the flag for running the list attribute class demo
-parser.add_argument("--run_list_attr_demo", action="store_true",
-    help="Boolean flag for whether the tests that use the class with one list attribute should be executed (optional "
-         + "argument).")
-args = parser.parse_args()
-"Parsed runtime arguments"
-run_empty_class_demo = args.run_empty_class_demo
-"Runtime flag for whether we should run the empty class (no attributes & no methods) example"
-run_one_int_attr_demo = args.run_one_int_attr_demo
-"Runtime flag for whether we should run the one integer attribute class example"
-run_no_attr_one_stat_method_demo = args.run_no_attr_one_stat_method_demo
-"Runtime flag for whether we should run the no attributes and one static method class example"
-run_one_attr_one_method_demo = args.run_one_attr_one_method_demo
-"Runtime flag for whether we should run the one attribute and one method class example"
-run_two_attr_two_method_demo = args.run_two_attr_two_method_demo
-"Runtime flag for whether we should run the two attributes and two methods class example"
-run_list_attr_demo = args.run_list_attr_demo
-"Runtime flag for whether we should run the list attribute class example"
-# Check if the user requested to run any of the demos.
-any_demos = run_empty_class_demo or run_one_int_attr_demo or run_no_attr_one_stat_method_demo \
-            or run_one_attr_one_method_demo or run_two_attr_two_method_demo or run_list_attr_demo
-"Boolean for whether any demos were requested by the user (through the runtime arguments)"
-# By default (if no runtime flags are provided), the script will run all of the class demos.
-run_all_demos = not any_demos
-"Boolean for whether all demos should be run (default behaviour if no specific demos are requested)"
+
 
 if run_empty_class_demo:
     test_helper.run_func_tests(EmptyClass, [IOPair((),EmptyClass)],assert_type=test_helper.ASSERT_TYPE,
@@ -271,7 +281,7 @@ if run_one_int_attr_demo:
                                      IOPair(-1,OneIntAttrClass(-1))],
                    test_desc="constructor for class with one integer attribute")
 
-if run_no_attr_one_stat_method_demo:
+if run_no_attr_one_method_demo:
     test_helper.run_func_tests(NoAttrOneStatMethodClass.return_zero,[IOPair((),0)],
                    test_desc="static int method for class with no attribute")
 
