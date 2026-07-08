@@ -6,11 +6,18 @@ this script will run all of the demos for object-oriented tests.
 Parameters
 ----------
 ---run_empty_class_demo : bool, default False
+    Boolean flag for whether the empty class example should be run.
 ---run_one_int_attr_demo : bool, default False
+    Boolean flag for whether the integer attribute class example should be run.
 ---run_no_attr_one_method_demo : bool, default False
+    Boolean flag for whether the class with no attributes and one method example should be run.
 ---run_one_attr_one_method_demo : bool, default False
+    Boolean flag for whether the class with one attribute and one method example should be run.
 ---run_two_attr_two_method_demo : bool, default False
+    Boolean flag for whether the class with two attributes and two methods example should be run.
 ---run_list_attr_demo : bool, default False
+    Boolean flag for whether the list attribute class example should be run.
+
 """
 
 # Import the test helper package.
