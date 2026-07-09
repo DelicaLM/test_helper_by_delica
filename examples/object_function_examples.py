@@ -1,6 +1,5 @@
 """
 Script demonstrating how we can use the test helper package to validate object-oriented functions.
-
 By default, (i.e., if you do not include any of the optional runtime flags described below) executing
 this script will run all of the built-in demos for object-oriented tests.
 

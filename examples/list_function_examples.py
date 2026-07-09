@@ -4,7 +4,7 @@ The optional runtime arguments below allow the user to choose which list example
 flags are used, this script will run all of the list examples.
 
 Parameters
----------
+----------
 ---run_empty_list_demo : bool, default False
     Boolean flag for whether the empty list example should be run.
 ---run_single_element_list_demo : bool, default False

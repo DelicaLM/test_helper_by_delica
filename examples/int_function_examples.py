@@ -1,8 +1,7 @@
 """
-This script provides several examples of how one can use src to test integer functions (i.e.,
-functions that return an integer value). We use the sample functions below to demonstrate how run_func_tests from the
-test helper package allows us to quickly verify that Python code returns accurate integer values for a wide range of
-inputs.
+This script provides several examples of how one can use the test helper package to validate functions that return
+integer values. The optional runtime arguments below allow the user to select which integer examples they would like to
+run. If no runtime flags are used, this script will run all of the built-in integer examples.
 
 Parameters
 ----------
