@@ -1,59 +1,49 @@
 """
-Script demonstrating how we can use the test helper package to evaluate functions that receive or output list objects.
+Script demonstrating how we can use the test helper package to evaluate functions that receive or generate Python lists.
+The optional runtime arguments below allow the user to choose which list examples they would like to run. If no runtime
+flags are used, this script will run all of the list examples.
 
-The functions below are defined to help show the variety of list-based functions that we can efficiently test with
-the helper package.
-
-Functions
+Parameters
 ---------
-return_empty_list()
-    Returns empty list ([]).
-return_one_element_list()
-    Returns a list with only one element (value of the element depends on the DEFAULT_ONE_ELEMENT_LIST constant).
-return_multi_element_list()
-    Returns a list with more than one element (values in the list depend on the DEFAULT_MULTI_ELEMENT_LIST constant).
-return_nested_list()
-    Returns a list that itself contains lists as elements (values in the nested lists depend on the DEFAULT_NESTED_LIST
-    constant).
-find_int_vals_in_list(list_to_search)
-    Returns a list with all the integer values in a list (returns empty list if there are no integer elements).
-concat_lists(list1, list2)
-    Returns the result of concatenating two lists.
-
-Constants
----------
-DEFAULT_INT_VALUE : int
-    The default integer value that should be used when constructing input lists.
-
-
+---run_empty_list_demo : bool, default False
+    Boolean flag for whether the empty list example should be run.
+---run_single_element_list_demo : bool, default False
+    Boolean flag for whether the single-element list  example should be run.
+---run_multi_element_list_demo : bool, default False
+    Boolean flag for whether the multiple-element list example should be run.
+---run_nested_list_demo : bool, default False
+    Boolean flag for whether the nested list function example should be run.
+---run_search_list_demo : bool, default False
+    Boolean flag for whether the search list example should be run.
+---run_concat_list_demo : bool, default False
+    Boolean flag for whether the concatenate list example should be run.
 
 """
-import argparse
 
 # Import the test helper functions
 from src import test_helper_funcs as test_lib
 
 # Import the IOPair class
 from src import IOPair
-import sys
 
+# Import argparse to parse the runtime arguments that allow the user to select which examples they want to run.
+import argparse
+
+# Declare some default integer lists that we can use in our sample tests.
 DEFAULT_INT_VAL = 0
+"Default integer value that should be used when constructing input lists."
 DEFAULT_ONE_ELEMENT_LIST = [DEFAULT_INT_VAL]
+"Default list with only one element (contains the default integer value)."
 DEFAULT_MULTI_ELEMENT_LIST = [DEFAULT_INT_VAL, DEFAULT_INT_VAL+1, DEFAULT_INT_VAL+2]
+"Default list with more than one element (contains the default integer value and the two integers that come after it)."
 DEFAULT_NESTED_LIST = [[DEFAULT_INT_VAL],
                        [DEFAULT_INT_VAL+1, DEFAULT_INT_VAL+2],
                        [DEFAULT_INT_VAL-1,DEFAULT_INT_VAL-2,DEFAULT_INT_VAL-3]]
+"Default nested list (i.e., a list that contains lists as elements)."
 
-# run_all_demos = True
-# run_return_empty_list_demo = True
-# run_return_one_element_list_demo = True
-# run_return_multi_element_list_demo = True
-# run_return_nested_list_demo = True
-# run_find_int_vals_in_list_demo = True
-# run_concat_lists_demo = True
-
-#if __name__ == "main":
+# Parse the runtime argument flags to determine which list examples should be run
 parser = argparse.ArgumentParser(description="Parser for function examples script")
+"Parser for runtime arguments."
 parser.add_argument("--run_empty_list_demo", action="store_true",
     help="Boolean flag for whether the tests that use empty lists should be executed (optional argument).")
 parser.add_argument("--run_single_element_list_demo", action="store_true",
@@ -69,37 +59,51 @@ parser.add_argument("--run_search_list_demo", action="store_true",
 parser.add_argument("--run_concat_lists_demo", action="store_true",
     help="Boolean flag for whether the tests concat two lists should be executed (optional argument).")
 args = parser.parse_args()
-run_return_empty_list_demo = args.run_empty_list_demo
-run_return_one_element_list_demo = args.run_single_element_list_demo
-run_return_multi_element_list_demo = args.run_multi_element_list_demo
-run_return_nested_list_demo = args.run_nested_list_demo
-run_find_int_vals_in_list_demo = args.run_search_list_demo
+"Parsed runtime arguments."
+run_empty_list_demo = args.run_empty_list_demo
+"Runtime flag for whether we should run the empty list example."
+run_one_element_list_demo = args.run_single_element_list_demo
+"Runtime flag for whether we should run the single-element list example."
+run_multi_element_list_demo = args.run_multi_element_list_demo
+"Runtime flag for whether we should run multiple-element list example."
+run_nested_list_demo = args.run_nested_list_demo
+"Runtime flag for whether we should run the nested list example."
+run_search_list_demo = args.run_search_list_demo
+"Runtime flag for whether we should run the search list example."
 run_concat_lists_demo = args.run_concat_lists_demo
-any_demos = run_return_empty_list_demo or run_return_one_element_list_demo or run_return_multi_element_list_demo \
-            or run_return_nested_list_demo or run_find_int_vals_in_list_demo or run_concat_lists_demo
+"Runtime flag for whether we should run the concatenated list example."
+any_demos = run_empty_list_demo or run_one_element_list_demo or run_multi_element_list_demo \
+            or run_nested_list_demo or run_search_list_demo or run_concat_lists_demo
+"Boolean for whether the user has selected any demos with the runtime flags."
 run_all_demos = not any_demos
-test = 0
+"Boolean for whether all demos should be run (default behaviour if no runtime flags are used)."
+# If no demos are selected, we will run all of them.
+run_empty_list_demo = run_empty_list_demo or run_all_demos
+run_one_element_list_demo = run_one_element_list_demo or run_all_demos
+run_multi_element_list_demo = run_multi_element_list_demo or run_all_demos
+run_nested_list_demo = run_nested_list_demo or run_all_demos
+run_search_list_demo = run_search_list_demo or run_all_demos
+run_concat_lists_demo = run_concat_lists_demo or run_all_demos
 
-
-
-
-
-
-
-
+# Define the list-based functions that we will use for the examples.
 def return_empty_list():
+    """Returns an empty list."""
     return []
 
 def return_one_element_list():
+    """Returns a list with one element."""
     return DEFAULT_ONE_ELEMENT_LIST
 
 def return_multi_element_list():
+    """Returns a list with multiple elements."""
     return DEFAULT_MULTI_ELEMENT_LIST
 
 def return_nested_list():
+    """Returns a nested list."""
     return DEFAULT_NESTED_LIST
 
 def find_int_vals_in_list(list_to_search):
+    """Returns a list with all the integer values in the list_to_search parameter."""
     int_vals = []
     for val in list_to_search:
         if type(val) == int:
@@ -107,31 +111,32 @@ def find_int_vals_in_list(list_to_search):
     return int_vals
 
 def concat_lists(list1, list2):
+    """Returns the result of concatenating two lists (list1 and list2)."""
     return list1 + list2
 
 
 
-if run_all_demos or run_return_empty_list_demo:
+if run_empty_list_demo:
     test_lib.run_func_tests(return_empty_list, [IOPair((),([],)),IOPair(DEFAULT_INT_VAL,TypeError)],
                    test_desc="return empty list function")
 
-if run_all_demos or run_return_one_element_list_demo:
+if run_one_element_list_demo:
     test_lib.run_func_tests(return_one_element_list, [IOPair((),DEFAULT_ONE_ELEMENT_LIST),
                                              IOPair(DEFAULT_INT_VAL,TypeError)],
                    test_desc="return single-element list function")
 
-if run_all_demos or run_return_multi_element_list_demo:
+if run_multi_element_list_demo:
     test_lib.run_func_tests(return_multi_element_list, [IOPair((),DEFAULT_MULTI_ELEMENT_LIST),
                                              IOPair(DEFAULT_INT_VAL,TypeError)],
                    test_desc="return multi-element list function")
 
 
-if run_all_demos or run_return_nested_list_demo:
+if run_nested_list_demo:
     test_lib.run_func_tests(return_nested_list, [IOPair((), DEFAULT_NESTED_LIST),
                                              IOPair(DEFAULT_INT_VAL, TypeError)],
                    test_desc="return nested list function")
 
-if run_all_demos or run_find_int_vals_in_list_demo:
+if run_search_list_demo:
     test_lib.run_func_tests(find_int_vals_in_list, [IOPair([], []),
                                            IOPair([DEFAULT_INT_VAL], [DEFAULT_INT_VAL]),
                                              IOPair([1,2,3], [1,2,3]),
@@ -140,7 +145,7 @@ if run_all_demos or run_find_int_vals_in_list_demo:
                                            IOPair(["abc","12",-10.22,True,False,"",[],[1,2]],[])],
                    test_desc="find int values in list function")
 
-if run_all_demos or run_concat_lists_demo:
+if run_concat_lists_demo:
     test_lib.run_func_tests(concat_lists, [IOPair(([],[]), []),
                                         IOPair(([1],[2]), [1,2]),
                                   IOPair(([1,2,3],[4,5,6]),[1,2,3,4,5,6]),

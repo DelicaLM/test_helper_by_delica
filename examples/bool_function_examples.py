@@ -1,7 +1,7 @@
 """
 This script provides several examples of how one can use the test helper package to test boolean functions (i.e.,
-functions that return True or False). We use the sample functions below to demonstrate how test_bool_func from the test
-helper package allows us to quickly verify that Python code accurately returns True or False for a wide range of inputs.
+functions that return True or False). With the runtime arguments below, the user can select which boolean examples they
+would like to run. If no runtime flags are used, this script will run all of the boolean test examples.
 
 Parameters
 ---------
@@ -130,7 +130,8 @@ if run_always_false_demo:
     test_lib.test_bool_func( always_false, false_inputs=[()], test_desc="always false function")
 
 if run_is_int_demo:
-    test_lib.test_bool_func(is_int, true_inputs=[(1,),(2,),(-10,)], false_inputs=[(1.0,),(2.0,),("",),('a',),("abc",)], test_desc="is_int function")
+    test_lib.test_bool_func(is_int, true_inputs=[(1,),(2,),(-10,)], false_inputs=[(1.0,),(2.0,),("",),('a',),("abc",)],
+                            test_desc="is_int function")
 
 if run_is_int_error_if_false_demo:
     test_lib.test_bool_func(is_int_error_if_false, true_inputs=[(1,),(2,),(-10,)],
@@ -139,7 +140,8 @@ if run_is_int_error_if_false_demo:
 
 
 if run_can_convert_to_int_demo:
-    test_lib.test_bool_func(can_convert_to_int, true_inputs=[(1,),(2.0,),("-10",)], false_inputs=[("hello",),("1ab",),([],)],
+    test_lib.test_bool_func(can_convert_to_int, true_inputs=[(1,),(2.0,),("-10",)],
+                            false_inputs=[("hello",),("1ab",),([],)],
                test_desc="can_convert_to_int function"),
 
 if run_list_has_val_demo:
