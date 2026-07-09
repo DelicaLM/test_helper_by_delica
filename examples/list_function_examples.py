@@ -24,7 +24,7 @@ Parameters
 from src import test_helper_funcs as test_lib
 
 # Import the IOPair class
-from src import IOPair
+from src.IOPair import IOPair
 
 # Import argparse to parse the runtime arguments that allow the user to select which examples they want to run.
 import argparse

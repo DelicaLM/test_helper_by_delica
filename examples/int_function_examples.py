@@ -24,7 +24,7 @@ Parameters
 from src import test_helper_funcs as test_lib
 
 # Import the IOPair class
-from src import IOPair
+from src.IOPair import IOPair
 
 # Import argparse for the optional runtime arguments (which allow the user to choose which demos they want to run)
 import argparse
@@ -70,7 +70,7 @@ any_demos = run_return_zero_demo or run_return_int_plus_one_demo or run_return_n
             run_return_string_length_demo or run_add_ints_demo or run_calc_int_list_sum_demo
 
 "Boolean for whether any demos were requested by the user (through the runtime arguments)"
-# By default, (if no runtime flags are provided) the script will run all of the class demos.
+# By default, (if no runtime flags are provided) the script will run all of the int demos.
 run_all_demos = not any_demos
 "Boolean for whether all demos should be run (default behaviour if no specific demos are requested)"
 # If no demos are selected, we will run all of them.
