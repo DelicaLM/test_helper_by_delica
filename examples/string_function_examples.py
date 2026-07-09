@@ -84,7 +84,7 @@ run_single_char_demo = run_single_char_demo or run_all_demos
 run_multi_char_demo = run_multi_char_demo or run_all_demos
 run_multiply_string_demo = run_multiply_string_demo or run_all_demos
 run_concat_strings_demo = run_concat_strings_demo or run_all_demos
-run_remove_vowels = run_remove_vowels_demo or run_all_demos
+run_remove_vowels_demo = run_remove_vowels_demo or run_all_demos
 
 def return_empty_string():
     """Returns empty string."""
