@@ -1,16 +1,15 @@
 """
 This module provides functions to help users easily create and run unit tests for their Python software.
-
 """
 
-# Import the IOPair class to more easily create and pass input-output pairs for tests
+# Import the IOPair class to more easily create and pass input-output pairs for tests.
 from src.IOPair import IOPair
 
 # Import the time library to measure test runtimes.
 import time
 
-# Constants for assertion types (i.e., methods in which we determine whether a test was successful) that the user
-# can use for their tests.
+# Constants for assertion types (i.e., methods by which we determine whether a test was successful)
+# that the user can select for their tests.
 ASSERT_EQUAL = "assert_equal"
 """str: Constant string label for the assertion type that checks whether test outputs are equal
 to the expected outputs."""
@@ -39,7 +38,7 @@ def make_tuple_str(input_tuple):
 
     Parameters
     ----------
-    input_tuple : tuple
+    input_tuple : tuple | any
         The tuple that we must convert into a string. (If you do not pass a tuple for this parameter, this function will
         create the appropriate tuple for your input before generating the string output.)
 
@@ -97,7 +96,7 @@ def compare_output_tuples(output_tuple1, output_tuple2, compare_type=ASSERT_EQUA
         The name of the comparison type that should be used (must be a value from the ASSERT_TYPES list at the start
         of this file (test_helper_funcs.py)). If you want your outputs to be checked with different assertion types,
         you can instead provide a list of comparison methods. For example, if you have two integer outputs and you want
-        to check if one is greater than a certain value and if the other is less than another value, then you can
+        to check if one is greater than a certain value and if the other is less than a different value, then you can
         provide the list [ASSERT_GREATER, ASSERT_LESS] for this parameter. If your list is shorter than the number of
         outputs, the last comparison type in the list will be used for the remaining output values.
 
@@ -111,6 +110,7 @@ def compare_output_tuples(output_tuple1, output_tuple2, compare_type=ASSERT_EQUA
         output_tuple1 = (output_tuple1,)
     if type(output_tuple2) != tuple:
         output_tuple2 = (output_tuple2,)
+    # Assume, by default, that the tuples do not match according to the comparison method.
     result = False
     # Make a list of the comparison types that should be used for the outputs
     compare_types = []
@@ -162,7 +162,6 @@ def compare_output_tuples(output_tuple1, output_tuple2, compare_type=ASSERT_EQUA
         result = all_outputs_correct
     return result
 
-
 def run_single_test(test_func, test_input=(), expected_output=(), assert_type=ASSERT_EQUAL, test_desc="",
                     raise_error_on_fail=True, add_new_line=True, include_input_in_error_msg=True):
     """Runs a single unit test for a given function.
@@ -180,7 +179,7 @@ def run_single_test(test_func, test_input=(), expected_output=(), assert_type=AS
         from the ASSERT_TYPES list at the start of this file (test_helper_funcs.py)). If you want your outputs to be
         checked with different assertion types, you can instead provide a list of comparison methods. For example,
         if you have two integer outputs and you want to check if one is greater than a certain value and if the other
-        is less than another value, then you can provide the list [ASSERT_GREATER, ASSERT_LESS] for this parameter.
+        is less than a different value, then you can provide the list [ASSERT_GREATER, ASSERT_LESS] for this parameter.
         If your list is shorter than the number of outputs, the last comparison type in the list will be used for the
         remaining output values.
     test_desc : str, optional, default=""
@@ -191,9 +190,9 @@ def run_single_test(test_func, test_input=(), expected_output=(), assert_type=AS
         Boolean flag indicating whether we should add a blank line after we finish printing the test results to stdout
         (useful for readability).
     include_input_in_error_msg : bool, optional, default=True
-        Boolean flag indicating whether we should include the test's input in the error message that is displayed
-        if the test fails (included to prevent the input from being printed twice if the test description already
-        includes the input).
+        Boolean flag indicating whether we should include the test's input in the error message that is displayed if
+        the test fails. Consider setting this parameter to False if your test description already includes the test
+        input.
 
     Returns
     -------
@@ -207,7 +206,7 @@ def run_single_test(test_func, test_input=(), expected_output=(), assert_type=AS
     """
     # Make sure that the test function is callable.
     if not callable(test_func):
-        raise TypeError("Test function must be callable.")
+        raise TypeError(f"{test_func} is not callable. Please provide a callable test function.")
     # Make sure that the assertion type(s) are valid.
     if type(assert_type) != list:
         if assert_type not in ASSERT_TYPES:
@@ -216,20 +215,22 @@ def run_single_test(test_func, test_input=(), expected_output=(), assert_type=AS
     else:
         for compare_type in assert_type:
             if compare_type not in ASSERT_TYPES:
-                raise ValueError("{compare_type} is not a valid assertion type. Please select one of the following "
-                                + f"options: {ASSERT_TYPES}")
+                raise ValueError(f"{compare_type} is not a valid assertion type. Please select one of the following "
+                                + f"options: {', '.join(ASSERT_TYPES)}")
     # Make sure that the test description is a string.
     if type(test_desc) != str:
-        raise TypeError(f"Test description must be a string.")
+        raise TypeError(f"{test_desc} is not a string. Test description must be a string.")
     # Make sure that the flag for whether we should raise an AssertionError if the test fails is a boolean.
     if type(raise_error_on_fail) != bool:
-        raise TypeError(f"Raise error on failure flag must be a boolean (True or False).")
+        raise TypeError(f"{raise_error_on_fail} is not a boolean. Raise error on failure flag must be a boolean "
+                        + f"(True or False).")
     # Make sure that the flag for whether we should print a new line after the test is a boolean.
     if type(add_new_line) != bool:
-        raise TypeError(f"Add new line flag must be a boolean (True or False).")
+        raise TypeError(f"{add_new_line} is not a boolean. Add new line flag must be a boolean (True or False).")
     # Make sure that the flag for whether we should include the inputs when we print the test results is a boolean
     if type(include_input_in_error_msg) != bool:
-        raise TypeError(f"Include input in error message flag must be a boolean (True or False).")
+        raise TypeError(f"{include_input_in_error_msg} is not a boolean. Include input in error message flag must be a "
+                        + f"boolean (True or False).")
     # If the expected output is a tuple of length one, we extract the single element (particularly useful when the
     # expected output is an Exception type).
     if type(expected_output) == tuple:

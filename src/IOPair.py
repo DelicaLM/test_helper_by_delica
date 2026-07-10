@@ -8,9 +8,9 @@ class IOPair:
 
     Attributes
     ----------
-    input_tuple : tuple
+    input_tuple : tuple | any
         Input tuple for the input-output pair.
-    output_tuple : tuple
+    output_tuple : tuple | any
         Output tuple for the output-input pair.
 
     """
