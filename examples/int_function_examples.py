@@ -19,15 +19,16 @@ Parameters
     Boolean flag for whether the calculate list sum function example should be run.
 """
 
-# Import the test helper package
+# Import the test helper package.
 from src import test_helper_funcs as test_lib
 
-# Import the IOPair class
+# Import the IOPair class.
 from src.IOPair import IOPair
 
-# Import argparse for the optional runtime arguments (which allow the user to choose which demos they want to run)
+# Import argparse for the optional runtime arguments (which allow the user to choose which demos they want to run).
 import argparse
 
+# Configure the runtime argument parser.
 parser = argparse.ArgumentParser(description="Parser for integer examples script")
 "Runtime argument parser"
 parser.add_argument("--run_return_zero_demo", action="store_true",
@@ -152,7 +153,9 @@ if run_add_ints_demo:
 
 if run_calc_int_list_sum_demo:
     test_lib.run_func_tests(calc_int_list_sum,[IOPair([], 0),
-                                               IOPair([1], 1)],
+                                               IOPair([1], 1),
+                                               IOPair([1, 2], 3),
+                                               IOPair([1, 2, 3], 6)],
                             test_desc="function that returns the sum of all elements in an integer list")
 
 

@@ -550,7 +550,10 @@ def test_bool_func(test_func, true_inputs=None, false_inputs=None, test_desc="",
     io_pairs = []
     true_io_pairs = make_io_pairs_from_input_list(true_inputs, True)
     io_pairs.extend(true_io_pairs)
-    false_io_pairs = make_io_pairs_from_input_list(false_inputs, False)
+    false_result = False
+    if error_if_false:
+        false_result = error_if_false_type
+    false_io_pairs = make_io_pairs_from_input_list(false_inputs, false_result)
     io_pairs.extend(false_io_pairs)
     type_error_io_pairs = make_io_pairs_from_input_list(type_error_inputs, TypeError)
     io_pairs.extend(type_error_io_pairs)

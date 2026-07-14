@@ -14,10 +14,9 @@ Parameters
 ---run_is_int_error_if_false_demo : bool, default False
     Boolean flag for whether the is int with type error if false function example should be run.
 ---run_can_convert_to_int_demo : bool, default False
-    Boolean flag for whether the can conver to int function example should be run.
+    Boolean flag for whether the can convert to int function example should be run.
 ---run_list_has_val_demo : bool, default False
     Boolean flag for whether the list has value function example should be run.
-
 """
 
 # Import the test helper package.
@@ -26,15 +25,7 @@ from src import test_helper_funcs as test_lib
 # Import argparse to parse runtime arguments (which allow the user to select which demos they want to run).
 import argparse
 
-# # Variables for the runtime arguments
-# run_always_true_demo = False
-# run_always_false_demo = False
-# run_is_int_demo = False
-# run_is_int_error_if_false_demo = False
-# run_can_convert_to_int_demo = False
-# run_list_has_val_demo = False
-
-# Define the optional runtime arguments
+# Define the optional runtime arguments.
 parser = argparse.ArgumentParser(description="Parser for boolean examples script")
 "Runtime argument parser"
 parser.add_argument("--run_always_true_demo", action="store_true",
@@ -51,10 +42,10 @@ parser.add_argument("--run_can_convert_to_int_demo", action="store_true",
 help="Boolean flag for whether the tests that check whether an input can be converted to an integer should be "
 + "executed (optional argument).")
 parser.add_argument("--run_list_has_val_demo", action="store_true",
-help="Boolean flag for whether the tests that check whether a list contains an input value should be expected "
+help="Boolean flag for whether the tests that check whether a list contains an input value should be executed "
 + "(optional argument).")
 
-# Parse the runtime arguments
+# Parse the runtime arguments.
 args = parser.parse_args()
 "Parsed runtime arguments"
 run_always_true_demo = args.run_always_true_demo
@@ -85,7 +76,6 @@ run_is_int_demo = run_is_int_demo or run_all_demos
 run_is_int_error_if_false_demo = run_is_int_error_if_false_demo or run_all_demos
 run_can_convert_to_int_demo = run_can_convert_to_int_demo or run_all_demos
 run_list_has_val_demo = run_list_has_val_demo or run_all_demos
-
 
 def always_true():
     """Function that always returns True"""
@@ -136,7 +126,7 @@ if run_is_int_demo:
 if run_is_int_error_if_false_demo:
     test_lib.test_bool_func(is_int_error_if_false, true_inputs=[(1,),(2,),(-10,)],
                    false_inputs=[(1.0,),(2.0,),("",),('a',),("abc",)],
-                   error_if_false=True, error_type=TypeError, test_desc="is_int function")
+                   error_if_false=True, error_if_false_type=TypeError, test_desc="is_int function")
 
 
 if run_can_convert_to_int_demo:
