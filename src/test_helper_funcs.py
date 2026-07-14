@@ -257,17 +257,19 @@ def run_single_test(test_func, test_input=(), expected_output=(), assert_type=AS
     test_output = None
     # Keep track of how long the test takes.
     test_runtime= 0.0
-    start_time = 0.0
-    end_time = 0.0
+    start_time = time.time()
+    end_time = time.time()
     # We need to run the test a bit differently depending on whether or not the expected output is an Exception.
     if should_raise_error: #if the expected output is an Exception
         assert error_type is not None
         assert error_type is Exception or issubclass(error_type, Exception)
         try:
             test_output = test_func(*test_input)
+            end_time = time.time()
         except error_type as e:
             # In this case, the test succeeds if we end up in the except branch for the
             # error type defined by expected output.
+            end_time = time.time()
             test_succeeded = True
             test_output = error_type
             print(f"ERROR MESSAGE: {e}")
@@ -279,8 +281,10 @@ def run_single_test(test_func, test_input=(), expected_output=(), assert_type=AS
         start_time = time.time()
         try:
             test_output = test_func(*test_input)
+            end_time = time.time()
         except Exception as e:
             # If an unexpected error is raised, we print the information out to the user.
+            end_time = time.time()
             unwanted_error_raised = True
             unwanted_error_type = type(e)
             test_output = unwanted_error_type
