@@ -227,7 +227,7 @@ def run_single_test(test_func, test_input=(), expected_output=(), assert_type=AS
     # Make sure that the flag for whether we should print a new line after the test is a boolean.
     if type(add_new_line) != bool:
         raise TypeError(f"{add_new_line} is not a boolean. Add new line flag must be a boolean (True or False).")
-    # Make sure that the flag for whether we should include the inputs when we print the test results is a boolean
+    # Make sure that the flag for whether we should include the inputs when we print the test results is a boolean.
     if type(include_input_in_error_msg) != bool:
         raise TypeError(f"{include_input_in_error_msg} is not a boolean. Include input in error message flag must be a "
                         + f"boolean (True or False).")
@@ -238,7 +238,7 @@ def run_single_test(test_func, test_input=(), expected_output=(), assert_type=AS
             expected_output = expected_output[0]
     # Start by printing the test description.
     print("Testing " + test_desc)
-    # Make string representations of the input and expected output tuples
+    # Make string representations of the input and expected output tuples.
     input_string = make_tuple_str(test_input)
     expected_output_string = make_tuple_str(expected_output)
     # Determine if the expected output is an Exception.
@@ -246,10 +246,12 @@ def run_single_test(test_func, test_input=(), expected_output=(), assert_type=AS
     error_type = None
     try:
         should_raise_error = expected_output is Exception or issubclass(expected_output, Exception)
-    except TypeError:
-        pass
-    if should_raise_error:
-        error_type = expected_output
+    except TypeError: # issubclass will trigger an error if expected_output is not a class
+        pass # If issubclass raises a TypeError, the expected output is not a class and, therefore, cannot be an
+             # Exception type. Since the should raise error flag is False by default, we don't need to perform
+             # any additional work in this exception block.
+    if should_raise_error: # if the expected output is an Exception
+        error_type = expected_output # get the type of Exception that the user expects
     # Assume that the test fails by default.
     test_succeeded = False
     test_output = None
@@ -257,20 +259,17 @@ def run_single_test(test_func, test_input=(), expected_output=(), assert_type=AS
     test_runtime= 0.0
     start_time = 0.0
     end_time = 0.0
-    # We need to run the test a bit differently depending on whether the expected output is an Exception.
+    # We need to run the test a bit differently depending on whether or not the expected output is an Exception.
     if should_raise_error: #if the expected output is an Exception
         assert error_type is not None
         assert error_type is Exception or issubclass(error_type, Exception)
         try:
-            start_time = time.time()
             test_output = test_func(*test_input)
-            end_time = time.time()
         except error_type as e:
             # In this case, the test succeeds if we end up in the except branch for the
             # error type defined by expected output.
             test_succeeded = True
             test_output = error_type
-            end_time = time.time()
             print(f"ERROR MESSAGE: {e}")
     else: #if the expected output is not an Exception
         # In this scenario, the test fails if any Exceptions are raised.
@@ -291,12 +290,15 @@ def run_single_test(test_func, test_input=(), expected_output=(), assert_type=AS
         if not unwanted_error_raised:
             # If no Exceptions were raised, we need to check whether the actual output matches the expected output.
             test_succeeded = compare_output_tuples(test_output, expected_output, compare_type=assert_type)
+    # Record the time at the end of the test.
     end_time = time.time()
+    # Print the test results to the user.
     if not test_succeeded:
         fail_msg = f"FAIL: {test_desc.upper()} FAILED "
         if include_input_in_error_msg:
             fail_msg += f"WITH INPUT = {input_string} "
         fail_msg += f"(EXPECTED OUTPUT = {expected_output}, ACTUAL_OUTPUT = {test_output})"
+        # Check if we should raise an Assertion Error to alert the user that their test failed.
         if raise_error_on_fail:
             raise AssertionError(fail_msg)
         else:
@@ -308,7 +310,6 @@ def run_single_test(test_func, test_input=(), expected_output=(), assert_type=AS
     if add_new_line:
         print("")
     return test_succeeded
-
 
 def run_func_tests(test_func, correct_io_pairs, assert_type=ASSERT_EQUAL, test_desc="", raise_error_on_fail=True):
     """Runs a set of unit tests for a specified function.
@@ -343,11 +344,11 @@ def run_func_tests(test_func, correct_io_pairs, assert_type=ASSERT_EQUAL, test_d
     Raises
     ______
     AssertionError
-        Raised if any of the tests fail (stdout messages allow the user to easily determine which test case failed).
+        Raised if any of the tests fail and raise_error_on_fail is set to True.
     """
     # Make sure that the test function is callable.
     if not callable(test_func):
-        raise TypeError("Test function must be callable.")
+        raise TypeError(f"{test_func} is not callable. Test function must be callable.")
     # Make sure that the user chose a valid assertion type.
     if assert_type not in ASSERT_TYPES:
         raise ValueError(f"{assert_type} is not a valid assertion type. Please select one of the following options: "
@@ -358,13 +359,15 @@ def run_func_tests(test_func, correct_io_pairs, assert_type=ASSERT_EQUAL, test_d
     else:
         # If the user did not provide a lone IOPair, we need to make sure that they passed a list of IOPairs.
         if type(correct_io_pairs) != list:
-            raise TypeError("You must provide a list of IOPair objects (one for each test).")
+            raise TypeError(f"{correct_io_pairs} is not a list. You must provide a list of IOPair objects "
+                            + f"(one for each test).")
         for io_pair in correct_io_pairs:
             if not isinstance(io_pair, IOPair):
-                raise TypeError("Every item in the input-output pairs list must be an IOPair object.")
+                raise TypeError(f"{io_pair} is not an IOPair. Every item in the input-output pairs list must be an "
+                                + f"IOPair object.")
     # Make sure that the test description is a string.
     if type(test_desc) != str:
-        raise TypeError("Test description must be a string.")
+        raise TypeError(f"{test_desc} is not a string. Test description must be a string.")
     # Start by printing the test description
     print("TESTING " + test_desc.upper())
     # Get the total number of tests that should be run.
@@ -377,7 +380,7 @@ def run_func_tests(test_func, correct_io_pairs, assert_type=ASSERT_EQUAL, test_d
     # Keep track of the current test number.
     test_num = 1
     for io_pair in correct_io_pairs:
-        curr_assert_type = assert_type
+        # Get the input and output for the test
         assert isinstance(io_pair, IOPair)
         test_input = io_pair.input_tuple
         assert type(test_input) == tuple, "Test input must be a tuple."
@@ -390,7 +393,8 @@ def run_func_tests(test_func, correct_io_pairs, assert_type=ASSERT_EQUAL, test_d
         #     except TypeError:
         #         curr_assert_type = assert_type
         print(f"Test #{test_num} of {num_tests}")
-        is_success = run_single_test(test_func, test_input, expected_output, assert_type=curr_assert_type,
+        # Run the test.
+        is_success = run_single_test(test_func, test_input, expected_output, assert_type=assert_type,
                                      test_desc=f"{test_func.__name__} function for input " + str(test_input),
                                      raise_error_on_fail=raise_error_on_fail, add_new_line=False,
                                      include_input_in_error_msg=False)
@@ -402,6 +406,7 @@ def run_func_tests(test_func, correct_io_pairs, assert_type=ASSERT_EQUAL, test_d
             failed_test_nums.append(test_num-1)
     print(f"ALL {num_tests} TESTS COMPLETED FOR {test_desc.upper()}")
     print(f"{num_succeeded} SUCCESSFUL TESTS")
+    # Make a string showing all the failed test numbers.
     failed_test_nums_str = ""
     for failed_test_num in failed_test_nums:
         failed_test_nums_str += f"#{failed_test_num}"
@@ -412,13 +417,69 @@ def run_func_tests(test_func, correct_io_pairs, assert_type=ASSERT_EQUAL, test_d
         failed_tests_line += f" ({failed_test_nums_str})"
     failed_tests_line += "\n"
     all_tests_succeeded = num_succeeded == num_tests
+    # Print the summary of test failures (will print "0 FAILED TESTS" if all tests succeeded).
     print(failed_tests_line)
     return all_tests_succeeded
 
 
+def clean_input_tuple_list(input_list):
+    """Turns a list of function inputs into a list of tuples (the format expected by many of the testing functions).
+    Caution: This function will turn each element of the input list into its own tuple, which might not be the
+    behaviour that you desire. In order to prevent this type of parsing error, please consider adding the appropriate
+    tuple parentheses to your inputs before using this function.
+
+    Parameters
+    ----------
+    input_list : list
+        The input list
+
+    Returns
+    -------
+    result : list
+        The correctly formatted list of input tuples.
+    """
+    result = []
+    if input_list is not None:
+        result = input_list
+        if not isinstance(input_list, list):
+            result = [input_list]
+        for i in range(len(result)):
+            if not isinstance(result[i], tuple):
+                result[i] = (result[i],)
+    return result
+
+def make_io_pairs_from_input_list(input_list, expected_output):
+    """Makes a list of IOPairs objects from a list of input tuples that should all yield the same expected output.
+
+    Parameters
+    ----------
+    input_list : list
+        The list of input tuples.
+    expected_output : tuple | any
+        The expected output tuple that should occur for all of the input tuples in input_list. If the user does not pass
+        a tuple for this parameter, the function will convert the provided output value into a tuple with a single
+        element.
+
+    Returns
+    -------
+    io_pairs : list[IOPair]
+        The list of IOPairs generated from the input tuple list and the expected output.
+    """
+    io_pairs = []
+    output_tuple = ()
+    if expected_output is not None:
+        output_tuple = expected_output
+        if not isinstance(expected_output, tuple):
+            output_tuple = (expected_output,)
+    input_list = clean_input_tuple_list(input_list)
+    for input_tuple in input_list:
+        new_io_pair = IOPair(input_tuple, output_tuple)
+        io_pairs.append(new_io_pair)
+    return io_pairs
+
 def test_bool_func(test_func, true_inputs=None, false_inputs=None, test_desc="", error_if_false=False,
-                   error_type=Exception, raise_error_on_fail=True, type_error_inputs=None, value_error_inputs=None,
-                   assert_error_inputs =None,):
+                   error_if_false_type=Exception, raise_error_on_fail=True, type_error_inputs=None,
+                   value_error_inputs=None, assert_error_inputs =None,):
     """Runs a sequence of tests for a function that returns a boolean value.
 
     Parameters
@@ -433,7 +494,7 @@ def test_bool_func(test_func, true_inputs=None, false_inputs=None, test_desc="",
         A description of the tests that should be printed to stdout.
     error_if_false : bool, optional, default=False
         Boolean flag for whether the function should raise an error when the condition it evaluates is False.
-    error_type : type, optional, default=Exception
+    error_if_false_type : type, optional, default=Exception
         The type of exception that should be raised for False results (if error_if_false is True).
     raise_error_on_fail : bool, optional, default=True
         A boolean flag indicating whether an AssertionError should be raised if a test fails.
@@ -457,86 +518,43 @@ def test_bool_func(test_func, true_inputs=None, false_inputs=None, test_desc="",
     """
     # Make sure that the test function is callable.
     if not callable(test_func):
-        raise TypeError("Test function must be callable.")
-    # Make sure that the user provided lists (or nothing) for the true and false inputs.
-    if true_inputs is None:
-        true_inputs = []
-    else:
-        if type(true_inputs) != list:
-            raise TypeError("You need to provide a list of input tuples for the true test cases.")
-    if false_inputs is None:
-        false_inputs = []
-    else:
-        if type(false_inputs) != list:
-            raise TypeError("You need to provide a list of input tuples for the false test cases.")
-    if type_error_inputs is None:
-        type_error_inputs = []
-    else:
-        if type(type_error_inputs) != list:
-            raise TypeError("You need to provide a list of input tuples for the TypeError test cases.")
-    if value_error_inputs is None:
-        value_error_inputs = []
-    else:
-        if type(value_error_inputs) != list:
-            raise TypeError("You need to provide a list of input tuples for the ValueError test cases.")
-    if assert_error_inputs is None:
-        assert_error_inputs = []
-    else:
-        if type(assert_error_inputs) != list:
-            raise TypeError("You need to provide a list of input tuples for the AssertError test cases.")
+        raise TypeError(f"{test_func} is not callable. Test function must be callable.")
+    # Ensure that the input lists are lists of tuples
+    true_inputs = clean_input_tuple_list(true_inputs)
+    false_inputs = clean_input_tuple_list(false_inputs)
+    type_error_inputs = clean_input_tuple_list(type_error_inputs)
+    value_error_inputs = clean_input_tuple_list(value_error_inputs)
+    assert_error_inputs = clean_input_tuple_list(assert_error_inputs)
     # Make sure that the error if false flag is a boolean.
     if type(error_if_false) != bool:
-        raise TypeError("Error if false flag must be a boolean (True or False).")
+        raise TypeError(f"{error_if_false} is not a boolean. Error if false flag must be a boolean (True or False).")
     if error_if_false:
         # If the test function should raise an exception for False outputs, we need to check whether the user provided
         # a valid exception type.
         is_exception = True
         try:
-            is_exception = issubclass(error_type, Exception)
-        except TypeError:
-            is_exception = False
+            is_exception = error_if_false_type is Exception or issubclass(error_if_false_type, Exception)
+        except TypeError: # issubclass raises a Type Error if error_type is not a class
+            is_exception = False # If error_type is not a class, it can't be an Exception type.
         if not is_exception:
-            raise TypeError("Error type must be a valid exception type in Python (e.g., TypeError, ValueError, etc.).")
+            raise TypeError(f"{error_if_false_type} is not a valid Exception type. The error type must be a valid "
+                            + f"exception type in Python (e.g., TypeError, ValueError, etc.).")
     # Make sure that the user provided a string for the test description.
     if type(test_desc) != str:
         raise TypeError("Test description must be a string.")
     # Convert the input tuples into IOPair objects.
     io_pairs = []
-    # Make IOPairs for inputs that should yield True.
-    for true_input in true_inputs:
-        if type(true_input) != tuple:
-            true_input = (true_input,)
-        new_io_pair = IOPair(true_input, (True,))
-        io_pairs.append(new_io_pair)
-    # Make IOPairs for inputs that should yield False (or an error).
-    false_result = False
-    if error_if_false:
-        false_result = error_type
-    for false_input in false_inputs:
-        if type(false_input) != tuple:
-            false_input = (false_input,)
-        new_io_pair = IOPair(false_input, (false_result,))
-        io_pairs.append(new_io_pair)
-    # Make IOPairs for inputs that should yield a TypeError.
-    for type_error_input in type_error_inputs:
-        if type(type_error_input) != tuple:
-            type_error_input = (type_error_input,)
-        new_io_pair = IOPair(type_error_input, (TypeError,))
-        io_pairs.append(new_io_pair)
-    # Make IOPairs for inputs that should yield a ValueError.
-    for value_error_input in value_error_inputs:
-        if type(value_error_input) != tuple:
-            value_error_input = (value_error_input,)
-        new_io_pair = IOPair(value_error_input, (ValueError,))
-        io_pairs.append(new_io_pair)
-    # Make IOPairs for inputs that should yield a AssertionError.
-    for assert_error_input in assert_error_inputs:
-        if type(assert_error_input) != tuple:
-            assert_error_input = (assert_error_input,)
-        new_io_pair = IOPair(assert_error_input, (AssertionError,))
-        io_pairs.append(new_io_pair)
+    true_io_pairs = make_io_pairs_from_input_list(true_inputs, True)
+    io_pairs.extend(true_io_pairs)
+    false_io_pairs = make_io_pairs_from_input_list(false_inputs, False)
+    io_pairs.extend(false_io_pairs)
+    type_error_io_pairs = make_io_pairs_from_input_list(type_error_inputs, TypeError)
+    io_pairs.extend(type_error_io_pairs)
+    value_error_io_pairs = make_io_pairs_from_input_list(value_error_inputs, ValueError)
+    io_pairs.extend(value_error_io_pairs)
+    assert_error_io_pairs = make_io_pairs_from_input_list(assert_error_inputs, AssertionError)
+    io_pairs.extend(assert_error_io_pairs)
     # Run the boolean function tests.
-    all_tests_succeeded = False
     all_tests_succeeded = run_func_tests(test_func, io_pairs, assert_type=ASSERT_EQUAL, test_desc=test_desc,
                                          raise_error_on_fail=raise_error_on_fail)
     return all_tests_succeeded
