@@ -17,7 +17,6 @@ Parameters
     Boolean flag for whether the concatenate strings example should be run.
 ---run_remove_vowels_demo : bool, default False
     Boolean flag for whether the remove vowels example should be run.
-
 """
 
 # Import the test helper package.
@@ -36,10 +35,11 @@ DEFAULT_MULTI_CHAR_STR = "abc"
 "Default multiple-character string."
 
 # Parse the runtime arguments to determine which examples we should run.
-parser = argparse.ArgumentParser(description="Parser for integer examples script")
+parser = argparse.ArgumentParser(description="Parser for string examples script")
 "Parser for optional runtime arguments."
 parser.add_argument("--run_empty_string_demo", action="store_true",
-help="Boolean flag for whether the tests that call the return zero function should be executed (optional argument).")
+help="Boolean flag for whether the tests that call the return empty string function should be executed "
+     + "(optional argument).")
 parser.add_argument("--run_single_char_demo", action="store_true",
 help="Boolean flag for whether the tests that call the return single character function should be executed (optional "
 +"argument).")

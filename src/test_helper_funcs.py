@@ -502,7 +502,7 @@ def test_bool_func(test_func, true_inputs=None, false_inputs=None, test_desc="",
         The type of exception that should be raised for False results (if error_if_false is True).
     raise_error_on_fail : bool, optional, default=True
         A boolean flag indicating whether an AssertionError should be raised if a test fails.
-    type_error_inputs : list[tuple] | list[any\, optional, default=None
+    type_error_inputs : list[tuple] | list[any], optional, default=None
         List of input tuples that should cause the test function to raise a TypeError.
     value_error_inputs : list[tuple] | list[any], optional, default=None
         List of input tuples that should cause the test function to raise a ValueError.

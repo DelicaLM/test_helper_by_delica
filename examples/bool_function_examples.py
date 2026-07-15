@@ -31,7 +31,7 @@ parser = argparse.ArgumentParser(description="Parser for boolean examples script
 parser.add_argument("--run_always_true_demo", action="store_true",
 help="Boolean flag for whether the tests that call the always true function should be executed (optional argument).")
 parser.add_argument("--run_always_false_demo", action="store_true",
-help="Boolean flag for whether the tests that call the always false should be executed (optional argument).")
+help="Boolean flag for whether the tests that call the always false function should be executed (optional argument).")
 parser.add_argument("--run_is_int_demo", action="store_true",
 help="Boolean flag for whether the tests that call the is integer function should be executed (optional "
 + "argument).")
@@ -78,11 +78,11 @@ run_can_convert_to_int_demo = run_can_convert_to_int_demo or run_all_demos
 run_list_has_val_demo = run_list_has_val_demo or run_all_demos
 
 def always_true():
-    """Function that always returns True"""
+    """Function that always returns True."""
     return True
 
 def always_false():
-    """Function that always returns False"""
+    """Function that always returns False."""
     return False
 
 def is_int(val):

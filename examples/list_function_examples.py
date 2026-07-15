@@ -8,22 +8,21 @@ Parameters
 ---run_empty_list_demo : bool, default False
     Boolean flag for whether the empty list example should be run.
 ---run_single_element_list_demo : bool, default False
-    Boolean flag for whether the single-element list  example should be run.
+    Boolean flag for whether the single-element list example should be run.
 ---run_multi_element_list_demo : bool, default False
     Boolean flag for whether the multiple-element list example should be run.
 ---run_nested_list_demo : bool, default False
     Boolean flag for whether the nested list function example should be run.
 ---run_search_list_demo : bool, default False
     Boolean flag for whether the search list example should be run.
----run_concat_list_demo : bool, default False
-    Boolean flag for whether the concatenate list example should be run.
-
+---run_concat_lists_demo : bool, default False
+    Boolean flag for whether the concatenate lists example should be run.
 """
 
-# Import the test helper functions
+# Import the test helper functions.
 from src import test_helper_funcs as test_lib
 
-# Import the IOPair class
+# Import the IOPair class.
 from src.IOPair import IOPair
 
 # Import argparse to parse the runtime arguments that allow the user to select which examples they want to run.
@@ -42,7 +41,7 @@ DEFAULT_NESTED_LIST = [[DEFAULT_INT_VAL],
 "Default nested list (i.e., a list that contains lists as elements)."
 
 # Parse the runtime argument flags to determine which list examples should be run
-parser = argparse.ArgumentParser(description="Parser for function examples script")
+parser = argparse.ArgumentParser(description="Parser for list function examples script")
 "Parser for runtime arguments."
 parser.add_argument("--run_empty_list_demo", action="store_true",
     help="Boolean flag for whether the tests that use empty lists should be executed (optional argument).")
@@ -57,7 +56,7 @@ parser.add_argument("--run_search_list_demo", action="store_true",
     help="Boolean flag for whether the tests that search for an item in an input list should be executed "
          + "(optional argument).")
 parser.add_argument("--run_concat_lists_demo", action="store_true",
-    help="Boolean flag for whether the tests concat two lists should be executed (optional argument).")
+    help="Boolean flag for whether the tests that concatenate two lists should be executed (optional argument).")
 args = parser.parse_args()
 "Parsed runtime arguments."
 run_empty_list_demo = args.run_empty_list_demo
@@ -117,19 +116,19 @@ def concat_lists(list1, list2):
 
 
 if run_empty_list_demo:
-    test_lib.run_func_tests(return_empty_list, [IOPair((),([],)),IOPair(DEFAULT_INT_VAL,TypeError)],
+    test_lib.run_func_tests(return_empty_list, [IOPair((),([],)),
+                                                IOPair(DEFAULT_INT_VAL, TypeError)],
                    test_desc="return empty list function")
 
 if run_one_element_list_demo:
     test_lib.run_func_tests(return_one_element_list, [IOPair((),DEFAULT_ONE_ELEMENT_LIST),
-                                             IOPair(DEFAULT_INT_VAL,TypeError)],
+                                             IOPair(DEFAULT_INT_VAL, TypeError)],
                    test_desc="return single-element list function")
 
 if run_multi_element_list_demo:
     test_lib.run_func_tests(return_multi_element_list, [IOPair((),DEFAULT_MULTI_ELEMENT_LIST),
                                              IOPair(DEFAULT_INT_VAL,TypeError)],
                    test_desc="return multi-element list function")
-
 
 if run_nested_list_demo:
     test_lib.run_func_tests(return_nested_list, [IOPair((), DEFAULT_NESTED_LIST),
@@ -139,7 +138,7 @@ if run_nested_list_demo:
 if run_search_list_demo:
     test_lib.run_func_tests(find_int_vals_in_list, [IOPair([], []),
                                            IOPair([DEFAULT_INT_VAL], [DEFAULT_INT_VAL]),
-                                             IOPair([1,2,3], [1,2,3]),
+                                           IOPair([1,2,3], [1,2,3]),
                                            IOPair([1,"a",1.0,2],[1,2]),
                                            IOPair(["abc","1",1.0,-20.0,-10],[-10]),
                                            IOPair(["abc","12",-10.22,True,False,"",[],[1,2]],[])],
@@ -149,8 +148,8 @@ if run_concat_lists_demo:
     test_lib.run_func_tests(concat_lists, [IOPair(([],[]), []),
                                         IOPair(([1],[2]), [1,2]),
                                   IOPair(([1,2,3],[4,5,6]),[1,2,3,4,5,6]),
-                                  IOPair((["a"],["b"]),["a", "b"]),
-                                  IOPair((["1","2",True],["6","99",-111,-22222,"abcde*"]),
-                                         ["1","2",True,"6","99",-111,-22222,"abcde*"]),
-                                  IOPair([1,2],TypeError)],
+                                  IOPair((["a"], ["b"]),["a", "b"]),
+                                  IOPair((["1", "2", True],["6", "99", -111, -22222, "abcde*"]),
+                                         ["1", "2", True, "6", "99", -111, -22222, "abcde*"]),
+                                  IOPair([1, 2], TypeError)],
                    test_desc="return concat list function")

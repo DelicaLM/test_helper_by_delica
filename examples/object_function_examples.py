@@ -17,7 +17,6 @@ Parameters
     Boolean flag for whether the class with two attributes and two methods example should be run.
 ---run_list_attr_demo : bool, default False
     Boolean flag for whether the list attribute class example should be run.
-
 """
 
 # Import the test helper package.
@@ -34,7 +33,7 @@ parser = argparse.ArgumentParser(description="Parser for object examples script"
 "Parser for runtime arguments"
 # Definition of the flag for running the empty class demo.
 parser.add_argument("--run_empty_class_demo", action="store_true",
-    help="Boolean flag for whether the tests that use the empty class (no attributes & no methods) should be executed "
+    help="Boolean flag for whether the tests that use empty classes (no attributes & no methods) should be executed "
          + "(optional argument).")
 # Definition of the flag for running the class with one integer attribute demo.
 parser.add_argument("--run_one_int_attr_demo", action="store_true",
@@ -59,24 +58,24 @@ parser.add_argument("--run_list_attr_demo", action="store_true",
 args = parser.parse_args()
 "Parsed runtime arguments"
 run_empty_class_demo = args.run_empty_class_demo
-"Runtime flag for whether we should run the empty class (no attributes & no methods) example"
+"Runtime flag for whether we should run the empty class (no attributes & no methods) example."
 run_one_int_attr_demo = args.run_one_int_attr_demo
-"Runtime flag for whether we should run the one integer attribute class example"
+"Runtime flag for whether we should run the one integer attribute class example."
 run_no_attr_one_method_demo = args.run_no_attr_one_stat_method_demo
-"Runtime flag for whether we should run the no attributes and one static method class example"
+"Runtime flag for whether we should run the no attributes and one static method class example."
 run_one_attr_one_method_demo = args.run_one_attr_one_method_demo
-"Runtime flag for whether we should run the one attribute and one method class example"
+"Runtime flag for whether we should run the one attribute and one method class example."
 run_two_attr_two_method_demo = args.run_two_attr_two_method_demo
-"Runtime flag for whether we should run the two attributes and two methods class example"
+"Runtime flag for whether we should run the two attributes and two methods class example."
 run_list_attr_demo = args.run_list_attr_demo
-"Runtime flag for whether we should run the list attribute class example"
+"Runtime flag for whether we should run the list attribute class example."
 # Check if the user requested to run any of the demos.
 any_demos = run_empty_class_demo or run_one_int_attr_demo or run_no_attr_one_method_demo \
             or run_one_attr_one_method_demo or run_two_attr_two_method_demo or run_list_attr_demo
-"Boolean for whether any demos were requested by the user (through the runtime arguments)"
+"Boolean for whether any demos were requested by the user (through the runtime arguments)."
 # By default (if no runtime flags are provided), the script will run all of the class demos.
 run_all_demos = not any_demos
-"Boolean for whether all demos should be run (default behaviour if no specific demos are requested)"
+"Boolean for whether all demos should be run (default behaviour if no specific demos are requested)."
 
 # If no demos are selected, we will run all of them.
 run_empty_class_demo = run_empty_class_demo or run_all_demos
@@ -86,10 +85,10 @@ run_one_attr_one_method_demo = run_one_attr_one_method_demo or run_all_demos
 run_two_attr_two_method_demo = run_two_attr_two_method_demo or run_all_demos
 run_list_attr_demo = run_list_attr_demo or run_all_demos
 
-
 class EmptyClass:
     """Class with no attributes and no instance methods."""
     def __init__(self):
+        """Empty class constructor."""
         pass
 
 
@@ -138,8 +137,7 @@ class OneIntAttrClass:
 
 
 class NoAttrOneStatMethodClass:
-    """Class with no attributes and one static method.
-    """
+    """Class with no attributes and one static method."""
     def __init__(self):
         """NoAttrOneStatMethodClass constructor (empty)."""
         pass
@@ -267,9 +265,6 @@ class ListAttrClass:
             if type(list_item) == int or type(list_item) == float:
                 list_sum += list_item
         return list_sum
-
-
-
 
 if run_empty_class_demo:
     test_helper.run_func_tests(EmptyClass, [IOPair((),EmptyClass)],assert_type=test_helper.ASSERT_TYPE,
