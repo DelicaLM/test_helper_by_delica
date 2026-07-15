@@ -490,9 +490,9 @@ def test_bool_func(test_func, true_inputs=None, false_inputs=None, test_desc="",
     ----------
     test_func : function
         The boolean function that should be tested.
-    true_inputs : list[tuple], optional, default=None
+    true_inputs : list[tuple] | list[any],  optional, default=None
         List of input tuples that should cause the test function to return True.
-    false_inputs : list[tuple], optional, default=None
+    false_inputs : list[tuple] | list[any], optional, default=None
         List of input tuples that should cause the test function to return False.
     test_desc : str, optional, default=""
         A description of the tests that should be printed to stdout.
@@ -502,11 +502,11 @@ def test_bool_func(test_func, true_inputs=None, false_inputs=None, test_desc="",
         The type of exception that should be raised for False results (if error_if_false is True).
     raise_error_on_fail : bool, optional, default=True
         A boolean flag indicating whether an AssertionError should be raised if a test fails.
-    type_error_inputs : list[tuple], optional, default=None
+    type_error_inputs : list[tuple] | list[any\, optional, default=None
         List of input tuples that should cause the test function to raise a TypeError.
-    value_error_inputs : list[tuple], optional, default=None
+    value_error_inputs : list[tuple] | list[any], optional, default=None
         List of input tuples that should cause the test function to raise a ValueError.
-    assert_error_inputs : list[tuple], optional, default=None
+    assert_error_inputs : list[tuple] | list[any], optional, default=None
         List of input tuples that should cause the test function to raise an AssertionError.
 
     Returns
@@ -517,7 +517,7 @@ def test_bool_func(test_func, true_inputs=None, false_inputs=None, test_desc="",
     Raises
     ______
     AssertionError
-        Raised if raise_error_on_fail is True and  any of the tests fail (stdout messages allow the user to easily
+        Raised if raise_error_on_fail is True and any of the tests fail (stdout messages allow the user to easily
         determine which test case failed).
     """
     # Make sure that the test function is callable.

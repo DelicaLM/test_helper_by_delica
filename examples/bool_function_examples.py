@@ -117,23 +117,23 @@ if run_always_true_demo:
     test_lib.test_bool_func(always_true, true_inputs=[()], test_desc="always true function")
 
 if run_always_false_demo:
-    test_lib.test_bool_func( always_false, false_inputs=[()], test_desc="always false function")
+    test_lib.test_bool_func(always_false, false_inputs=[()], test_desc="always false function")
 
 if run_is_int_demo:
-    test_lib.test_bool_func(is_int, true_inputs=[(1,),(2,),(-10,)], false_inputs=[(1.0,),(2.0,),("",),('a',),("abc",)],
+    test_lib.test_bool_func(is_int, true_inputs=[1, 2, 10], false_inputs=[1.0, 2.0, "", 'a', "abc"],
                             test_desc="is_int function")
 
 if run_is_int_error_if_false_demo:
-    test_lib.test_bool_func(is_int_error_if_false, true_inputs=[(1,),(2,),(-10,)],
-                   false_inputs=[(1.0,),(2.0,),("",),('a',),("abc",)],
-                   error_if_false=True, error_if_false_type=TypeError, test_desc="is_int function")
+    test_lib.test_bool_func(is_int_error_if_false, true_inputs=[1, 2, -10],
+                   false_inputs=[1.0, 2.0, "", 'a', "abc"],
+                   error_if_false=True, error_if_false_type=TypeError, test_desc="is_int (error if false) function")
 
 
 if run_can_convert_to_int_demo:
-    test_lib.test_bool_func(can_convert_to_int, true_inputs=[(1,),(2.0,),("-10",)],
-                            false_inputs=[("hello",),("1ab",),([],)],
+    test_lib.test_bool_func(can_convert_to_int, true_inputs=[1, 2.0, "10"],
+                            false_inputs=["hello", "1ab", []],
                test_desc="can_convert_to_int function"),
 
 if run_list_has_val_demo:
-    test_lib.test_bool_func(list_has_val, true_inputs=[([1],1),([1,2],2),(["a","ab","abc"],"a")],
-                   false_inputs=[([],0),([1],2),([1,2,3],4),(["a",1,"b"],2)])
+    test_lib.test_bool_func(list_has_val, true_inputs=[([1], 1),([1, 2], 2),(["a", "ab", "abc"], "a")],
+                   false_inputs=[([], 0),([1], 2),([1, 2, 3], 4),(["a", 1, "b"], 2)])
