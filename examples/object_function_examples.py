@@ -61,7 +61,7 @@ run_empty_class_demo = args.run_empty_class_demo
 "Runtime flag for whether we should run the empty class (no attributes & no methods) example."
 run_one_int_attr_demo = args.run_one_int_attr_demo
 "Runtime flag for whether we should run the one integer attribute class example."
-run_no_attr_one_method_demo = args.run_no_attr_one_stat_method_demo
+run_no_attr_one_method_demo = args.run_no_attr_one_method_demo
 "Runtime flag for whether we should run the no attributes and one static method class example."
 run_one_attr_one_method_demo = args.run_one_attr_one_method_demo
 "Runtime flag for whether we should run the one attribute and one method class example."
@@ -90,7 +90,6 @@ class EmptyClass:
     def __init__(self):
         """Empty class constructor."""
         pass
-
 
 class OneIntAttrClass:
     """Class with one integer attribute.
@@ -258,6 +257,28 @@ class ListAttrClass:
         """
         self.my_list = input_list
 
+    def __eq__(self, other):
+        """Equality instance method (checks equality with another object).
+
+        This equality function concludes that two TwoAttrTwoMethodClass instances are equal if their integer attributes
+        and their string attributes are both identical.
+
+        Parameters
+        ----------
+        other : ListAttrClass
+            The other instance of this class (which contains the list attribute that must be compared against the list
+            attribute of the calling object).
+
+        Returns
+        -------
+        bool
+            Returns True if the two instance have the same integer and string attribute values.
+        """
+        result = False
+        if isinstance(other, ListAttrClass):
+            result = self.my_list == other.my_list
+        return result
+
     def calc_list_sum(self):
         """Instance method for calculating the sum of all the values in the integer list."""
         list_sum = 0
@@ -300,3 +321,15 @@ if run_two_attr_two_method_demo:
     test_helper.run_func_tests(TwoAttrTwoMethodClass(500, "hi").return_str_val,
                    [IOPair((), "hi")],
                    test_desc="get string method for class with two int attributes and two get methods")
+
+if run_list_attr_demo:
+    test_helper.run_func_tests(ListAttrClass, [IOPair(([],),ListAttrClass([])),
+                                               IOPair(([1,2],),ListAttrClass([1,2]))],
+                               test_desc="constructor for class with list attribute")
+    test_helper.run_func_tests(ListAttrClass([1]).calc_list_sum, [IOPair((), 1)],
+                               test_desc="calc list sum method for class with list attribute")
+    test_helper.run_func_tests(ListAttrClass([1, 1, 1]).calc_list_sum, [IOPair((), 3)],
+                               test_desc="calc list sum method for class with list attribute")
+    test_helper.run_func_tests(ListAttrClass([1, 2, 3]).calc_list_sum, [IOPair((), 6)],
+                               test_desc="calc list sum method for class with list attribute")
+    test = 0

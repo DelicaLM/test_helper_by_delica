@@ -157,7 +157,14 @@ def compare_output_tuples(output_tuple1, output_tuple2, compare_type=ASSERT_EQUA
             elif comp_type == ASSERT_GREATER_OR_EQUAL:
                 all_outputs_correct &= output_val_1 >= output_val_2
             elif comp_type == ASSERT_TYPE:
-                all_outputs_correct &= type(output_val_1) == type(output_val_2)
+                if isinstance(output_val_2, type) and isinstance(output_val_1, type):
+                    all_outputs_correct &= output_val_1 == output_val_2
+                elif isinstance(output_val_2, type):
+                    all_outputs_correct &= isinstance(output_val_1, output_val_2)
+                elif isinstance(output_val_1, type):
+                    all_outputs_correct &= isinstance(output_val_2, output_val_1)
+                else:
+                    all_outputs_correct &= type(output_val_1) == type(output_val_2)
         # Only return True if all of the outputs were correct based on their comparison type.
         result = all_outputs_correct
     return result
