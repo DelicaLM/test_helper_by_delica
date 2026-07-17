@@ -5,7 +5,6 @@ built-in demos for object-oriented tests.
 
 Parameters
 ----------
-
 """
 
 # run_empty_class_demo : bool, default False
