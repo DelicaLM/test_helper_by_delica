@@ -18,6 +18,5 @@ jobs:
           python-version: "3.x"
       - name: Execute Tests
         run: | 
-          cd ..
           pwd
           ls
