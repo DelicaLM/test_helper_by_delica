@@ -5,8 +5,7 @@ built-in demos for object-oriented tests.
 
 Parameters
 ----------
----run_return_zero_demo : bool, default False
-    Boolean flag for whether the return zero function example should be run.
+
 """
 
 # run_empty_class_demo : bool, default False
