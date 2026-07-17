@@ -4,7 +4,7 @@ functions that return True or False). With the runtime arguments below, the user
 would like to run. If no runtime flags are used, this script will run all of the boolean test examples.
 
 Parameters
----------
+----------
 ---run_always_true_demo : bool, default False
     Boolean flag for whether the always true function example should be run.
 ---run_always_false_demo : bool, default False
