@@ -20,5 +20,5 @@ jobs:
           python-version: "3.x"
       - name: Execute Tests
         run: | 
-          pwd
-          ls
+          cd tests
+          python3 test_test_helper_funcs.py
