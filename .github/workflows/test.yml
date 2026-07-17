@@ -1,0 +1,15 @@
+on: [push]
+
+jobs:
+  tests:
+    name: Testing the Test Helper Package
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+      - name: Execute Tests
+        run: | 
+          cd tests
+          python3 test_test_helper_funcs.py
