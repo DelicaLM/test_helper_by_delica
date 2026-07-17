@@ -18,7 +18,9 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: "3.x"
+      - name: Install local package
+        run:  |
+          pip install -e .
       - name: Execute Tests
         run: | 
-          cd tests
-          python3 test_test_helper_funcs.py
+          python3 tests/test_test_helper_funcs.py

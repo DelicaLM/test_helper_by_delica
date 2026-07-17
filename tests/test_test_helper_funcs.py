@@ -8,6 +8,9 @@ DEFAULT_INT = 0
 DEFAULT_RETURN_VAL = DEFAULT_INT
 "int : Default return value returned by functions in this test suite."
 
+run_all_tests = True
+"bool : Boolean flag for whether all tests should be run, regardless of their boolean flags below."
+
 test_run_single_test = False
 "bool : Boolean flag for whether or not to run the tests for the run_single_test function."
 test_run_func_tests = False
