@@ -3,6 +3,7 @@
 # their extremely helpful Medium article (link below).
 # https://medium.com/@ariassbustojonathan/automate-python-documentation-with-sphinx-for-github-3dda2ca690ec
 
+
 name: documentation
 
 on:
