@@ -9,7 +9,8 @@ name: documentation
 on:
   release:
     types: [created]
-    branches: --main
+    branches:
+      - main
 
 permissions:
   contents: write
