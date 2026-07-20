@@ -14,7 +14,10 @@
 #sphinx-apidoc -o ./source ../src -f
 name: documentation
 
-on: [push, pull_request, workflow_dispatch]
+on:
+  release:
+    types: [created]
+    branches: --main
 
 permissions:
   contents: write
