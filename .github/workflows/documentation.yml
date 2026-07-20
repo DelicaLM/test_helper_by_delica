@@ -8,7 +8,7 @@ name: documentation
 
 on:
   release:
-    types: [created]
+    types: [published]
     branches:
       - main
 
