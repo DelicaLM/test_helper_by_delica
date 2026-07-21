@@ -1,28 +1,20 @@
 # Workflow for generating documentation files with sphinx
 # Reference: This file is closely based on the documentation.yml file provided by Jonathan Arias Busto in
-# their extremely helpful Medium article #(https://medium.com/@ariassbustojonathan/automate-python-documentation-with
-# -sphinx-for-github-3dda2ca690ec).
-#      - name: Deploy to GitHub Pages
-#        uses: peaceiris/actions-gh-pages@v4
-#        if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
-#        with:
-#          publish_branch: gh-pages
-#          github_token: ${{ secrets.GITHUB_TOKEN }}
-#          publish_dir: _build/
-#          force_orphan: true
-#          enable_jekyll: false
-#sphinx-apidoc -o ./source ../src -f
-name: documentation
+# their extremely helpful Medium article (link below).
+# https://medium.com/@ariassbustojonathan/automate-python-documentation-with-sphinx-for-github-3dda2ca690ec
 
-on:
-  release:
-    types: [created]
-    branches: --main
+
+name: documentation
 
 permissions:
   contents: write
   id-token: write
   pages: write
+
+on:
+  release:
+    types: [published]
+    branches: --main
 
 jobs:
   docs:
