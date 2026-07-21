@@ -14,8 +14,7 @@ permissions:
 on:
   release:
     types: [published]
-    branches:
-      - 'main'
+    branches: --main
 
 jobs:
   docs:
