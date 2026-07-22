@@ -29,7 +29,7 @@ autodoc2_docstring_parser_regexes = [
 ]
 
 autodoc_type_aliases = {
-    'IOPair.IOPair': 'src.IOPair.IOPair'
+    'IOPair.IOPair': 'test_helper_by_delica.IOPair.IOPair'
 }
 primary_domain = 'py'
 
@@ -41,8 +41,8 @@ napoleon_google_docstring = False
 napoleon_numpy_docstring = True
 
 autodoc2_packages = [
-    "../../src/IOPair.py",
-"../../src/test_helper_funcs.py",
+    "../../test_helper_by_delica/IOPair.py",
+"../../test_helper_by_delica/test_helper_funcs.py",
     "../../examples/bool_function_examples.py",
 "../../examples/int_function_examples.py",
 "../../examples/list_function_examples.py",

@@ -20,7 +20,7 @@ Parameters
 """
 
 # Import the test helper package.
-from src import test_helper_funcs as test_lib
+from test_helper_by_delica import test_helper_funcs as test_lib
 
 # Import argparse to parse runtime arguments (which allow the user to select which demos they want to run).
 import argparse

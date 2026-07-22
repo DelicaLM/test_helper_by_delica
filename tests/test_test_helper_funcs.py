@@ -1,7 +1,7 @@
 """Script to test the functions in the test helper package (test_helper_funcs.py)."""
 
-import src.test_helper_funcs as test_lib
-from src.IOPair import IOPair
+import test_helper_by_delica.test_helper_funcs as test_lib
+from test_helper_by_delica.IOPair import IOPair
 
 DEFAULT_INT = 0
 "int : Default integer value that should be returned by a function (makes it easier to standardize tests)."

@@ -20,10 +20,10 @@ Parameters
 """
 
 # Import the test helper package.
-from src import test_helper_funcs as test_lib
+from test_helper_by_delica import test_helper_funcs as test_lib
 
 # Import the IOPair class.
-from src.IOPair import IOPair
+from test_helper_by_delica.IOPair import IOPair
 
 # Import argparse for the optional runtime arguments (which allow the user to choose which demos they want to run).
 import argparse
