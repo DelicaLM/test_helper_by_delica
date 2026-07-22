@@ -19,6 +19,7 @@ on:
 
 jobs:
   docs:
+    if: github.ref_name == 'main'
     environment:
       name: github-pages
     runs-on: ubuntu-latest
