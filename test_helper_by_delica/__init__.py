@@ -1,4 +1,4 @@
-__all__ = ["test_helper_funcs", "IOPair"]
+from .test_helper_funcs import test_bool_func
+from .IOPair import *
 
-from test_helper_by_delica import test_helper_funcs
-from test_helper_by_delica import IOPair
+__all__ = ["test_bool_func", "IOPair"]
