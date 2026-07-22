@@ -36,10 +36,10 @@ Parameters
 
 
 # Import the test helper package.
-import src.test_helper_funcs as test_helper
+import test_helper_by_delica.test_helper_funcs as test_helper
 
 # Import the IOPair class
-from src.IOPair import IOPair
+from test_helper_by_delica.IOPair import IOPair
 
 # Import argparse for parsing runtimes flags (which determine whether each class demo is executed).
 import argparse
