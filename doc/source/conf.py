@@ -9,11 +9,13 @@
 import os
 import sys
 sys.path.insert(0, os.path.abspath('../../'))
+from importlib.metadata import version as get_version
+version_num = get_version("test_helper_by_delica")
 
 project = 'test-helper-by-delica'
 copyright = '2026, Delica Leboe-McGowan'
 author = 'Delica Leboe-McGowan'
-release = '1.0.2'
+release = version_num
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
