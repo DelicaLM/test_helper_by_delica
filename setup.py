@@ -3,8 +3,6 @@ from pathlib import Path
 
 this_directory = Path(__file__).parent
 long_description = (this_directory / "README.md").read_text()
-long_description2 = open('README.md').read()
-test = 0
 
 setup(
     name='test_helper_by_delica',
@@ -17,6 +15,6 @@ setup(
     install_requires=[
 
     ],
-    long_description=open('README.md').read(),
+    long_description=long_description,
     long_description_type='text/markdown'
 )
