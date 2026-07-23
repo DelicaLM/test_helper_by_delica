@@ -17,7 +17,7 @@ on:
 
 jobs:
   docs:
-    if: github.event.release.target_commitish == 'test'
+    if: github.event.release.target_commitish == 'main'
     environment:
       name: github-pages
     runs-on: ubuntu-latest
