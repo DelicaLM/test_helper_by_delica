@@ -5,7 +5,7 @@ authors = [
   { name="Delica Leboe-McGowan", email="stormindustries22@outlook.com" },
 ]
 
-description = "A Python package that simplifies the creation and execution of unittest test cases."
+description = "A Python package that simplifies the creation, execution, and analysis of unit tests."
 readme = "README.md"
 requires-python = ">=3.9"
 classifiers = [

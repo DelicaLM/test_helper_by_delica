@@ -8,7 +8,7 @@ setup(
     name='test_helper_by_delica',
     use_scm_version=True,
     setup_requires=['setuptools_scm'],
-    description="A Python package that simplifies the creation and execution of unittest test cases.",
+    description="A Python package that simplifies the creation and execution of unit tests.",
     author="Delica Leboe-McGowan",
     author_email="stormindustries22@outlook.com",
     packages=['test_helper_by_delica'],
@@ -16,5 +16,5 @@ setup(
 
     ],
     long_description=long_description,
-    long_description_content_type='text/markdown'
+    long_description_type='text/markdown'
 )
