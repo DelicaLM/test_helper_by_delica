@@ -8,14 +8,12 @@
 
 import os
 import sys
-sys.path.insert(0, os.path.abspath('../../'))
-from importlib.metadata import version as get_version
-version_num = get_version("test_helper_by_delica")
+import test_helper_by_delica
 
 project = 'test-helper-by-delica'
 copyright = '2026, Delica Leboe-McGowan'
 author = 'Delica Leboe-McGowan'
-release = version_num
+release = test_helper_by_delica.__version__
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
