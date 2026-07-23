@@ -14,12 +14,10 @@ permissions:
 on:
   release:
     types: [published]
-    branches:
-      - main
 
 jobs:
   docs:
-    if: github.ref_name == 'main'
+    if: github.event.release.target_commitish == 'main'
     environment:
       name: github-pages
     runs-on: ubuntu-latest
