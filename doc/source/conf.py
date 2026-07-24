@@ -7,9 +7,6 @@
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
 import os
-import pathlib
-import sys
-import re
 
 version_num = ""
 
