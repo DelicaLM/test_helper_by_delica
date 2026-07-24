@@ -1,4 +1,4 @@
-from .test_helper_funcs import test_bool_func
+from .test_helper_funcs import *
 from .IOPair import *
 from importlib.metadata import version, PackageNotFoundError
 
