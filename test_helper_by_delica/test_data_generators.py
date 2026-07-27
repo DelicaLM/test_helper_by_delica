@@ -63,7 +63,8 @@ def get_rand_int_list(num_ints):
     list[int]
         A list with random integer elements.
     """
-    assert num_ints > 0, "Number of integer elements must be greater than 0."
+    if type(num_ints) != int:
+        raise TypeError(f"Number of integer elements must be an integer.")
     if num_ints <= 0:
         raise ValueError("Number of integer elements must be greater than 0.")
     return [get_rand_int() for i in range(num_ints)]

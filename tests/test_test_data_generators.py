@@ -58,43 +58,83 @@ if test_get_rand_bool or run_all_tests:
     # Make sure that get_rand_bool returns a boolean.
     run_func_tests(get_rand_bool, [
         IOPair((),(bool,))
-    ], assert_type=ASSERT_TYPE)
+    ], assert_type=ASSERT_TYPE, test_desc="get_rand_bool return type")
     # Make sure that get_rand_bool returns True or False
     # (redundant with the previous test).
     run_func_tests(get_rand_bool, [
         IOPair((), ([True, False],))
-    ], assert_type=ASSERT_IN_SET)
+    ], assert_type=ASSERT_IN_SET, test_desc="get_rand_bool return value")
 
 if test_get_rand_bool_list or run_all_tests:
     # Make sure that all elements in the get_rand_bool_list output are booleans.
     run_func_tests(get_rand_bool_list, [
         IOPair((1,), (bool,)),
         IOPair((10,), (bool,)),
-    ], assert_type=ASSERT_LIST_ELEMENTS_TYPE)
+    ], assert_type=ASSERT_LIST_ELEMENTS_TYPE, test_desc="get_rand_bool_list return type")
     # Make sure that all elements in get_rand_bool_list are True or False
     # (redundant with the previous test).
     run_func_tests(get_rand_bool_list, [
         IOPair((1,), ([True, False],)),
         IOPair((10,), ([True, False],)),
-    ], assert_type=ASSERT_LIST_ELEMENTS_IN_SET)
+    ], assert_type=ASSERT_LIST_ELEMENTS_IN_SET, test_desc="get_rand_bool_list return values")
     # Make sure that get_rand_bool_list raises errors for incorrect parameters.
     run_func_tests(get_rand_bool_list, [
         IOPair(("",), (TypeError,)),
         IOPair((-1,), (ValueError,)),
-    ], assert_type=ASSERT_EQUAL)
+    ], assert_type=ASSERT_EQUAL, test_desc="get_rand_bool_list errors for incorrect parameters")
 
 if test_get_rand_int or run_all_tests:
     # Make sure that get_rand_int returns an integer.
     run_func_tests(get_rand_int, [
         IOPair((),(int,)),
-    ], assert_type=ASSERT_TYPE)
+    ], assert_type=ASSERT_TYPE, test_desc="get_rand_int return type")
 
 if test_get_rand_pos_int or run_all_tests:
     # Make sure that get_rand_int returns an integer.
-    run_func_tests(get_rand_int, [
+    run_func_tests(get_rand_pos_int, [
         IOPair((), (int,)),
-    ], assert_type=ASSERT_TYPE)
+    ], assert_type=ASSERT_TYPE, test_desc="get_rand_pos_int return type")
     # Make sure that get_rand_int is positive.
-    run_func_tests(get_rand_int, [
+    run_func_tests(get_rand_pos_int, [
         IOPair((), (0,)),
-    ], assert_type=ASSERT_GREATER)
+    ], assert_type=ASSERT_GREATER, test_desc="get_rand_pos_int return value")
+
+if test_get_rand_neg_int or run_all_tests:
+    # Make sure that get_rand_int returns an integer.
+    run_func_tests(get_rand_neg_int, [
+        IOPair((), (int,)),
+    ], assert_type=ASSERT_TYPE, test_desc="get_rand_neg_int return type")
+    # Make sure that get_rand_int is positive.
+    run_func_tests(get_rand_neg_int, [
+        IOPair((), (0,)),
+    ], assert_type=ASSERT_LESS, test_desc="get_rand_neg_int return value")
+
+if test_get_rand_int_list or run_all_tests:
+    # Make sure that all elements in the get_rand_int_list output are booleans.
+    run_func_tests(get_rand_int_list, [
+        IOPair((1,), (int,)),
+        IOPair((10,), (int,)),
+    ], assert_type=ASSERT_LIST_ELEMENTS_TYPE, test_desc="get_rand_int_list return type")
+    # Make sure that get_rand_int_list raises errors for incorrect parameters.
+    run_func_tests(get_rand_int_list, [
+        IOPair(("",), (TypeError,)),
+        IOPair((-1,), (ValueError,)),
+    ], assert_type=ASSERT_EQUAL, test_desc="get_rand_int_list errors for incorrect parameters")
+
+# if test_get_rand_pos_int_list or run_all_tests:
+#     # Make sure that all elements in the get_rand_pos_int_list output are booleans.
+#     run_func_tests(get_rand_pos_int_list, [
+#         IOPair((1,), (int,)),
+#         IOPair((10,), (int,)),
+#     ], assert_type=ASSERT_LIST_ELEMENTS_TYPE, test_desc="get_rand_pos_int_list return type")
+#     # Make sure that all elements in get_rand_pos_int_list are True or False
+#     # (redundant with the previous test).
+#     run_func_tests(get_rand_pos_int_list, [
+#         IOPair((1,), ([True, False],)),
+#         IOPair((10,), ([True, False],)),
+#     ], assert_type=ASSERT_LIST_ELEMENTS_IN_SET, test_desc="get_rand_pos_int_list return values")
+#     # Make sure that get_rand_pos_int_list raises errors for incorrect parameters.
+#     run_func_tests(get_rand_pos_int_list, [
+#         IOPair(("",), (TypeError,)),
+#         IOPair((-1,), (ValueError,)),
+#     ], assert_type=ASSERT_EQUAL, test_desc="get_rand_pos_int_list errors for incorrect parameters")
