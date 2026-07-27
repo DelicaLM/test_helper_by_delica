@@ -29,11 +29,16 @@ ASSERT_RAISES = "assert_raises"
 """str: Constant string label for the assertion type that checks whether the test function raises an Exception."""
 ASSERT_IN_SET = "assert_in_set"
 """str: Constant string label for the assertion type that checks whether test outputs are elements in a provided set."""
-ASSERT_TYPE = "assert_output_is_type" # use if the test should verify whether the output is of a certain type
+ASSERT_TYPE = "assert_output_is_type"
 """str: Constant string label for the assertion type that checks whether test outputs have the expected data types."""
+ASSERT_LIST_ELEMENTS_TYPE = "assert_list_elements_type"
+"""str: Constant string label for the assertion type that checks whether all elements in an output list have the 
+expected data types."""
 ASSERT_TYPES = [ASSERT_EQUAL, ASSERT_LESS, ASSERT_LESS_OR_EQUAL, ASSERT_GREATER, ASSERT_GREATER_OR_EQUAL,
-                ASSERT_RAISES, ASSERT_IN_SET, ASSERT_TYPE]
+                ASSERT_RAISES, ASSERT_IN_SET, ASSERT_TYPE, ASSERT_LIST_ELEMENTS_TYPE,]
 """list: List of all the assertion types that are currently supported in this module."""
+
+MAX_PRINTED_LIST_ITEMS = 5
 
 def make_tuple_str(input_tuple):
     """Creates a more readable string representation of a tuple.
@@ -63,14 +68,20 @@ def make_tuple_str(input_tuple):
             input_items.append(item)
     # Add each tuple item to the string.
     for item in input_items:
-        if isinstance(item, list): # If the item is a list, we iterate over each of its elements to make sure that
-                                   # we add their correct string forms to the list (otherwise str(list) can give the
-                                   # obj.__repr__() string instead of obj.__str__()).
+        if isinstance(item, list):
+            # If the item is a list, we iterate over each of its elements to make sure that
+            # we add their correct string forms to the list (otherwise str(list) can give the
+            # obj.__repr__() string instead of obj.__str__()).
             result += "["
-            for list_item in item:
-                result += str(list_item)
-                if list_item != item[-1]:
+            index = 0
+            while index < len(item) and index < MAX_PRINTED_LIST_ITEMS:
+                curr_item = item[index]
+                result += str(curr_item)
+                if index < len(item) - 1:
                     result += ", "
+                index += 1
+            if len(item) > MAX_PRINTED_LIST_ITEMS:
+                result += "..., " + str(item[-1])
             result += "]"
         elif callable(item) or isinstance(item, type): # If the item is a class or function, make sure that we only
                                                        # print its name.
@@ -169,6 +180,14 @@ def compare_output_tuples(output_tuple1, output_tuple2, compare_type=ASSERT_EQUA
                     all_outputs_correct &= isinstance(output_val_2, output_val_1)
                 else:
                     all_outputs_correct &= type(output_val_1) == type(output_val_2)
+            elif comp_type == ASSERT_LIST_ELEMENTS_TYPE:
+                all_outputs_correct &= type(output_val_1) == list
+                if all_outputs_correct:
+                    index = 0
+                    while index < len(output_val_1) and all_outputs_correct:
+                        element = output_val_1[index]
+                        all_outputs_correct &= type(element) == output_val_2
+                        index += 1
         # Only return True if all of the outputs were correct based on their comparison type.
         result = all_outputs_correct
     return result
@@ -312,7 +331,12 @@ def run_single_test(test_func, test_input=(), expected_output=(), assert_type=AS
         fail_msg = f"FAIL: {test_desc.upper()} FAILED "
         if include_input_in_error_msg:
             fail_msg += f"WITH INPUT = {input_string} "
-        fail_msg += f"(EXPECTED OUTPUT = {expected_output}, ACTUAL_OUTPUT = {test_output})"
+        if assert_type == ASSERT_TYPE:
+            fail_msg += f"(EXPECTED OUTPUT TYPE = {expected_output.__name__}, ACTUAL_OUTPUT = {test_output})"
+        elif assert_type == ASSERT_LIST_ELEMENTS_TYPE:
+            fail_msg += f"(EXPECTED OUTPUT TYPE = list[{expected_output.__name__}], ACTUAL_OUTPUT = {test_output})"
+        else:
+            fail_msg += f"(EXPECTED OUTPUT = {expected_output}, ACTUAL_OUTPUT = {test_output})"
         # Check if we should raise an Assertion Error to alert the user that their test failed.
         if raise_error_on_fail:
             raise AssertionError(fail_msg)
