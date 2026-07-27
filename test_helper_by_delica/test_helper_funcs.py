@@ -27,10 +27,12 @@ ASSERT_GREATER_OR_EQUAL = "assert_greater_or_equal"
 to the expected outputs."""
 ASSERT_RAISES = "assert_raises"
 """str: Constant string label for the assertion type that checks whether the test function raises an Exception."""
+ASSERT_IN_SET = "assert_in_set"
+"""str: Constant string label for the assertion type that checks whether test outputs are elements in a provided set."""
 ASSERT_TYPE = "assert_output_is_type" # use if the test should verify whether the output is of a certain type
 """str: Constant string label for the assertion type that checks whether test outputs have the expected data types."""
 ASSERT_TYPES = [ASSERT_EQUAL, ASSERT_LESS, ASSERT_LESS_OR_EQUAL, ASSERT_GREATER, ASSERT_GREATER_OR_EQUAL,
-                ASSERT_RAISES, ASSERT_TYPE]
+                ASSERT_RAISES, ASSERT_IN_SET, ASSERT_TYPE]
 """list: List of all the assertion types that are currently supported in this module."""
 
 def make_tuple_str(input_tuple):
@@ -156,6 +158,8 @@ def compare_output_tuples(output_tuple1, output_tuple2, compare_type=ASSERT_EQUA
                 all_outputs_correct &= output_val_1 > output_val_2
             elif comp_type == ASSERT_GREATER_OR_EQUAL:
                 all_outputs_correct &= output_val_1 >= output_val_2
+            elif comp_type == ASSERT_IN_SET:
+                all_outputs_correct &= output_val_1 in output_val_2
             elif comp_type == ASSERT_TYPE:
                 if isinstance(output_val_2, type) and isinstance(output_val_1, type):
                     all_outputs_correct &= output_val_1 == output_val_2
