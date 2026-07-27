@@ -61,3 +61,11 @@ if test_get_rand_bool or run_all_tests:
     run_func_tests(get_rand_bool, [
         IOPair((), (bool,))
     ], assert_type=ASSERT_TYPE)
+    run_func_tests(get_rand_bool, [
+        IOPair((), ([True, False],))
+    ], assert_type=ASSERT_IN_SET)
+
+if test_get_rand_bool_list or run_all_tests:
+    run_func_tests(get_rand_bool_list, [
+        IOPair((), (list[bool],))
+    ])

@@ -319,7 +319,7 @@ def run_single_test(test_func, test_input=(), expected_output=(), assert_type=AS
         else:
             print(fail_msg)
     else:
-        print(f"SUCCESS: input={input_string}\n         output={expected_output_string}")
+        print(f"SUCCESS: input={input_string}\n         output={test_output}")
         test_runtime = end_time - start_time
         print(f"TEST RUNTIME: {test_runtime:.20f} seconds")
     if add_new_line:
