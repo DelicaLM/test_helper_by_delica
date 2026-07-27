@@ -29,13 +29,16 @@ ASSERT_RAISES = "assert_raises"
 """str: Constant string label for the assertion type that checks whether the test function raises an Exception."""
 ASSERT_IN_SET = "assert_in_set"
 """str: Constant string label for the assertion type that checks whether test outputs are elements in a provided set."""
+ASSERT_LIST_ELEMENTS_IN_SET = "assert_list_elements_in_set"
+"""str: Constant string label for the assertion type that checks whether all elements in an output list are present 
+in a provided set."""
 ASSERT_TYPE = "assert_output_is_type"
 """str: Constant string label for the assertion type that checks whether test outputs have the expected data types."""
 ASSERT_LIST_ELEMENTS_TYPE = "assert_list_elements_type"
 """str: Constant string label for the assertion type that checks whether all elements in an output list have the 
 expected data types."""
 ASSERT_TYPES = [ASSERT_EQUAL, ASSERT_LESS, ASSERT_LESS_OR_EQUAL, ASSERT_GREATER, ASSERT_GREATER_OR_EQUAL,
-                ASSERT_RAISES, ASSERT_IN_SET, ASSERT_TYPE, ASSERT_LIST_ELEMENTS_TYPE,]
+                ASSERT_RAISES, ASSERT_IN_SET, ASSERT_LIST_ELEMENTS_IN_SET, ASSERT_TYPE, ASSERT_LIST_ELEMENTS_TYPE,]
 """list: List of all the assertion types that are currently supported in this module."""
 
 MAX_PRINTED_LIST_ITEMS = 5
@@ -171,6 +174,14 @@ def compare_output_tuples(output_tuple1, output_tuple2, compare_type=ASSERT_EQUA
                 all_outputs_correct &= output_val_1 >= output_val_2
             elif comp_type == ASSERT_IN_SET:
                 all_outputs_correct &= output_val_1 in output_val_2
+            elif comp_type == ASSERT_LIST_ELEMENTS_IN_SET:
+                all_outputs_correct &= type(output_val_1) == list
+                if all_outputs_correct:
+                    index = 0
+                    while index < len(output_val_1) and all_outputs_correct:
+                        element = output_val_1[index]
+                        all_outputs_correct &= element in output_val_2
+                        index += 1
             elif comp_type == ASSERT_TYPE:
                 if isinstance(output_val_2, type) and isinstance(output_val_1, type):
                     all_outputs_correct &= output_val_1 == output_val_2
@@ -339,6 +350,8 @@ def run_single_test(test_func, test_input=(), expected_output=(), assert_type=AS
             fail_msg += f"(EXPECTED OUTPUT TYPE = {expected_output.__name__}, ACTUAL_OUTPUT = {test_output_string})"
         elif assert_type == ASSERT_LIST_ELEMENTS_TYPE:
             fail_msg += f"(EXPECTED OUTPUT TYPE = list[{expected_output.__name__}], ACTUAL_OUTPUT = {test_output_string})"
+        elif assert_type == ASSERT_LIST_ELEMENTS_IN_SET:
+            fail_msg += f"(EXPECTED OUTPUT VALUES = {str(expected_output)}, ACTUAL_OUTPUT = {test_output_string})"
         else:
             fail_msg += f"(EXPECTED OUTPUT = {expected_output_string}, ACTUAL_OUTPUT = {test_output_string})"
         # Check if we should raise an Assertion Error to alert the user that their test failed.

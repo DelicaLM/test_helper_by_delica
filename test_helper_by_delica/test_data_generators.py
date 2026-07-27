@@ -32,7 +32,8 @@ def get_rand_bool_list(num_bools):
     list[bool]
         A list with random boolean elements.
     """
-    assert num_bools > 0, "Number of boolean elements must be greater than 0."
+    if type(num_bools) != int:
+        raise TypeError(f"Number of boolean elements must be an integer.")
     if num_bools <= 0:
         raise ValueError("Number of boolean elements must be greater than 0.")
     return [get_rand_bool() for i in range(num_bools)]
