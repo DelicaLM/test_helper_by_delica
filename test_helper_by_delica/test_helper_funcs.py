@@ -295,6 +295,7 @@ def run_single_test(test_func, test_input=(), expected_output=(), assert_type=AS
         assert error_type is Exception or issubclass(error_type, Exception)
         try:
             test_output = test_func(*test_input)
+            test_output_string = make_tuple_str(test_output)
             end_time = time.time()
         except error_type as e:
             # In this case, the test succeeds if we end up in the except branch for the
@@ -302,6 +303,7 @@ def run_single_test(test_func, test_input=(), expected_output=(), assert_type=AS
             end_time = time.time()
             test_succeeded = True
             test_output = error_type
+            test_output_string = error_type.__name__
             print(f"ERROR MESSAGE: {e}")
     else: #if the expected output is not an Exception
         # In this scenario, the test fails if any Exceptions are raised.
@@ -311,6 +313,7 @@ def run_single_test(test_func, test_input=(), expected_output=(), assert_type=AS
         start_time = time.time()
         try:
             test_output = test_func(*test_input)
+            test_output_string = make_tuple_str(test_output)
             end_time = time.time()
         except Exception as e:
             # If an unexpected error is raised, we print the information out to the user.
@@ -318,6 +321,7 @@ def run_single_test(test_func, test_input=(), expected_output=(), assert_type=AS
             unwanted_error_raised = True
             unwanted_error_type = type(e)
             test_output = unwanted_error_type
+            test_output_string = unwanted_error_type.__name__
             test_succeeded = False
             unwanted_error_type_name = unwanted_error_type.__name__
             print(f"TEST FUNCTION RAISED UNEXPECTED {unwanted_error_type_name}\n   ERROR MESSAGE: {e}")
@@ -332,18 +336,18 @@ def run_single_test(test_func, test_input=(), expected_output=(), assert_type=AS
         if include_input_in_error_msg:
             fail_msg += f"WITH INPUT = {input_string} "
         if assert_type == ASSERT_TYPE:
-            fail_msg += f"(EXPECTED OUTPUT TYPE = {expected_output.__name__}, ACTUAL_OUTPUT = {test_output})"
+            fail_msg += f"(EXPECTED OUTPUT TYPE = {expected_output.__name__}, ACTUAL_OUTPUT = {test_output_string})"
         elif assert_type == ASSERT_LIST_ELEMENTS_TYPE:
-            fail_msg += f"(EXPECTED OUTPUT TYPE = list[{expected_output.__name__}], ACTUAL_OUTPUT = {test_output})"
+            fail_msg += f"(EXPECTED OUTPUT TYPE = list[{expected_output.__name__}], ACTUAL_OUTPUT = {test_output_string})"
         else:
-            fail_msg += f"(EXPECTED OUTPUT = {expected_output}, ACTUAL_OUTPUT = {test_output})"
+            fail_msg += f"(EXPECTED OUTPUT = {expected_output_string}, ACTUAL_OUTPUT = {test_output_string})"
         # Check if we should raise an Assertion Error to alert the user that their test failed.
         if raise_error_on_fail:
             raise AssertionError(fail_msg)
         else:
             print(fail_msg)
     else:
-        print(f"SUCCESS: input={input_string}\n         output={test_output}")
+        print(f"SUCCESS: input={input_string}\n         output={test_output_string}")
         test_runtime = end_time - start_time
         print(f"TEST RUNTIME: {test_runtime:.20f} seconds")
     if add_new_line:
