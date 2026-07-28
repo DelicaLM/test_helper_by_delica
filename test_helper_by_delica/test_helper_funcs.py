@@ -16,15 +16,27 @@ to the expected outputs."""
 ASSERT_LESS = "assert_less_than"
 """str: Constant string label for the assertion type that checks whether test outputs are less than
 expected output values."""
+ASSERT_LIST_ELEMENTS_LESS = "assert_list_elements_less_than"
+"""str: Constant string label for the assertion type that checks whether all values in an output list are less than
+a specified value."""
 ASSERT_LESS_OR_EQUAL = "assert_less_or_equal"
 """str: Constant string label for the assertion type that checks whether test outputs are less than or equal
 to the expected outputs."""
+ASSERT_LIST_ELEMENTS_LESS_OR_EQUAL = "assert_list_elements_less_than_or_equal"
+"""str: Constant string label for the assertion type that checks whether all values in an output list are less than
+or equal to a specified value."""
 ASSERT_GREATER = "assert_greater_than"
 """str: Constant string label for the assertion type that checks whether test outputs are greater
 than the expected output values."""
+ASSERT_LIST_ELEMENTS_GREATER = "assert_list_elements_greater_than"
+"""str: Constant string label for the assertion type that checks whether all values in an output list are greater than
+a specified value."""
 ASSERT_GREATER_OR_EQUAL = "assert_greater_or_equal"
 """str: Constant string label for the assertion type that checks whether test outputs are greater than or equal
 to the expected outputs."""
+ASSERT_LIST_ELEMENTS_GREATER_OR_EQUAL = "assert_list_elements_greater_than_or_equal"
+"""str: Constant string label for the assertion type that checks whether all values in an output list are greater than
+or equal to a specified value."""
 ASSERT_RAISES = "assert_raises"
 """str: Constant string label for the assertion type that checks whether the test function raises an Exception."""
 ASSERT_IN_SET = "assert_in_set"
@@ -37,8 +49,10 @@ ASSERT_TYPE = "assert_output_is_type"
 ASSERT_LIST_ELEMENTS_TYPE = "assert_list_elements_type"
 """str: Constant string label for the assertion type that checks whether all elements in an output list have the 
 expected data types."""
-ASSERT_TYPES = [ASSERT_EQUAL, ASSERT_LESS, ASSERT_LESS_OR_EQUAL, ASSERT_GREATER, ASSERT_GREATER_OR_EQUAL,
-                ASSERT_RAISES, ASSERT_IN_SET, ASSERT_LIST_ELEMENTS_IN_SET, ASSERT_TYPE, ASSERT_LIST_ELEMENTS_TYPE,]
+ASSERT_TYPES = [ASSERT_EQUAL, ASSERT_LESS, ASSERT_LIST_ELEMENTS_LESS, ASSERT_LESS_OR_EQUAL,
+                ASSERT_LIST_ELEMENTS_LESS_OR_EQUAL, ASSERT_GREATER, ASSERT_LIST_ELEMENTS_GREATER,
+                ASSERT_GREATER_OR_EQUAL, ASSERT_RAISES, ASSERT_IN_SET, ASSERT_LIST_ELEMENTS_IN_SET, ASSERT_TYPE,
+                ASSERT_LIST_ELEMENTS_TYPE,]
 """list: List of all the assertion types that are currently supported in this module."""
 
 MAX_PRINTED_LIST_ITEMS = 5
@@ -166,12 +180,44 @@ def compare_output_tuples(output_tuple1, output_tuple2, compare_type=ASSERT_EQUA
                 all_outputs_correct &= output_val_1 == output_val_2
             elif comp_type == ASSERT_LESS:
                 all_outputs_correct &= output_val_1 < output_val_2
+            elif comp_type == ASSERT_LIST_ELEMENTS_LESS:
+                all_outputs_correct &= type(output_val_1) == list
+                if all_outputs_correct:
+                    index = 0
+                    while index < len(output_val_1) and all_outputs_correct:
+                        element = output_val_1[index]
+                        all_outputs_correct &= element < output_val_2
+                        index += 1
             elif comp_type == ASSERT_LESS_OR_EQUAL:
                 all_outputs_correct &= output_val_1 <= output_val_2
+            elif comp_type == ASSERT_LIST_ELEMENTS_LESS_OR_EQUAL:
+                all_outputs_correct &= type(output_val_1) == list
+                if all_outputs_correct:
+                    index = 0
+                    while index < len(output_val_1) and all_outputs_correct:
+                        element = output_val_1[index]
+                        all_outputs_correct &= element <= output_val_2
+                        index += 1
             elif comp_type == ASSERT_GREATER:
                 all_outputs_correct &= output_val_1 > output_val_2
+            elif comp_type == ASSERT_LIST_ELEMENTS_GREATER:
+                all_outputs_correct &= type(output_val_1) == list
+                if all_outputs_correct:
+                    index = 0
+                    while index < len(output_val_1) and all_outputs_correct:
+                        element = output_val_1[index]
+                        all_outputs_correct &= element > output_val_2
+                        index += 1
             elif comp_type == ASSERT_GREATER_OR_EQUAL:
                 all_outputs_correct &= output_val_1 >= output_val_2
+            elif comp_type == ASSERT_LIST_ELEMENTS_GREATER_OR_EQUAL:
+                all_outputs_correct &= type(output_val_1) == list
+                if all_outputs_correct:
+                    index = 0
+                    while index < len(output_val_1) and all_outputs_correct:
+                        element = output_val_1[index]
+                        all_outputs_correct &= element >= output_val_2
+                        index += 1
             elif comp_type == ASSERT_IN_SET:
                 all_outputs_correct &= output_val_1 in output_val_2
             elif comp_type == ASSERT_LIST_ELEMENTS_IN_SET:

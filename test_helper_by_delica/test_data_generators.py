@@ -82,7 +82,8 @@ def get_rand_pos_int_list(num_ints):
     list[int]
         A list with random positive integer elements.
         """
-    assert num_ints > 0, "Number of integer elements must be greater than 0."
+    if type(num_ints) != int:
+        raise TypeError(f"Number of integer elements must be an integer.")
     if num_ints <= 0:
         raise ValueError("Number of integer elements must be greater than 0.")
     return [get_rand_pos_int() for i in range(num_ints)]
@@ -100,10 +101,11 @@ def get_rand_neg_int_list(num_ints):
     list[int]
         A list with random negative integer elements.
         """
-    assert num_ints > 0, "Number of integer elements must be greater than 0."
+    if type(num_ints) != int:
+        raise TypeError(f"Number of integer elements must be an integer.")
     if num_ints <= 0:
         raise ValueError("Number of integer elements must be greater than 0.")
-    return [get_rand_pos_int() for i in range(num_ints)]
+    return [get_rand_neg_int() for i in range(num_ints)]
 
 
 def get_rand_float():
@@ -131,7 +133,8 @@ def get_rand_float_list(num_floats):
     list[float]
         A list with random float elements.
     """
-    assert num_floats > 0, "Number of float elements must be greater than 0."
+    if type(num_floats) != int:
+        raise TypeError(f"Number of float elements must be an integer.")
     if num_floats <= 0:
         raise ValueError("Number of float elements must be greater than 0.")
     return [get_rand_float() for i in range(num_floats)]
