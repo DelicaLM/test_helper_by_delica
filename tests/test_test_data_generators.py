@@ -37,6 +37,10 @@ test_get_rand_neg_float = True
 "bool : Boolean flag for whether or not to run the tests for the get_rand_neg_float function."
 test_get_rand_float_list = True
 "bool : Boolean flag for whether or not to run the tests for the get_rand_float_list function."
+test_get_rand_pos_float_list = True
+"bool : Boolean flag for whether or not to run the tests for the get_rand_pos_float_list function."
+test_get_rand_neg_float_list = True
+"bool : Boolean flag for whether or not to run the tests for the get_rand_neg_float_list function."
 
 test_get_rand_letter_lowercase = True
 "bool : Boolean flag for whether or not to run the tests for the get_rand_letter_lowercase function."
@@ -106,17 +110,23 @@ if test_get_rand_neg_int or run_all_tests:
     run_func_tests(get_rand_neg_int, [
         IOPair((), (int,)),
     ], assert_type=ASSERT_TYPE, test_desc="get_rand_neg_int return type")
-    # Make sure that get_rand_neg_int is positive.
+    # Make sure that get_rand_neg_int is negative.
     run_func_tests(get_rand_neg_int, [
         IOPair((), (0,)),
     ], assert_type=ASSERT_LESS, test_desc="get_rand_neg_int return value")
 
 if test_get_rand_int_list or run_all_tests:
-    # Make sure that all elements in the get_rand_int_list output are booleans.
+    # Make sure that all elements in the get_rand_int_list output are integers.
     run_func_tests(get_rand_int_list, [
         IOPair((1,), (int,)),
         IOPair((10,), (int,)),
     ], assert_type=ASSERT_LIST_ELEMENTS_TYPE, test_desc="get_rand_int_list return type")
+    # Make sure that get_rand_int_list returns lists of the correct lengths.
+    run_func_tests(get_rand_int_list, [
+        IOPair((1,), (1,)),
+        IOPair((10,), (10,)),
+        IOPair((25,), (25,)),
+    ], assert_type=ASSERT_LENGTH, test_desc="get_rand_int_list return length")
     # Make sure that get_rand_int_list raises errors for incorrect parameters.
     run_func_tests(get_rand_int_list, [
         IOPair(("",), (TypeError,)),
@@ -124,7 +134,7 @@ if test_get_rand_int_list or run_all_tests:
     ], assert_type=ASSERT_EQUAL, test_desc="get_rand_int_list errors for incorrect parameters")
 
 if test_get_rand_pos_int_list or run_all_tests:
-    # Make sure that all elements in the get_rand_pos_int_list output are booleans.
+    # Make sure that all elements in the get_rand_pos_int_list output are integers.
     run_func_tests(get_rand_pos_int_list, [
         IOPair((1,), (int,)),
         IOPair((10,), (int,)),
@@ -134,6 +144,12 @@ if test_get_rand_pos_int_list or run_all_tests:
         IOPair((1,), (0,)),
         IOPair((10,), (0,)),
     ], assert_type=ASSERT_LIST_ELEMENTS_GREATER, test_desc="get_rand_pos_int_list return values")
+    # Make sure that get_rand_pos_int_list returns lists of the correct lengths.
+    run_func_tests(get_rand_pos_int_list, [
+        IOPair((1,), (1,)),
+        IOPair((10,), (10,)),
+        IOPair((25,), (25,)),
+    ], assert_type=ASSERT_LENGTH, test_desc="get_rand_pos_int_list return length")
     # Make sure that get_rand_pos_int_list raises errors for incorrect parameters.
     run_func_tests(get_rand_pos_int_list, [
         IOPair(("",), (TypeError,)),
@@ -141,16 +157,22 @@ if test_get_rand_pos_int_list or run_all_tests:
     ], assert_type=ASSERT_EQUAL, test_desc="get_rand_pos_int_list errors for incorrect parameters")
 
 if test_get_rand_neg_int_list or run_all_tests:
-    # Make sure that all elements in the get_rand_neg_int_list output are booleans.
+    # Make sure that all elements in the get_rand_neg_int_list output are integers.
     run_func_tests(get_rand_neg_int_list, [
         IOPair((1,), (int,)),
         IOPair((10,), (int,)),
     ], assert_type=ASSERT_LIST_ELEMENTS_TYPE, test_desc="get_rand_neg_int_list return type")
-    # Make sure that all elements in get_rand_neg_int_list are greater than zero.
+    # Make sure that all elements in get_rand_neg_int_list are less than zero.
     run_func_tests(get_rand_neg_int_list, [
         IOPair((1,), (0,)),
         IOPair((10,), (0,)),
     ], assert_type=ASSERT_LIST_ELEMENTS_LESS, test_desc="get_rand_neg_int_list return values")
+    # Make sure that get_rand_neg_int_list returns lists of the correct lengths.
+    run_func_tests(get_rand_neg_int_list, [
+        IOPair((1,), (1,)),
+        IOPair((10,), (10,)),
+        IOPair((25,), (25,)),
+    ], assert_type=ASSERT_LENGTH, test_desc="get_rand_neg_int_list return length")
     # Make sure that get_rand_neg_int_list raises errors for incorrect parameters.
     run_func_tests(get_rand_neg_int_list, [
         IOPair(("",), (TypeError,)),
@@ -158,13 +180,13 @@ if test_get_rand_neg_int_list or run_all_tests:
     ], assert_type=ASSERT_EQUAL, test_desc="get_rand_neg_int_list errors for incorrect parameters")
 
 if test_get_rand_float or run_all_tests:
-    # Make sure that get_rand_float returns an integer.
+    # Make sure that get_rand_float returns a float.
     run_func_tests(get_rand_float, [
         IOPair((), (float,)),
     ], assert_type=ASSERT_TYPE, test_desc="get_rand_float return type")
 
 if test_get_rand_pos_float or run_all_tests:
-    # Make sure that get_rand_pos_float returns an integer.
+    # Make sure that get_rand_pos_float returns a float.
     run_func_tests(get_rand_pos_float, [
         IOPair((), (float,)),
     ], assert_type=ASSERT_TYPE, test_desc="get_rand_pos_float return type")
@@ -174,23 +196,103 @@ if test_get_rand_pos_float or run_all_tests:
     ], assert_type=ASSERT_GREATER, test_desc="get_rand_pos_float return value")
 
 if test_get_rand_neg_float or run_all_tests:
-    # Make sure that get_rand_neg_float returns an integer.
+    # Make sure that get_rand_neg_float returns a float.
     run_func_tests(get_rand_neg_float, [
         IOPair((), (float,)),
     ], assert_type=ASSERT_TYPE, test_desc="get_rand_neg_float return type")
-    # Make sure that get_rand_neg_float is positive.
+    # Make sure that get_rand_neg_float is negative.
     run_func_tests(get_rand_neg_int, [
         IOPair((), (0.0,)),
     ], assert_type=ASSERT_LESS, test_desc="get_rand_neg_float return value")
 
 if test_get_rand_float_list or run_all_tests:
-    # Make sure that all elements in the get_rand_float_list output are booleans.
+    # Make sure that all elements in the get_rand_float_list output are floats.
     run_func_tests(get_rand_float_list, [
         IOPair((1,), (float,)),
         IOPair((10,), (float,)),
     ], assert_type=ASSERT_LIST_ELEMENTS_TYPE, test_desc="get_rand_float_list return type")
+    # Make sure that get_rand_float_list returns lists of the correct lengths.
+    run_func_tests(get_rand_float_list, [
+        IOPair((1,), (1,)),
+        IOPair((10,), (10,)),
+        IOPair((25,), (25,)),
+    ], assert_type=ASSERT_LENGTH, test_desc="get_rand_float_list return length")
     # Make sure that get_rand_float_list raises errors for incorrect parameters.
     run_func_tests(get_rand_float_list, [
         IOPair(("",), (TypeError,)),
         IOPair((-1,), (ValueError,)),
     ], assert_type=ASSERT_EQUAL, test_desc="get_rand_float_list errors for incorrect parameters")
+
+if test_get_rand_pos_float_list or run_all_tests:
+    # Make sure that all elements in the get_rand_pos_float_list output are floats.
+    run_func_tests(get_rand_pos_float_list, [
+        IOPair((1,), (float,)),
+        IOPair((10,), (float,)),
+    ], assert_type=ASSERT_LIST_ELEMENTS_TYPE, test_desc="get_rand_pos_float_list return type")
+    # Make sure that all elements in get_rand_pos_float_list are greater than zero.
+    run_func_tests(get_rand_pos_float_list, [
+        IOPair((1,), (0.0,)),
+        IOPair((10,), (0.0,)),
+    ], assert_type=ASSERT_LIST_ELEMENTS_GREATER, test_desc="get_rand_pos_float_list return values")
+    # Make sure that get_rand_pos_float_list returns lists of the correct lengths.
+    run_func_tests(get_rand_pos_float_list, [
+        IOPair((1,), (1,)),
+        IOPair((10,), (10,)),
+        IOPair((25,), (25,)),
+    ], assert_type=ASSERT_LENGTH, test_desc="get_rand_pos_float_list return length")
+    # Make sure that get_rand_pos_float_list raises errors for incorrect parameters.
+    run_func_tests(get_rand_pos_float_list, [
+        IOPair(("",), (TypeError,)),
+        IOPair((-1,), (ValueError,)),
+    ], assert_type=ASSERT_EQUAL, test_desc="get_rand_pos_float_list errors for incorrect parameters")
+
+if test_get_rand_neg_float_list or run_all_tests:
+    # Make sure that all elements in the get_rand_neg_float_list output are floats.
+    run_func_tests(get_rand_neg_float_list, [
+        IOPair((1,), (float,)),
+        IOPair((10,), (float,)),
+    ], assert_type=ASSERT_LIST_ELEMENTS_TYPE, test_desc="get_rand_neg_float_list return type")
+    # Make sure that all elements in get_rand_neg_float_list are less than zero.
+    run_func_tests(get_rand_neg_float_list, [
+        IOPair((1,), (0.0,)),
+        IOPair((10,), (0.0,)),
+    ], assert_type=ASSERT_LIST_ELEMENTS_LESS, test_desc="get_rand_neg_float_list return values")
+    # Make sure that get_rand_neg_float_list returns lists of the correct lengths.
+    run_func_tests(get_rand_neg_float_list, [
+        IOPair((1,), (1,)),
+        IOPair((10,), (10,)),
+        IOPair((25,), (25,)),
+    ], assert_type=ASSERT_LENGTH, test_desc="get_rand_neg_float_list return length")
+    # Make sure that get_rand_neg_float_list raises errors for incorrect parameters.
+    run_func_tests(get_rand_neg_float_list, [
+        IOPair(("",), (TypeError,)),
+        IOPair((-1,), (ValueError,)),
+    ], assert_type=ASSERT_EQUAL, test_desc="get_rand_neg_float_list errors for incorrect parameters")
+
+if test_get_rand_letter_lowercase or run_all_tests:
+    # Make sure that get_rand_letter_lowercase returns a string.
+    run_func_tests(get_rand_letter_lowercase, [
+        IOPair((),(str,)),
+    ], assert_type=ASSERT_TYPE, test_desc="get_rand_letter_lowercase return type")
+    # Make sure that get_rand_letter_lowercase returns a lowercase a-z letter.
+    run_func_tests(get_rand_letter_lowercase, [
+        IOPair((), ("abcdefghijklmnopqrstuvwxyz",)),
+    ], assert_type=ASSERT_IN_SET, test_desc="get_rand_letter_lowercase return type")
+    # Make sure that get_rand_letter_lowercase returns a string of length one.
+    run_func_tests(get_rand_letter_lowercase, [
+        IOPair((), (1,)),
+    ], assert_type=ASSERT_LENGTH, test_desc="get_rand_letter_lowercase return length")
+
+if test_get_rand_letter_uppercase or run_all_tests:
+    # Make sure that get_rand_letter_uppercase returns a string.
+    run_func_tests(get_rand_letter_uppercase, [
+        IOPair((),(str,)),
+    ], assert_type=ASSERT_TYPE, test_desc="get_rand_letter_uppercase return type")
+    # Make sure that get_rand_letter_uppercase returns a uppercase A-Z letter.
+    run_func_tests(get_rand_letter_uppercase, [
+        IOPair((), ("ABCDEFGHIJKLMNOPQRSTUVWXYZ",)),
+    ], assert_type=ASSERT_IN_SET, test_desc="get_rand_letter_uppercase return type")
+    # Make sure that get_rand_letter_uppercase returns a string of length one.
+    run_func_tests(get_rand_letter_uppercase, [
+        IOPair((), (1,)),
+    ], assert_type=ASSERT_LENGTH, test_desc="get_rand_letter_uppercase return length")

@@ -49,10 +49,13 @@ ASSERT_TYPE = "assert_output_is_type"
 ASSERT_LIST_ELEMENTS_TYPE = "assert_list_elements_type"
 """str: Constant string label for the assertion type that checks whether all elements in an output list have the 
 expected data types."""
+ASSERT_LENGTH = "assert_length"
+"""str: Constant string label for the assertion type that checks whether an output list, string, tuple, or any other
+variable type that can be used with the built-in length function len() has an expected number of elements."""
 ASSERT_TYPES = [ASSERT_EQUAL, ASSERT_LESS, ASSERT_LIST_ELEMENTS_LESS, ASSERT_LESS_OR_EQUAL,
                 ASSERT_LIST_ELEMENTS_LESS_OR_EQUAL, ASSERT_GREATER, ASSERT_LIST_ELEMENTS_GREATER,
                 ASSERT_GREATER_OR_EQUAL, ASSERT_RAISES, ASSERT_IN_SET, ASSERT_LIST_ELEMENTS_IN_SET, ASSERT_TYPE,
-                ASSERT_LIST_ELEMENTS_TYPE,]
+                ASSERT_LIST_ELEMENTS_TYPE, ASSERT_LENGTH]
 """list: List of all the assertion types that are currently supported in this module."""
 
 MAX_PRINTED_LIST_ITEMS = 5
@@ -245,6 +248,11 @@ def compare_output_tuples(output_tuple1, output_tuple2, compare_type=ASSERT_EQUA
                         element = output_val_1[index]
                         all_outputs_correct &= type(element) == output_val_2
                         index += 1
+            elif comp_type == ASSERT_LENGTH:
+                try:
+                    all_outputs_correct &= len(output_val_1) == output_val_2
+                except TypeError:
+                    all_outputs_correct = False
         # Only return True if all of the outputs were correct based on their comparison type.
         result = all_outputs_correct
     return result

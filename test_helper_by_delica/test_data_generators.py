@@ -139,6 +139,44 @@ def get_rand_float_list(num_floats):
         raise ValueError("Number of float elements must be greater than 0.")
     return [get_rand_float() for i in range(num_floats)]
 
+def get_rand_pos_float_list(num_floats):
+    """Generates a list with random positive float elements.
+
+    Parameters
+    ----------
+    num_floats : floats
+        Length of the list to generate.
+
+    Returns
+    -------
+    list[float]
+        A list with random positive float elements.
+    """
+    if type(num_floats) != int:
+        raise TypeError(f"Number of float elements must be an integer.")
+    if num_floats <= 0:
+        raise ValueError("Number of float elements must be greater than 0.")
+    return [get_rand_pos_float() for i in range(num_floats)]
+
+def get_rand_neg_float_list(num_floats):
+    """Generates a list with random negative float elements.
+
+    Parameters
+    ----------
+    num_floats : floats
+        Length of the list to generate.
+
+    Returns
+    -------
+    list[float]
+        A list with random negative float elements.
+    """
+    if type(num_floats) != int:
+        raise TypeError(f"Number of float elements must be an integer.")
+    if num_floats <= 0:
+        raise ValueError("Number of float elements must be less than 0.")
+    return [get_rand_neg_float() for i in range(num_floats)]
+
 def get_rand_letter_lowercase():
     """Returns a random lowercase a-z letter."""
     return rand.choice(ATOZ_LOWERCASE)
