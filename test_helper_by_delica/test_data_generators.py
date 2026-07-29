@@ -174,7 +174,7 @@ def get_rand_neg_float_list(num_floats):
     if type(num_floats) != int:
         raise TypeError(f"Number of float elements must be an integer.")
     if num_floats <= 0:
-        raise ValueError("Number of float elements must be less than 0.")
+        raise ValueError("Number of float elements must be greater than 0.")
     return [get_rand_neg_float() for i in range(num_floats)]
 
 def get_rand_letter_lowercase():
@@ -190,7 +190,7 @@ def get_rand_letter_mixedcase():
     return rand.choice(ATOZ_MIXEDCASE)
 
 def get_rand_letter_list(list_length):
-    """Generates a list with random positive and negative float elements.
+    """Generates a list with random uppercase letters and/or lowercase letters (A-Z and a-z).
 
     Parameters
     ----------
@@ -202,10 +202,49 @@ def get_rand_letter_list(list_length):
     list[str]
         A list with random string elements that each contain a single a-z or A-Z letter.
     """
-    assert list_length > 0, "List length must be greater than 0."
+    if type(list_length) != int:
+        raise TypeError(f"Number of letter elements must be an integer.")
     if list_length <= 0:
-        raise ValueError("List length must be greater than 0.")
+        raise ValueError("Number of letter elements must be greater than 0.")
     return [get_rand_letter_mixedcase() for i in range(list_length)]
+
+def get_rand_uppercase_letter_list(list_length):
+    """Generates a list with random uppercase letters (A-Z).
+
+    Parameters
+    ----------
+    list_length : int
+        Length of the list to generate.
+
+    Returns
+    -------
+    list[str]
+        A list with random string elements that each contain a single A-Z letter.
+    """
+    if type(list_length) != int:
+        raise TypeError(f"Number of uppercase letter elements must be an integer.")
+    if list_length <= 0:
+        raise ValueError("Number of uppercase letter elements must be greater than 0.")
+    return [get_rand_letter_uppercase() for i in range(list_length)]
+
+def get_rand_lowercase_letter_list(list_length):
+    """Generates a list with random lowercase letters (a-z).
+
+    Parameters
+    ----------
+    list_length : int
+        Length of the list to generate.
+
+    Returns
+    -------
+    list[str]
+        A list with random string elements that each contain a single a-z letter.
+    """
+    if type(list_length) != int:
+        raise TypeError(f"Number of lowercase letter elements must be an integer.")
+    if list_length <= 0:
+        raise ValueError("Number of lowercase letter elements must be greater than 0.")
+    return [get_rand_letter_lowercase() for i in range(list_length)]
 
 def get_rand_az_string_lowercase(num_chars):
     """Returns a random string containing only lowercase a-z letters.

@@ -50,6 +50,12 @@ test_get_rand_letter_mixedcase = True
 "bool : Boolean flag for whether or not to run the tests for the get_rand_letter_mixedcase function."
 test_get_rand_letter_list = True
 "bool : Boolean flag for whether or not to run the tests for the get_rand_letter_list function."
+test_get_rand_uppercase_letter_list = True
+"bool : Boolean flag for whether or not to run the tests for the get_rand_uppercase_letter_list function."
+test_get_rand_lowercase_letter_list = True
+"bool : Boolean flag for whether or not to run the tests for the get_rand_lowercase_letter_list function."
+test_get_rand_mixedcase_letter_list = True
+"bool : Boolean flag for whether or not to run the tests for the get_rand_mixedcase_letter_list function."
 
 test_get_rand_az_string_lowercase = True
 "bool : Boolean flag for whether or not to run the tests for the get_rand_az_string_lowercase function."
@@ -296,3 +302,83 @@ if test_get_rand_letter_uppercase or run_all_tests:
     run_func_tests(get_rand_letter_uppercase, [
         IOPair((), (1,)),
     ], assert_type=ASSERT_LENGTH, test_desc="get_rand_letter_uppercase return length")
+
+if test_get_rand_letter_mixedcase or run_all_tests:
+    # Make sure that get_rand_letter_mixedcase returns a string.
+    run_func_tests(get_rand_letter_mixedcase, [
+        IOPair((),(str,)),
+    ], assert_type=ASSERT_TYPE, test_desc="get_rand_letter_mixedcase return type")
+    # Make sure that get_rand_letter_mixedcase returns a mixedcase A-Z letter.
+    run_func_tests(get_rand_letter_mixedcase, [
+        IOPair((), ("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ",)),
+    ], assert_type=ASSERT_IN_SET, test_desc="get_rand_letter_mixedcase return type")
+    # Make sure that get_rand_letter_mixedcase returns a string of length one.
+    run_func_tests(get_rand_letter_mixedcase, [
+        IOPair((), (1,)),
+    ], assert_type=ASSERT_LENGTH, test_desc="get_rand_letter_mixedcase return length")
+
+if test_get_rand_letter_list or run_all_tests:
+    # Make sure that all elements in the get_rand_letter_list output are strings.
+    run_func_tests(get_rand_letter_list, [
+        IOPair((1,), (str,)),
+        IOPair((10,), (str,)),
+    ], assert_type=ASSERT_LIST_ELEMENTS_TYPE, test_desc="get_rand_letter_list return type")
+    # Make sure that get_rand_letter_list returns lists of the correct lengths.
+    run_func_tests(get_rand_letter_list, [
+        IOPair((1,), (1,)),
+        IOPair((10,), (10,)),
+        IOPair((25,), (25,)),
+    ], assert_type=ASSERT_LENGTH, test_desc="get_rand_letter_list return length")
+    # Make sure that get_rand_letter_list returns a list that only contains a-z or A-Z letters.
+    run_func_tests(get_rand_letter_list, [
+        IOPair((25,), ("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ",)),
+    ], assert_type=ASSERT_LIST_ELEMENTS_IN_SET, test_desc="get_rand_letter_list return values")
+    # Make sure that get_rand_letter_list raises errors for incorrect parameters.
+    run_func_tests(get_rand_letter_list, [
+        IOPair(("",), (TypeError,)),
+        IOPair((-1,), (ValueError,)),
+    ], assert_type=ASSERT_EQUAL, test_desc="get_rand_letter_list errors for incorrect parameters")
+
+if test_get_rand_uppercase_letter_list or run_all_tests:
+    # Make sure that all elements in the get_rand_uppercase_letter_list output are strings.
+    run_func_tests(get_rand_uppercase_letter_list, [
+        IOPair((1,), (str,)),
+        IOPair((10,), (str,)),
+    ], assert_type=ASSERT_LIST_ELEMENTS_TYPE, test_desc="get_rand_uppercase_letter_list return type")
+    # Make sure that get_rand_uppercase_letter_list returns lists of the correct lengths.
+    run_func_tests(get_rand_uppercase_letter_list, [
+        IOPair((1,), (1,)),
+        IOPair((10,), (10,)),
+        IOPair((25,), (25,)),
+    ], assert_type=ASSERT_LENGTH, test_desc="get_rand_uppercase_letter_list return length")
+    # Make sure that get_rand_uppercase_letter_list returns a list that only contains a-z or A-Z letters.
+    run_func_tests(get_rand_uppercase_letter_list, [
+        IOPair((25,), ("ABCDEFGHIJKLMNOPQRSTUVWXYZ",)),
+    ], assert_type=ASSERT_LIST_ELEMENTS_IN_SET, test_desc="get_rand_uppercase_letter_list return values")
+    # Make sure that get_rand_uppercase_letter_list raises errors for incorrect parameters.
+    run_func_tests(get_rand_uppercase_letter_list, [
+        IOPair(("",), (TypeError,)),
+        IOPair((-1,), (ValueError,)),
+    ], assert_type=ASSERT_EQUAL, test_desc="get_rand_uppercase_letter_list errors for incorrect parameters")
+
+if test_get_rand_lowercase_letter_list or run_all_tests:
+    # Make sure that all elements in the get_rand_lowercase_letter_list output are strings.
+    run_func_tests(get_rand_lowercase_letter_list, [
+        IOPair((1,), (str,)),
+        IOPair((10,), (str,)),
+    ], assert_type=ASSERT_LIST_ELEMENTS_TYPE, test_desc="get_rand_lowercase_letter_list return type")
+    # Make sure that get_rand_lowercase_letter_list returns lists of the correct lengths.
+    run_func_tests(get_rand_lowercase_letter_list, [
+        IOPair((1,), (1,)),
+        IOPair((10,), (10,)),
+        IOPair((25,), (25,)),
+    ], assert_type=ASSERT_LENGTH, test_desc="get_rand_lowercase_letter_list return length")
+    # Make sure that get_rand_lowercase_letter_list returns a list that only contains a-z or A-Z letters.
+    run_func_tests(get_rand_lowercase_letter_list, [
+        IOPair((25,), ("abcdefghijklmnopqrstuvwxyz",)),
+    ], assert_type=ASSERT_LIST_ELEMENTS_IN_SET, test_desc="get_rand_lowercase_letter_list return values")
+    # Make sure that get_rand_lowercase_letter_list raises errors for incorrect parameters.
+    run_func_tests(get_rand_lowercase_letter_list, [
+        IOPair(("",), (TypeError,)),
+        IOPair((-1,), (ValueError,)),
+    ], assert_type=ASSERT_EQUAL, test_desc="get_rand_lowercase_letter_list errors for incorrect parameters")
