@@ -259,9 +259,10 @@ def get_rand_az_string_lowercase(num_chars):
     str
         A random string containing only lowercase a-z letters.
     """
-    assert num_chars > 0, "String length must be greater than 0."
+    if type(num_chars) != int:
+        raise TypeError(f"String length must be an integer.")
     if num_chars <= 0:
-        raise ValueError("String length float elements must be greater than 0.")
+        raise ValueError("String length must be greater than 0.")
     result = ""
     for i in range(num_chars):
         result += rand.choice(ATOZ_LOWERCASE)
@@ -280,6 +281,10 @@ def get_rand_az_string_uppercase(num_chars):
     str
         A random string containing only uppercase A-Z letters.
     """
+    if type(num_chars) != int:
+        raise TypeError(f"String length must be an integer.")
+    if num_chars <= 0:
+        raise ValueError("String length must be greater than 0.")
     result = ""
     for i in range(num_chars):
         result += rand.choice(ATOZ_UPPERCASE)
@@ -299,15 +304,16 @@ def get_rand_az_string_mixedcase(num_chars):
     str
         A random string containing uppercase and lowercase letters.
     """
-    assert num_chars > 0, "String length must be greater than 0."
+    if type(num_chars) != int:
+        raise TypeError(f"String length must be an integer.")
     if num_chars <= 0:
-        raise ValueError("String length float elements must be greater than 0.")
+        raise ValueError("String length must be greater than 0.")
     result = ""
     for i in range(num_chars):
         result += rand.choice(ATOZ_MIXEDCASE)
     return result
 
-def get_rand_az_string_list(list_length):
+def get_rand_mixedcase_az_string_list(list_length):
     """Generates a list with random string elements that only contain letters in the ranges a-z and A-Z.
 
     Parameters
@@ -320,9 +326,10 @@ def get_rand_az_string_list(list_length):
     list[str]
         A list with random string elements that each contain multiple a-z or A-Z letters.
     """
-    assert list_length > 0, "List length must be greater than 0."
+    if type(list_length) != int:
+        raise TypeError(f"Number of mixedcase az string elements must be an integer.")
     if list_length <= 0:
-        raise ValueError("List length must be greater than 0.")
+        raise ValueError("Number of mixedcase az string elements must be greater than 0.")
     min_string_length = 1
     max_string_length = LONG_STRING_LENGTH
     result = [""]*list_length
