@@ -11,60 +11,62 @@ from test_helper_by_delica.test_data_generators import *
 run_all_tests = True
 "bool : Boolean flag for whether all tests should be run, regardless of their boolean flags below."
 
-test_get_rand_bool = True
+test_get_rand_bool = False
 "bool : Boolean flag for whether or not to run the tests for the get_rand_bool function."
 test_get_rand_bool_list = True
 "bool : Boolean flag for whether or not to run the tests for the get_rand_bool_list function."
 
-test_get_rand_int = True
+test_get_rand_int = False
 "bool : Boolean flag for whether or not to run the tests for the get_rand_int function."
-test_get_rand_pos_int = True
+test_get_rand_pos_int = False
 "bool : Boolean flag for whether or not to run the tests for the get_rand_pos_int function."
-test_get_rand_neg_int = True
+test_get_rand_neg_int = False
 "bool : Boolean flag for whether or not to run the tests for the get_rand_neg_int function."
-test_get_rand_int_list = True
+test_get_rand_int_list = False
 "bool : Boolean flag for whether or not to run the tests for the get_rand_int_list function."
-test_get_rand_pos_int_list = True
+test_get_rand_pos_int_list = False
 "bool : Boolean flag for whether or not to run the tests for the get_rand_pos_int_list function."
-test_get_rand_neg_int_list = True
+test_get_rand_neg_int_list = False
 "bool : Boolean flag for whether or not to run the tests for the get_rand_neg_int_list function."
 
-test_get_rand_float = True
+test_get_rand_float = False
 "bool : Boolean flag for whether or not to run the tests for the get_rand_float function."
-test_get_rand_pos_float = True
+test_get_rand_pos_float = False
 "bool : Boolean flag for whether or not to run the tests for the get_rand_pos_float function."
-test_get_rand_neg_float = True
+test_get_rand_neg_float = False
 "bool : Boolean flag for whether or not to run the tests for the get_rand_neg_float function."
-test_get_rand_float_list = True
+test_get_rand_float_list = False
 "bool : Boolean flag for whether or not to run the tests for the get_rand_float_list function."
-test_get_rand_pos_float_list = True
+test_get_rand_pos_float_list = False
 "bool : Boolean flag for whether or not to run the tests for the get_rand_pos_float_list function."
-test_get_rand_neg_float_list = True
+test_get_rand_neg_float_list = False
 "bool : Boolean flag for whether or not to run the tests for the get_rand_neg_float_list function."
 
-test_get_rand_letter_lowercase = True
+test_get_rand_letter_lowercase = False
 "bool : Boolean flag for whether or not to run the tests for the get_rand_letter_lowercase function."
-test_get_rand_letter_uppercase = True
+test_get_rand_letter_uppercase = False
 "bool : Boolean flag for whether or not to run the tests for the get_rand_letter_uppercase function."
-test_get_rand_letter_mixedcase = True
+test_get_rand_letter_mixedcase = False
 "bool : Boolean flag for whether or not to run the tests for the get_rand_letter_mixedcase function."
-test_get_rand_letter_list = True
+test_get_rand_letter_list = False
 "bool : Boolean flag for whether or not to run the tests for the get_rand_letter_list function."
-test_get_rand_uppercase_letter_list = True
+test_get_rand_uppercase_letter_list = False
 "bool : Boolean flag for whether or not to run the tests for the get_rand_uppercase_letter_list function."
-test_get_rand_lowercase_letter_list = True
+test_get_rand_lowercase_letter_list = False
 "bool : Boolean flag for whether or not to run the tests for the get_rand_lowercase_letter_list function."
-test_get_rand_mixedcase_letter_list = True
-"bool : Boolean flag for whether or not to run the tests for the get_rand_mixedcase_letter_list function."
 
-test_get_rand_az_string_lowercase = True
+test_get_rand_az_string_lowercase = False
 "bool : Boolean flag for whether or not to run the tests for the get_rand_az_string_lowercase function."
-test_get_rand_az_string_uppercase = True
+test_get_rand_az_string_uppercase = False
 "bool : Boolean flag for whether or not to run the tests for the get_rand_az_string_uppercase function."
-test_get_rand_az_string_mixedcase = True
+test_get_rand_az_string_mixedcase = False
 "bool : Boolean flag for whether or not to run the tests for the get_rand_az_string_mixedcase function."
-test_get_rand_az_string_list = True
-"bool : Boolean flag for whether or not to run the tests for the get_rand_az_string_list function."
+test_get_rand_mixedcase_az_string_list = False
+"bool : Boolean flag for whether or not to run the tests for the get_rand_mixedcase_az_string_list function."
+test_get_rand_lowercase_az_string_list = False
+"bool : Boolean flag for whether or not to run the tests for the get_rand_lowercase_az_string_list function."
+test_get_rand_uppercase_az_string_list = False
+"bool : Boolean flag for whether or not to run the tests for the get_rand_uppercase_az_string_list function."
 
 if test_get_rand_bool or run_all_tests:
     # Make sure that get_rand_bool returns a boolean.
@@ -382,3 +384,57 @@ if test_get_rand_lowercase_letter_list or run_all_tests:
         IOPair(("",), (TypeError,)),
         IOPair((-1,), (ValueError,)),
     ], assert_type=ASSERT_EQUAL, test_desc="get_rand_lowercase_letter_list errors for incorrect parameters")
+
+if test_get_rand_az_string_lowercase or run_all_tests:
+    # Make sure that get_rand_az_string_lowercase returns a string.
+    run_func_tests(get_rand_az_string_lowercase, [
+        IOPair((1,),(str,)),
+    ], assert_type=ASSERT_TYPE, test_desc="get_rand_az_string_lowercase return type")
+    # Make sure that get_rand_az_string_lowercase returns a lowercase a-z letter.
+    run_func_tests(get_rand_az_string_lowercase, [
+        IOPair((1,), ("abcdefghijklmnopqrstuvwxyz",)),
+        IOPair((10,), ("abcdefghijklmnopqrstuvwxyz",)),
+        IOPair((25,), ("abcdefghijklmnopqrstuvwxyz",)),
+    ], assert_type=ASSERT_CHARS_IN_SET, test_desc="get_rand_az_string_lowercase return type")
+    # Make sure that get_rand_letter_lowercase returns a string of length one.
+    run_func_tests(get_rand_az_string_lowercase, [
+        IOPair((1,), (1,)),
+        IOPair((10,), (10,)),
+        IOPair((25,), (25,)),
+    ], assert_type=ASSERT_LENGTH, test_desc="get_rand_az_string_lowercase return length")
+
+if test_get_rand_az_string_uppercase or run_all_tests:
+    # Make sure that get_rand_az_string_uppercase returns a string.
+    run_func_tests(get_rand_az_string_uppercase, [
+        IOPair((1,),(str,)),
+    ], assert_type=ASSERT_TYPE, test_desc="get_rand_az_string_uppercase return type")
+    # Make sure that get_rand_az_string_uppercase returns a uppercase a-z letter.
+    run_func_tests(get_rand_az_string_uppercase, [
+        IOPair((1,), ("ABCDEFGHIJKLMNOPQRSTUVWXYZ",)),
+        IOPair((10,), ("ABCDEFGHIJKLMNOPQRSTUVWXYZ",)),
+        IOPair((25,), ("ABCDEFGHIJKLMNOPQRSTUVWXYZ",)),
+    ], assert_type=ASSERT_CHARS_IN_SET, test_desc="get_rand_az_string_uppercase return type")
+    # Make sure that get_rand_letter_uppercase returns a string of length one.
+    run_func_tests(get_rand_az_string_uppercase, [
+        IOPair((1,), (1,)),
+        IOPair((10,), (10,)),
+        IOPair((25,), (25,)),
+    ], assert_type=ASSERT_LENGTH, test_desc="get_rand_az_string_uppercase return length")
+
+if test_get_rand_az_string_mixedcase or run_all_tests:
+    # Make sure that get_rand_az_string_mixedcase returns a string.
+    run_func_tests(get_rand_az_string_mixedcase, [
+        IOPair((1,),(str,)),
+    ], assert_type=ASSERT_TYPE, test_desc="get_rand_az_string_mixedcase return type")
+    # Make sure that get_rand_az_string_mixedcase returns a mixedcase a-z letter.
+    run_func_tests(get_rand_az_string_mixedcase, [
+        IOPair((1,), ("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ",)),
+        IOPair((10,), ("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ",)),
+        IOPair((25,), ("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ",)),
+    ], assert_type=ASSERT_CHARS_IN_SET, test_desc="get_rand_az_string_mixedcase return type")
+    # Make sure that get_rand_letter_mixedcase returns a string of length one.
+    run_func_tests(get_rand_az_string_uppercase, [
+        IOPair((1,), (1,)),
+        IOPair((10,), (10,)),
+        IOPair((25,), (25,)),
+    ], assert_type=ASSERT_LENGTH, test_desc="get_rand_az_string_mixedcase return length")

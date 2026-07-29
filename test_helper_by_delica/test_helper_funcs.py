@@ -44,6 +44,9 @@ ASSERT_IN_SET = "assert_in_set"
 ASSERT_LIST_ELEMENTS_IN_SET = "assert_list_elements_in_set"
 """str: Constant string label for the assertion type that checks whether all elements in an output list are present 
 in a provided set."""
+ASSERT_CHARS_IN_SET = "assert_chars_in_set"
+"""str: Constant string label for the assertion type that checks whether all characters in an output string are present 
+in a provided set."""
 ASSERT_TYPE = "assert_output_is_type"
 """str: Constant string label for the assertion type that checks whether test outputs have the expected data types."""
 ASSERT_LIST_ELEMENTS_TYPE = "assert_list_elements_type"
@@ -54,8 +57,8 @@ ASSERT_LENGTH = "assert_length"
 variable type that can be used with the built-in length function len() has an expected number of elements."""
 ASSERT_TYPES = [ASSERT_EQUAL, ASSERT_LESS, ASSERT_LIST_ELEMENTS_LESS, ASSERT_LESS_OR_EQUAL,
                 ASSERT_LIST_ELEMENTS_LESS_OR_EQUAL, ASSERT_GREATER, ASSERT_LIST_ELEMENTS_GREATER,
-                ASSERT_GREATER_OR_EQUAL, ASSERT_RAISES, ASSERT_IN_SET, ASSERT_LIST_ELEMENTS_IN_SET, ASSERT_TYPE,
-                ASSERT_LIST_ELEMENTS_TYPE, ASSERT_LENGTH]
+                ASSERT_GREATER_OR_EQUAL, ASSERT_RAISES, ASSERT_IN_SET, ASSERT_LIST_ELEMENTS_IN_SET, ASSERT_CHARS_IN_SET,
+                ASSERT_TYPE, ASSERT_LIST_ELEMENTS_TYPE, ASSERT_LENGTH]
 """list: List of all the assertion types that are currently supported in this module."""
 
 MAX_PRINTED_LIST_ITEMS = 5
@@ -230,6 +233,14 @@ def compare_output_tuples(output_tuple1, output_tuple2, compare_type=ASSERT_EQUA
                     while index < len(output_val_1) and all_outputs_correct:
                         element = output_val_1[index]
                         all_outputs_correct &= element in output_val_2
+                        index += 1
+            elif comp_type == ASSERT_CHARS_IN_SET:
+                all_outputs_correct &= type(output_val_1) == str
+                if all_outputs_correct:
+                    index = 0
+                    while index < len(output_val_1) and all_outputs_correct:
+                        char_element = output_val_1[index]
+                        all_outputs_correct &= char_element in output_val_2
                         index += 1
             elif comp_type == ASSERT_TYPE:
                 if isinstance(output_val_2, type) and isinstance(output_val_1, type):
