@@ -324,7 +324,7 @@ def get_rand_mixedcase_az_string_list(list_length):
     Returns
     -------
     list[str]
-        A list with random string elements that each contain multiple a-z or A-Z letters.
+        A list with random string elements that each contain one or more a-z or A-Z letters.
     """
     if type(list_length) != int:
         raise TypeError(f"Number of mixedcase az string elements must be an integer.")
@@ -336,6 +336,56 @@ def get_rand_mixedcase_az_string_list(list_length):
     for i in range(list_length):
         string_length = rand.randint(min_string_length, max_string_length+1)
         result[i] = get_rand_az_string_mixedcase(string_length)
+    return result
+
+def get_rand_uppercase_az_string_list(list_length):
+    """Generates a list with random string elements that only contain letters in the range A-Z.
+
+    Parameters
+    ----------
+    list_length : int
+        Length of the list to generate.
+
+    Returns
+    -------
+    list[str]
+        A list with random string elements that each contain one or more A-Z letters.
+    """
+    if type(list_length) != int:
+        raise TypeError(f"Number of uppercase az string elements must be an integer.")
+    if list_length <= 0:
+        raise ValueError("Number of uppercase az string elements must be greater than 0.")
+    min_string_length = 1
+    max_string_length = LONG_STRING_LENGTH
+    result = [""]*list_length
+    for i in range(list_length):
+        string_length = rand.randint(min_string_length, max_string_length+1)
+        result[i] = get_rand_az_string_uppercase(string_length)
+    return result
+
+def get_rand_lowercase_az_string_list(list_length):
+    """Generates a list with random string elements that only contain letters in the range a-z.
+
+    Parameters
+    ----------
+    list_length : int
+        Length of the list to generate.
+
+    Returns
+    -------
+    list[str]
+        A list with random string elements that each contain one or more a-z letters.
+    """
+    if type(list_length) != int:
+        raise TypeError(f"Number of lowercase az string elements must be an integer.")
+    if list_length <= 0:
+        raise ValueError("Number of lowercase az string elements must be greater than 0.")
+    min_string_length = 1
+    max_string_length = LONG_STRING_LENGTH
+    result = [""]*list_length
+    for i in range(list_length):
+        string_length = rand.randint(min_string_length, max_string_length+1)
+        result[i] = get_rand_az_string_lowercase(string_length)
     return result
 
 
