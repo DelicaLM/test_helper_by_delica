@@ -34,7 +34,7 @@ test_with_always_false = False
 "bool : Boolean flag for whether to test the testing library on a function than always returns False."
 test_with_is_even = False
 "bool : Boolean flag for whether to test the testing library on a function than outputs whether an integer is even."
-test_with_list_has_val_with_type_errors = True
+test_with_list_has_val_with_type_errors = False
 "bool : Boolean flag for whether to test the library on a function that checks if a list contains a certain value."
 
 
@@ -170,7 +170,7 @@ def list_has_val_with_type_errors(list_to_search, int_val):
 
 
 # Test the run-single-test function in the test helper package.
-if test_run_single_test:
+if test_run_single_test or run_all_tests:
     print("TESTING RUN_SINGLE_TEST FUNCTION")
     if test_with_no_param_no_return:
         #Test whether the run-single-test function correctly handles a test function with no parameters and no output.
@@ -190,7 +190,7 @@ if test_run_single_test:
                                  expected_output=(AssertionError,),
                                  test_desc="run-single-test function on test function with no parameters and no return "
                                            + "value (fail case)")
-    if test_with_one_param_no_return:
+    if test_with_one_param_no_return or run_all_tests:
         #Test whether the run-single-test function correctly handles a test function with one parameter and no return value.
         #Success Case: The run-single-test function should conclude that the one-param-no-return function
         #              is working properly when it returns nothing.
@@ -216,7 +216,7 @@ if test_run_single_test:
                                  expected_output=(AssertionError,),
                                  test_desc="run-single-test function on test function with one parameter and no "
                                            + "return value (fail case)")
-    if test_with_two_param_no_return:
+    if test_with_two_param_no_return or run_all_tests:
         #Test whether the run-single-test function correctly handles a test function with two parameters and no return value.
         #Success Case: The run-single-test function should conclude that the two-param-no-return function
         #              is working properly when it returns nothing.
@@ -242,7 +242,7 @@ if test_run_single_test:
                                  expected_output=(AssertionError,),
                                  test_desc="run-single-test function on test function with two parameters and no "
                                            + "return value (fail case)")
-    if test_with_no_param_one_return:
+    if test_with_no_param_one_return or run_all_tests:
         # Test whether the run-single-test function correctly handles a test function with no parameters and one
         # return value.
         # Success Case: The run-single-test function should conclude that the no-param-one-return function
@@ -278,7 +278,7 @@ if test_run_single_test:
                                  expected_output=(AssertionError,),
                                  test_desc="run-single-test function on test function with no parameters and one "
                                            + "return value (fail case)")
-    if test_with_no_param_two_return:
+    if test_with_no_param_two_return or run_all_tests:
         # Test whether the run-single-test function correctly handles a test function with no parameters and two
         # return values.
         # Success Case: The run-single-test function should conclude that the no-param-two-return function
@@ -316,9 +316,9 @@ if test_run_single_test:
                                            + " integer return values (fail case)")
 
 # Test the run-func-tests function from the test helper package.
-if test_run_func_tests:
+if test_run_func_tests or run_all_tests:
     print("TESTING RUN_FUNC_TESTS FUNCTION")
-    if test_with_no_param_no_return:
+    if test_with_no_param_no_return or run_all_tests:
         # Test whether the run-func-tests function correctly handles a test function with no parameters and no return values.
         # Success Case: The run-func-tests function should conclude that the no-param-no-return function
         #              is working properly when it returns nothing.
@@ -350,7 +350,7 @@ if test_run_func_tests:
                                  expected_output=(AssertionError,),
                                  test_desc="run-func-tests function on test function with no parameters and no return "
                                            +"value (mixed success/fail case)")
-    if test_with_one_param_no_return:
+    if test_with_one_param_no_return or run_all_tests:
         # Test whether the run-func-test function correctly handles a test function with one parameter and no output.
         # Success Case: The run-single-test function should conclude that the no-param-no-return function
         #              is working properly when it returns nothing.
@@ -386,9 +386,8 @@ if test_run_func_tests:
                                  expected_output=(AssertionError,),
                                  test_desc="run-func-tests function on test function with one parameter and no return "
                                            + "value (mixed success/fail case)")
-
-if test_test_bool_func:
-    if test_with_always_true:
+if test_test_bool_func or run_all_tests:
+    if test_with_always_true or run_all_tests:
         # Test whether the test-bool-func function correctly handles a test function that always returns True.
         # Success Case: The test-bool-func function should conclude that the always-true function is working properly
         #               when it returns True.
@@ -414,7 +413,7 @@ if test_test_bool_func:
                                  test_input=(always_true, [()], [()], "always true function"),
                                  expected_output=(AssertionError,),
                                  test_desc="test-bool-func on test function that always returns True (fail case)")
-    if test_with_always_false:
+    if test_with_always_false or run_all_tests:
         # Test whether the test-bool-func function correctly handles a test function that always returns False.
         # Success Case: The test-bool-func function should conclude that the always-false function is working properly
         #               when it returns False.
@@ -440,7 +439,7 @@ if test_test_bool_func:
                                  test_input=(always_false, [()], [()], "always false function"),
                                  expected_output=(AssertionError,),
                                  test_desc="test-bool-func on test function that always returns False (fail case)")
-    if test_with_is_even:
+    if test_with_is_even or run_all_tests:
         # Test whether the test-bool-func function correctly handles a test function that checks if an integer is even.
         # Success Case: The test-bool-func function should conclude that the is-even function is working properly
         #               when it returns True for even integers and False for odd integers.
@@ -499,7 +498,7 @@ if test_test_bool_func:
                                  expected_output=(False,),
                                  test_desc="test-bool-func on test function that determines whether an integer is even "
                                            + "(fail case)")
-    if test_with_list_has_val_with_type_errors:
+    if test_with_list_has_val_with_type_errors or run_all_tests:
         # Test whether the test-bool-func function correctly handles a test function that checks if an integer value
         # is in a list and raises TypeErrors if the two parameters are not, respectively, a list and an integer.
         # Success Case: The test-bool-func function should conclude that the value in list function is working properly
