@@ -156,5 +156,5 @@ For additional information on how this package can accommodate your testing need
 ## Citation
 To reference this Python package, please use the following citation.
 ### APA Format
-Leboe-McGowan, D. S. (2026). Test helper by delica (Version 1.0.2) [Source code]. GitHub. 
+Leboe-McGowan, D. S. (2026). Test helper by delica (Version 1.0.X) [Source code]. GitHub. 
 [https://github.com/DelicaLM/test_helper_by_delica](https://github.com/DelicaLM/test_helper_by_delica)
