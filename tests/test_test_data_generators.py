@@ -451,10 +451,10 @@ if test_get_rand_mixedcase_az_string_list or run_all_tests:
         IOPair((10,), (10,)),
         IOPair((25,), (25,)),
     ], assert_type=ASSERT_LENGTH, test_desc="get_rand_mixedcase_az_string_list return length")
-    # # Make sure that get_rand_mixedcase_az_string_list returns a list that only contains a-z or A-Z letters.
-    # run_func_tests(get_rand_mixedcase_az_string_list, [
-    #     IOPair((25,), ("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ",)),
-    # ], assert_type=ASSERT_LIST_ELEMENTS_IN_SET, test_desc="get_rand_mixedcase_az_string_list return values")
+    # Make sure that get_rand_mixedcase_az_string_list returns a list that only contain strings with a-z or A-Z letters.
+    run_func_tests(get_rand_mixedcase_az_string_list, [
+        IOPair((25,), ("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ",)),
+    ], assert_type=ASSERT_LIST_ELEMENTS_CHARS_IN_SET, test_desc="get_rand_mixedcase_az_string_list return values")
     # Make sure that get_rand_mixedcase_az_string_list raises errors for incorrect parameters.
     run_func_tests(get_rand_mixedcase_az_string_list, [
         IOPair(("",), (TypeError,)),
