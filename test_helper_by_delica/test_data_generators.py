@@ -5,15 +5,26 @@ import random as rand
 
 # Set constants for generating random values.
 LARGE_INT = 100000000
+"""int: Large positive integer constant (used as the maximum when selecting random integers)."""
 SHORT_LIST_LENGTH = 10
+"""int: Constant for the length of \"short\" lists."""
 LONG_LIST_LENGTH = 250
+"""int: Constant for the length of \"long\" lists."""
 ATOZ_LOWERCASE = "abcdefghijklmnopqrstuvwxyz"
+"""str: String containing all lowercase a-z letters (used for generating lowercase strings)."""
 ATOZ_UPPERCASE = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+"""str: String containing all uppercase A-Z letters (used for generating uppercase strings)."""
 ATOZ_MIXEDCASE = ATOZ_LOWERCASE + ATOZ_UPPERCASE
+"""str: String containing all lowercase a-z and uppercase A-Z letters (used for generating 
+lowercase strings)."""
 DIGITS = "0123456789"
+"""str: String containing all 0-9 digits (used for generating strings with number characters)."""
 MISC_SYMBOLS = "+?/%^&*@!#$()[]{}\'\"\n"
+"""str: String containing non-alphanumeric characters (used for generating strings with miscellaneous characters)."""
 SHORT_STRING_LENGTH = 5
+"""int: Constant for the length of \"short\" strings."""
 LONG_STRING_LENGTH = 50
+"""int: Constant for the length of \"long\" strings."""
 
 def get_rand_bool():
     """Randomly returns True or False with equal probability."""
