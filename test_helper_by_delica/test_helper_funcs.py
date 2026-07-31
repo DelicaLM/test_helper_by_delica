@@ -16,22 +16,55 @@ to the expected outputs."""
 ASSERT_LESS = "assert_less_than"
 """str: Constant string label for the assertion type that checks whether test outputs are less than
 expected output values."""
+ASSERT_LIST_ELEMENTS_LESS = "assert_list_elements_less_than"
+"""str: Constant string label for the assertion type that checks whether all values in an output list are less than
+a specified value."""
 ASSERT_LESS_OR_EQUAL = "assert_less_or_equal"
 """str: Constant string label for the assertion type that checks whether test outputs are less than or equal
 to the expected outputs."""
+ASSERT_LIST_ELEMENTS_LESS_OR_EQUAL = "assert_list_elements_less_than_or_equal"
+"""str: Constant string label for the assertion type that checks whether all values in an output list are less than
+or equal to a specified value."""
 ASSERT_GREATER = "assert_greater_than"
 """str: Constant string label for the assertion type that checks whether test outputs are greater
 than the expected output values."""
+ASSERT_LIST_ELEMENTS_GREATER = "assert_list_elements_greater_than"
+"""str: Constant string label for the assertion type that checks whether all values in an output list are greater than
+a specified value."""
 ASSERT_GREATER_OR_EQUAL = "assert_greater_or_equal"
 """str: Constant string label for the assertion type that checks whether test outputs are greater than or equal
 to the expected outputs."""
+ASSERT_LIST_ELEMENTS_GREATER_OR_EQUAL = "assert_list_elements_greater_than_or_equal"
+"""str: Constant string label for the assertion type that checks whether all values in an output list are greater than
+or equal to a specified value."""
 ASSERT_RAISES = "assert_raises"
 """str: Constant string label for the assertion type that checks whether the test function raises an Exception."""
-ASSERT_TYPE = "assert_output_is_type" # use if the test should verify whether the output is of a certain type
+ASSERT_IN_SET = "assert_in_set"
+"""str: Constant string label for the assertion type that checks whether test outputs are elements in a provided set."""
+ASSERT_LIST_ELEMENTS_IN_SET = "assert_list_elements_in_set"
+"""str: Constant string label for the assertion type that checks whether all elements in an output list are present 
+in a provided set."""
+ASSERT_CHARS_IN_SET = "assert_chars_in_set"
+"""str: Constant string label for the assertion type that checks whether all characters in an output string are present 
+in a provided set."""
+ASSERT_LIST_ELEMENTS_CHARS_IN_SET = "assert_list_elements_chars_in_set"
+"""str: Constant string label for the assertion type that checks whether all elements in an output set only contain 
+characters from a provided set."""
+ASSERT_TYPE = "assert_output_is_type"
 """str: Constant string label for the assertion type that checks whether test outputs have the expected data types."""
-ASSERT_TYPES = [ASSERT_EQUAL, ASSERT_LESS, ASSERT_LESS_OR_EQUAL, ASSERT_GREATER, ASSERT_GREATER_OR_EQUAL,
-                ASSERT_RAISES, ASSERT_TYPE]
+ASSERT_LIST_ELEMENTS_TYPE = "assert_list_elements_type"
+"""str: Constant string label for the assertion type that checks whether all elements in an output list have the 
+expected data types."""
+ASSERT_LENGTH = "assert_length"
+"""str: Constant string label for the assertion type that checks whether an output list, string, tuple, or any other
+variable type that can be used with the built-in length function len() has an expected number of elements."""
+ASSERT_TYPES = [ASSERT_EQUAL, ASSERT_LESS, ASSERT_LIST_ELEMENTS_LESS, ASSERT_LESS_OR_EQUAL,
+                ASSERT_LIST_ELEMENTS_LESS_OR_EQUAL, ASSERT_GREATER, ASSERT_LIST_ELEMENTS_GREATER,
+                ASSERT_GREATER_OR_EQUAL, ASSERT_RAISES, ASSERT_IN_SET, ASSERT_LIST_ELEMENTS_IN_SET, ASSERT_CHARS_IN_SET,
+                ASSERT_LIST_ELEMENTS_CHARS_IN_SET, ASSERT_TYPE, ASSERT_LIST_ELEMENTS_TYPE, ASSERT_LENGTH]
 """list: List of all the assertion types that are currently supported in this module."""
+
+MAX_PRINTED_LIST_ITEMS = 5
 
 def make_tuple_str(input_tuple):
     """Creates a more readable string representation of a tuple.
@@ -61,14 +94,20 @@ def make_tuple_str(input_tuple):
             input_items.append(item)
     # Add each tuple item to the string.
     for item in input_items:
-        if isinstance(item, list): # If the item is a list, we iterate over each of its elements to make sure that
-                                   # we add their correct string forms to the list (otherwise str(list) can give the
-                                   # obj.__repr__() string instead of obj.__str__()).
+        if isinstance(item, list):
+            # If the item is a list, we iterate over each of its elements to make sure that
+            # we add their correct string forms to the list (otherwise str(list) can give the
+            # obj.__repr__() string instead of obj.__str__()).
             result += "["
-            for list_item in item:
-                result += str(list_item)
-                if list_item != item[-1]:
+            index = 0
+            while index < len(item) and index < MAX_PRINTED_LIST_ITEMS:
+                curr_item = item[index]
+                result += str(curr_item)
+                if index < len(item) - 1:
                     result += ", "
+                index += 1
+            if len(item) > MAX_PRINTED_LIST_ITEMS:
+                result += "..., " + str(item[-1])
             result += "]"
         elif callable(item) or isinstance(item, type): # If the item is a class or function, make sure that we only
                                                        # print its name.
@@ -150,12 +189,74 @@ def compare_output_tuples(output_tuple1, output_tuple2, compare_type=ASSERT_EQUA
                 all_outputs_correct &= output_val_1 == output_val_2
             elif comp_type == ASSERT_LESS:
                 all_outputs_correct &= output_val_1 < output_val_2
+            elif comp_type == ASSERT_LIST_ELEMENTS_LESS:
+                all_outputs_correct &= type(output_val_1) == list
+                if all_outputs_correct:
+                    index = 0
+                    while index < len(output_val_1) and all_outputs_correct:
+                        element = output_val_1[index]
+                        all_outputs_correct &= element < output_val_2
+                        index += 1
             elif comp_type == ASSERT_LESS_OR_EQUAL:
                 all_outputs_correct &= output_val_1 <= output_val_2
+            elif comp_type == ASSERT_LIST_ELEMENTS_LESS_OR_EQUAL:
+                all_outputs_correct &= type(output_val_1) == list
+                if all_outputs_correct:
+                    index = 0
+                    while index < len(output_val_1) and all_outputs_correct:
+                        element = output_val_1[index]
+                        all_outputs_correct &= element <= output_val_2
+                        index += 1
             elif comp_type == ASSERT_GREATER:
                 all_outputs_correct &= output_val_1 > output_val_2
+            elif comp_type == ASSERT_LIST_ELEMENTS_GREATER:
+                all_outputs_correct &= type(output_val_1) == list
+                if all_outputs_correct:
+                    index = 0
+                    while index < len(output_val_1) and all_outputs_correct:
+                        element = output_val_1[index]
+                        all_outputs_correct &= element > output_val_2
+                        index += 1
             elif comp_type == ASSERT_GREATER_OR_EQUAL:
                 all_outputs_correct &= output_val_1 >= output_val_2
+            elif comp_type == ASSERT_LIST_ELEMENTS_GREATER_OR_EQUAL:
+                all_outputs_correct &= type(output_val_1) == list
+                if all_outputs_correct:
+                    index = 0
+                    while index < len(output_val_1) and all_outputs_correct:
+                        element = output_val_1[index]
+                        all_outputs_correct &= element >= output_val_2
+                        index += 1
+            elif comp_type == ASSERT_IN_SET:
+                all_outputs_correct &= output_val_1 in output_val_2
+            elif comp_type == ASSERT_LIST_ELEMENTS_IN_SET:
+                all_outputs_correct &= type(output_val_1) == list
+                if all_outputs_correct:
+                    index = 0
+                    while index < len(output_val_1) and all_outputs_correct:
+                        element = output_val_1[index]
+                        all_outputs_correct &= element in output_val_2
+                        index += 1
+            elif comp_type == ASSERT_CHARS_IN_SET:
+                all_outputs_correct &= type(output_val_1) == str
+                if all_outputs_correct:
+                    index = 0
+                    while index < len(output_val_1) and all_outputs_correct:
+                        char_element = output_val_1[index]
+                        all_outputs_correct &= char_element in output_val_2
+                        index += 1
+            elif comp_type == ASSERT_LIST_ELEMENTS_CHARS_IN_SET:
+                all_outputs_correct &= type(output_val_1) == list
+                if all_outputs_correct:
+                    index = 0
+                    while index < len(output_val_1) and all_outputs_correct:
+                        element = output_val_1[index]
+                        all_outputs_correct &= type(element) == str
+                        char_index = 0
+                        while char_index < len(element) and all_outputs_correct:
+                            all_outputs_correct &= element[char_index] in output_val_2
+                            char_index += 1
+                        index += 1
             elif comp_type == ASSERT_TYPE:
                 if isinstance(output_val_2, type) and isinstance(output_val_1, type):
                     all_outputs_correct &= output_val_1 == output_val_2
@@ -165,6 +266,19 @@ def compare_output_tuples(output_tuple1, output_tuple2, compare_type=ASSERT_EQUA
                     all_outputs_correct &= isinstance(output_val_2, output_val_1)
                 else:
                     all_outputs_correct &= type(output_val_1) == type(output_val_2)
+            elif comp_type == ASSERT_LIST_ELEMENTS_TYPE:
+                all_outputs_correct &= type(output_val_1) == list
+                if all_outputs_correct:
+                    index = 0
+                    while index < len(output_val_1) and all_outputs_correct:
+                        element = output_val_1[index]
+                        all_outputs_correct &= type(element) == output_val_2
+                        index += 1
+            elif comp_type == ASSERT_LENGTH:
+                try:
+                    all_outputs_correct &= len(output_val_1) == output_val_2
+                except TypeError:
+                    all_outputs_correct = False
         # Only return True if all of the outputs were correct based on their comparison type.
         result = all_outputs_correct
     return result
@@ -272,6 +386,7 @@ def run_single_test(test_func, test_input=(), expected_output=(), assert_type=AS
         assert error_type is Exception or issubclass(error_type, Exception)
         try:
             test_output = test_func(*test_input)
+            test_output_string = make_tuple_str(test_output)
             end_time = time.time()
         except error_type as e:
             # In this case, the test succeeds if we end up in the except branch for the
@@ -279,6 +394,7 @@ def run_single_test(test_func, test_input=(), expected_output=(), assert_type=AS
             end_time = time.time()
             test_succeeded = True
             test_output = error_type
+            test_output_string = error_type.__name__
             print(f"ERROR MESSAGE: {e}")
     else: #if the expected output is not an Exception
         # In this scenario, the test fails if any Exceptions are raised.
@@ -288,6 +404,7 @@ def run_single_test(test_func, test_input=(), expected_output=(), assert_type=AS
         start_time = time.time()
         try:
             test_output = test_func(*test_input)
+            test_output_string = make_tuple_str(test_output)
             end_time = time.time()
         except Exception as e:
             # If an unexpected error is raised, we print the information out to the user.
@@ -295,6 +412,7 @@ def run_single_test(test_func, test_input=(), expected_output=(), assert_type=AS
             unwanted_error_raised = True
             unwanted_error_type = type(e)
             test_output = unwanted_error_type
+            test_output_string = unwanted_error_type.__name__
             test_succeeded = False
             unwanted_error_type_name = unwanted_error_type.__name__
             print(f"TEST FUNCTION RAISED UNEXPECTED {unwanted_error_type_name}\n   ERROR MESSAGE: {e}")
@@ -308,14 +426,21 @@ def run_single_test(test_func, test_input=(), expected_output=(), assert_type=AS
         fail_msg = f"FAIL: {test_desc.upper()} FAILED "
         if include_input_in_error_msg:
             fail_msg += f"WITH INPUT = {input_string} "
-        fail_msg += f"(EXPECTED OUTPUT = {expected_output}, ACTUAL_OUTPUT = {test_output})"
+        if assert_type == ASSERT_TYPE:
+            fail_msg += f"(EXPECTED OUTPUT TYPE = {expected_output.__name__}, ACTUAL_OUTPUT = {test_output_string})"
+        elif assert_type == ASSERT_LIST_ELEMENTS_TYPE:
+            fail_msg += f"(EXPECTED OUTPUT TYPE = list[{expected_output.__name__}], ACTUAL_OUTPUT = {test_output_string})"
+        elif assert_type == ASSERT_LIST_ELEMENTS_IN_SET:
+            fail_msg += f"(EXPECTED OUTPUT VALUES = {str(expected_output)}, ACTUAL_OUTPUT = {test_output_string})"
+        else:
+            fail_msg += f"(EXPECTED OUTPUT = {expected_output_string}, ACTUAL_OUTPUT = {test_output_string})"
         # Check if we should raise an Assertion Error to alert the user that their test failed.
         if raise_error_on_fail:
             raise AssertionError(fail_msg)
         else:
             print(fail_msg)
     else:
-        print(f"SUCCESS: input={input_string}\n         output={expected_output_string}")
+        print(f"SUCCESS: input={input_string}\n         output={test_output_string}")
         test_runtime = end_time - start_time
         print(f"TEST RUNTIME: {test_runtime:.20f} seconds")
     if add_new_line:

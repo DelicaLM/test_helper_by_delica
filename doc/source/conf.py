@@ -62,6 +62,7 @@ napoleon_numpy_docstring = True
 autodoc2_packages = [
     "../../test_helper_by_delica/IOPair.py",
 "../../test_helper_by_delica/test_helper_funcs.py",
+"../../test_helper_by_delica/test_data_generators.py",
     "../../examples/bool_function_examples.py",
 "../../examples/int_function_examples.py",
 "../../examples/list_function_examples.py",
