@@ -1,5 +1,6 @@
 from .test_helper_funcs import *
 from .IOPair import *
+from .test_data_generators import *
 from importlib.metadata import version, PackageNotFoundError
 
 __version__ = "unknown"
@@ -8,4 +9,4 @@ try:
 except PackageNotFoundError:
     pass
 
-__all__ = ["test_bool_func", "IOPair"]
+__all__ = ["test_helper_funcs", "IOPair", "test_data_generators"]
