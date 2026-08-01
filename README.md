@@ -23,7 +23,7 @@ def always_true():
 ````
 Now we can call the boolean testing function from the package to check whether always_true returns the expected result.
 ````
-import test_helper_by_delica 
+import test_helper_by_delica
 test_helper_by_delica.test_bool_func(always_true, true_inputs=[()], test_desc="always true function")
 ````
 This function call generates the following output:
