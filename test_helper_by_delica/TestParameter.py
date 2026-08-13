@@ -1,10 +1,10 @@
 
 
 class TestParameter:
-    def __init__(self, par_name, par_type):
+    def __init__(self, par_name, par_type=None, default_val=None):
         self.par_name = par_name
-        self.par_type = None
-        self.default_val = None
+        self.par_type = par_type
+        self.default_val = default_val
         self.min_val = None
         self.max_val = None
         self.other_illegal_values = []

@@ -7,10 +7,25 @@ class TestSuite:
         self.test_params = []
         func_sig = inspect.signature(func_handle)
         par_details = inspect.getfullargspec(func_handle)
+        par_names = []
         for par in par_details.args:
-            new_test_par = TestParameter(par)
-            self.test_params.append(par)
+            par_names.append(par)
+        # for par in par_details.args:
+        #     new_test_par = TestParameter(par)
+        #     self.test_params.append(par)
         test = 0
+
+    def set_par_details(self, par_name, par_type = None, default_val = None, min_val = None, max_val = None,
+                        other_illegal_values = None):
+        par_index = 0
+        found_par = False
+        while par_index < len(self.test_params) and not found_par:
+            found_par = self.test_params[par_index].par_name == par_name
+            if not found_par:
+                par_index += 1
+        if not found_par:
+            raise ValueError(f"Parameter with name {par_name} not found in the Test Suite for the function "
+                             + f"{self.test_func.__name__},")
 
 
 
