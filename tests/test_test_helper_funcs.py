@@ -372,7 +372,7 @@ if test_run_func_tests or run_all_tests:
         # Fail Case: Make sure that the run-func-tests function raises an Assertion error if the required input
         #            argument is missing.
         test_lib.run_single_test(test_lib.run_func_tests,
-                                 test_input=(no_param_no_return, [IOPair((), ())], test_lib.ASSERT_EQUAL,
+                                 test_input=(one_param_no_return, [IOPair((), ())], test_lib.ASSERT_EQUAL,
                                              "function with no parameters and no return value"),
                                  expected_output=(AssertionError,),
                                  test_desc="run-func-tests function on test function with one parameter and no return "

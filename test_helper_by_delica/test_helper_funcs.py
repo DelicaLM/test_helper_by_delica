@@ -174,7 +174,9 @@ def compare_output_tuples(output_tuple1, output_tuple2, compare_type=ASSERT_EQUA
         while len(compare_types) < len(output_tuple1):
             compare_types.append(last_compare_type)
     # Check if the tuples have the same lengths (if not, we instantly know that the comparison result will be false).
-    if len(output_tuple1) == len(output_tuple2):
+    if output_tuple1 == () or output_tuple1 == (None,):
+        result = output_tuple2 == () or output_tuple2 == (None,)
+    elif len(output_tuple1) == len(output_tuple2):
         # Make sure that we have the correct number of comparison types.
         assert len(compare_types) == len(output_tuple1)
         # Start by assuming that the outputs are all correct.
