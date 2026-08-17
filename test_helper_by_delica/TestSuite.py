@@ -1,4 +1,5 @@
 import inspect
+import docstring_parser
 from TestParameter import TestParameter
 
 class TestSuite:
@@ -6,13 +7,13 @@ class TestSuite:
         self.test_func = func_handle
         self.test_params = []
         func_sig = inspect.signature(func_handle)
-        par_details = inspect.getfullargspec(func_handle)
+        par_sig_details = inspect.getfullargspec(func_handle)
         par_names = []
-        for par in par_details.args:
+        for par in par_sig_details.args:
             par_names.append(par)
-        # for par in par_details.args:
-        #     new_test_par = TestParameter(par)
-        #     self.test_params.append(par)
+        for par_name in par_names:
+            new_test_par = TestParameter(par_name)
+            self.test_params.append(new_test_par)
         test = 0
 
     def set_par_details(self, par_name, par_type = None, default_val = None, min_val = None, max_val = None,
