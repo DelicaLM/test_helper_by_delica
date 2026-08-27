@@ -1,6 +1,7 @@
 import inspect
 import docstring_parser
 from TestParameter import TestParameter
+import test_helper_funcs as test_lib
 
 class TestSuite:
     def __init__(self, func_handle):
@@ -23,14 +24,6 @@ class TestSuite:
             new_param = TestParameter(par_name, par_type, par_default)
             self.test_params.append(new_param)
             test = 0
-        # par_sig_details = inspect.getfullargspec(func_handle)
-        # par_names = []
-        # for par in par_sig_details.args:
-        #     par_names.append(par)
-        # for par_name in par_names:
-        #     new_test_par = TestParameter(par_name)
-        #     self.test_params.append(new_test_par)
-        test = 0
 
     def set_par_details(self, par_name, par_type = None, default_val = None, min_val = None, max_val = None,
                         other_illegal_values = None):
@@ -43,6 +36,11 @@ class TestSuite:
         if not found_par:
             raise ValueError(f"Parameter with name {par_name} not found in the Test Suite for the function "
                              + f"{self.test_func.__name__},")
+
+    def run_type_tests(self):
+        io_pairs = []
+        test_lib.run_func_tests(self.test_func, io_pairs)
+
 
 
 
