@@ -6,14 +6,30 @@ class TestSuite:
     def __init__(self, func_handle):
         self.test_func = func_handle
         self.test_params = []
+        self.return_type = None
+        self.return_types = []
         func_sig = inspect.signature(func_handle)
-        par_sig_details = inspect.getfullargspec(func_handle)
-        par_names = []
-        for par in par_sig_details.args:
-            par_names.append(par)
-        for par_name in par_names:
-            new_test_par = TestParameter(par_name)
-            self.test_params.append(new_test_par)
+        if func_sig.return_annotation != inspect.Parameter.empty and isinstance(func_sig.return_annotation, type):
+            self.return_type = func_sig.return_annotation
+            self.return_types.append(self.return_type)
+        for name, param in func_sig.parameters.items():
+            par_name = name
+            par_type = None
+            par_default = None
+            if param.annotation != inspect.Parameter.empty and isinstance(param.annotation, type):
+                par_type = param.annotation
+            if param.default != inspect.Parameter.empty:
+                par_default = param.default
+            new_param = TestParameter(par_name, par_type, par_default)
+            self.test_params.append(new_param)
+            test = 0
+        # par_sig_details = inspect.getfullargspec(func_handle)
+        # par_names = []
+        # for par in par_sig_details.args:
+        #     par_names.append(par)
+        # for par_name in par_names:
+        #     new_test_par = TestParameter(par_name)
+        #     self.test_params.append(new_test_par)
         test = 0
 
     def set_par_details(self, par_name, par_type = None, default_val = None, min_val = None, max_val = None,
@@ -34,7 +50,7 @@ class TestSuite:
 
 
 
-def add_one(int_val):
+def add_one(int_val : int = 1) -> int:
     return int_val + 1
 
 test_suite = TestSuite(add_one)
