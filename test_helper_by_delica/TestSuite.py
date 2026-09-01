@@ -1,5 +1,6 @@
 import inspect
 import docstring_parser
+import random
 from TestParameter import TestParameter
 import test_helper_funcs as test_lib
 from test_helper_by_delica import IOPair
@@ -11,7 +12,31 @@ DEFAULT_BOOL = False
 
 PAR_TYPES = [int, float, str]
 
-def get_default_for_type(var_type):
+def get_default_for_type(var_type : type = int):
+    assert var_type in PAR_TYPES
+    result = None
+    if var_type is int:
+        result = DEFAULT_INT
+    elif var_type is float:
+        result = DEFAULT_FLOAT
+    elif var_type is str:
+        result = DEFAULT_STRING
+    elif var_type is bool:
+        result = DEFAULT_BOOL
+    return result
+
+def get_rand_int(min_val : int = 0, max_val : int = 100) -> int:
+    return random.randint(min_val, max_val)
+
+
+def get_rand_float(min_val : float = 0.0, max_val : float = 1.0) -> float:
+    return random.uniform(min_val, max_val)
+
+# def get_rand_string(str_len = 1):
+#
+
+
+def get_rand_for_type(var_type : type = int):
     assert var_type in PAR_TYPES
     result = 0
     if var_type is int:
@@ -76,7 +101,7 @@ class TestSuite:
             raise ValueError(f"Parameter with name {par_name} not found in the Test Suite for the function "
                              + f"{self.test_func.__name__},")
 
-    def run_type_tests(self, expect_type_errors=True):
+    def run_type_tests(self, expect_type_errors=True, num_rand_cases=1):
         io_pairs = []
         default_input_tuple = ()
         for param in self.test_params:
@@ -90,19 +115,11 @@ class TestSuite:
                 curr_type = curr_param.par_type
                 wrong_types = [par_type for par_type in PAR_TYPES if par_type != curr_type]
                 for wrong_type in wrong_types:
-                    wrong_val = get_default_for_type(wrong_type)
-                    wrong_tuple = get_revised_tuple(default_input_tuple, param_index, wrong_val)
-                    # if param_index == 0:
-                    #     if len(self.test_params) == 1:
-                    #         wrong_tuple = (wrong_val,)
-                    #     else:
-                    #         wrong_tuple = (wrong_val,) + default_input_tuple[1:]
-                    # elif param_index < len(self.test_params) - 1:
-                    #     wrong_tuple = default_input_tuple[:param_index] + (wrong_val,) \
-                    #                    + default_input_tuple[param_index + 1:]
-                    # else:
-                    #     wrong_tuple = default_input_tuple[:param_index] + (wrong_val,)
-                    io_pairs.append(IOPair(wrong_tuple, TypeError))
+                    wrong_default_val = get_default_for_type(wrong_type)
+                    wrong_default_tuple = get_revised_tuple(default_input_tuple, param_index, wrong_default_val)
+                    io_pairs.append(IOPair(wrong_default_tuple, TypeError))
+                    # for i in range(num_rand_cases):
+                    #     wrong_rand_val =
                 param_index += 1
         io_pairs.append(default_io_pair)
 
